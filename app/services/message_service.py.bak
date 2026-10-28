@@ -1,0 +1,856 @@
+"""
+MessageService — Message CRUD + RAG orchestration + SSE streaming.
+
+Orchestration flow for ``stream_response``:
+  1. Save the user message to MongoDB
+  2. Retrieve context from ``RagService``
+  3. Load recent conversation history
+  4. Build a LangChain prompt with context
+  5. Stream GPT-4o response token-by-token (yielded as SSE events)
+  6. Save the complete assistant message to MongoDB
+"""
+import json
+import logging
+import re
+import asyncio
+import time
+from datetime import datetime, timezone
+from typing import List, AsyncGenerator, Optional, Dict, Any
+
+from bson import ObjectId
+from fastapi import HTTPException, Request
+from openai import BadRequestError
+
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+
+from app.config import settings
+from app.core.database import get_database
+from app.core.constants import COLLECTION_MESSAGES, MessageRole
+from app.services.rag_service import RagService
+from app.services.chat_service import ChatService
+from app.services.user_upload_service import UserUploadService
+
+logger = logging.getLogger(__name__)
+
+
+def _print(msg: str):
+    """Print with immediate flush for real-time visibility."""
+    print(msg, flush=True)
+
+
+SYSTEM_PROMPT = """You are Petal AI, a specialized evidence-grounded dental reference assistant.
+
+Your goal is to answer using only the retrieved clinical textbook, handbook, and guideline evidence and to help dental professionals quickly find reliable, source-grounded information.
+
+ROLE & SAFETY PRINCIPLES:
+1. EVIDENCE-GROUNDED SUPPORT:
+   - Use only the retrieved content.
+   - Do NOT speculate beyond the retrieved evidence.
+   - For text-only questions, answer like a concise clinical reference or handbook entry unless the question clearly requires deeper explanation.
+   - For image-based clinical questions, use conservative language and keep the response evidence-grounded.
+   - Final clinical judgment always rests with the treating practitioner.
+
+{format_instructions}
+
+{analysis_block}
+
+{context_block}"""
+
+
+VISUAL_FORMAT_INSTRUCTIONS = """2. STRICT EVIDENCE-ONLY RESPONSE FOR IMAGE QUERIES:
+   An image was uploaded. You MUST answer ONLY using the retrieved clinical content below.
+   Do NOT diagnose from the image using your own medical knowledge.
+   Do NOT generate clinical assessments, descriptions, or pathognomonic findings that are not explicitly present in the retrieved content.
+   Your job is to MATCH the uploaded image against conditions, descriptions, and figures found in the retrieved documents.
+
+   Response structure:
+   - Possible Condition(s): List ONLY conditions mentioned in the retrieved content that match the visual presentation. Quote or paraphrase the textbook description.
+   - Relevant Evidence: Present the exact textbook content that supports the match (etiology, clinical features, management) as found in the retrieved chunks.
+   - Treatment / Management: ONLY if the retrieved content includes treatment information for the matched condition.
+   - If NO retrieved content matches the image, explicitly state: "No matching condition was found in the available knowledge base."
+
+3. CRITICAL RULES:
+   - Every clinical statement MUST be directly traceable to a retrieved chunk. If you cannot cite it, do NOT say it.
+   - Do NOT add your own clinical knowledge, differential diagnoses, or pathology descriptions beyond what the retrieved content provides.
+   - Do NOT use phrases like "pathognomonic for", "classic clinical sign of" unless those exact phrases appear in the retrieved content.
+   - Use conservative language: "The retrieved content describes..." or "According to [Source]..."
+
+4. IMAGES & SOURCES:
+   - Images (if applicable): Display relevant retrieved textbook figures using standard markdown `![Description](URL)`. Do NOT display images that appear to be just cropped text, section headers, typographic elements, or scanned words. Omit section if no relevant clinical images exist.
+   - Source: Every clinical statement MUST end with an exact citation from the context (e.g., [Handbook of Local Anesthesia, Page 42]). Do not cite 'Chunk 1'. Do not show file extension."""
+
+TEXT_FORMAT_INSTRUCTIONS = """2. ADAPTIVE RESPONSE STRUCTURE FOR TEXT-ONLY QUERIES:
+
+Decide the response style from the user's question and the retrieved evidence.
+
+A) For treatment, management, or procedural questions:
+- Provide a brief introductory explanation.
+- Use a "Treatment:" or "Management:" header followed by a clear numbered list of steps.
+- Do NOT use an "Answer:" header.
+
+B) For simple factual, medication, or guideline questions:
+- Provide a concise, clear explanation.
+- If the retrieved evidence describes comparative data, dosages, drug dilutions, or tabular info, you MUST format it as a clean Markdown table.
+- Use bullet points only if listing symptoms or unrelated key facts.
+- Do NOT use an "Answer:" header.
+
+C) For true clinical case-planning or scenario-based questions:
+- Allowed headers:
+  - Clinical Assessment
+  - Treatment Options
+  - Limitations (only if genuinely needed)
+
+3. STRICT RULES FOR TEXT-ONLY QUERIES:
+- Do NOT output visual-analysis sections such as "Uploaded Visual Findings", "Detected Visual Signs", or "Diagnostic Confidence".
+- Do NOT restate the user's whole question unless necessary.
+- Do NOT add boilerplate disclaimer language unless safety truly requires it.
+- CLINICAL FIDELITY: When extracting clinical guidelines, treatments, or dosages, you MUST include all exact constraints, exclusions, demographic limits, and specific parameters (e.g., age, weight, timeframes, exact dosages) verbatim as they appear in the source. Do NOT summarize or generalize away critical details.
+
+4. IMAGES & SOURCES:
+- IMAGES: Do strictly NOT display images for simple factual, medication, or guideline queries. You may ONLY display an image using `![Description](URL)` if the user's question explicitly asks for a visual reference (e.g., "show me") or involves a complex clinical procedure where a visual is necessary.
+- Source Citation: Inline format `[Document Name, Page X]`. If no page: `[Document Name]`.
+- Remove .pdf/.xlsx extensions.
+"""
+
+CONTEXT_TEMPLATE = """--- RETRIEVED CLINICAL CONTENT ---
+The following excerpts are from peer-reviewed dental textbooks and clinical guidelines.
+
+{context}
+--- END OF RETRIEVED CONTENT ---"""
+
+_BLOB_URL_PATTERN = re.compile(r"https://[a-zA-Z0-9-]+\.blob\.core\.windows\.net/([^/?)]+)/([^? \n)]+)(\?[^ \n)]+)?")
+_shared_llm_stream = None
+_shared_llm_title = None
+
+def _get_stream_llm():
+    global _shared_llm_stream
+    if _shared_llm_stream is None:
+        _shared_llm_stream = ChatGoogleGenerativeAI(
+            model=settings.GEMINI_CHAT_MODEL,
+            project=settings.GOOGLE_CLOUD_PROJECT,
+            location=settings.GOOGLE_CLOUD_LOCATION,
+            credentials=settings.get_vertex_credentials(),
+            vertexai=True,
+            temperature=0.1,
+            top_p=0.9,
+            streaming=True,
+            thinking_budget=0,
+        )
+    return _shared_llm_stream
+
+def _get_title_llm():
+    global _shared_llm_title
+    if _shared_llm_title is None:
+        _shared_llm_title = ChatGoogleGenerativeAI(
+            model=settings.GEMINI_CHAT_MODEL,
+            project=settings.GOOGLE_CLOUD_PROJECT,
+            location=settings.GOOGLE_CLOUD_LOCATION,
+            credentials=settings.get_vertex_credentials(),
+            vertexai=True,
+            temperature=0,
+            max_output_tokens=100,
+            thinking_budget=0
+        )
+    return _shared_llm_title
+
+class MessageService:
+    @staticmethod
+    def _is_trivial_query(query: str) -> bool:
+        """Return True if the query is a simple greeting (e.g. 'hi')."""
+        trivial_terms = {"hi", "hello", "hey", "how are you", "good morning", "good afternoon"}
+        clean_q = query.lower().strip().strip("?!.")
+        return clean_q in trivial_terms
+
+    @staticmethod
+    def _is_ambiguous_followup(query: str) -> bool:
+        """Return True if the query lacks enough context to be a standalone search query.
+        
+        Uses a content-word heuristic instead of keyword matching:
+        - Short queries (≤6 words) with no domain-specific terms are follow-ups
+        - Queries with only common verbs/adverbs need conversation context
+        
+        Examples that return True:  'explain in detail', 'tell me more', 'how?', 'show me'
+        Examples that return False: 'what is gingival recession', 'treatment for periodontitis'
+        """
+        clean_q = query.lower().strip().strip("?!.")
+        words = clean_q.split()
+        
+        # Very short queries are almost always follow-ups
+        if len(words) <= 2:
+            return True
+        
+        # Common non-content words (verbs, adverbs, prepositions, pronouns)
+        # These words don't carry domain-specific meaning
+        NON_CONTENT = {
+            "show", "tell", "give", "explain", "describe", "elaborate", "detail",
+            "more", "further", "deeper", "about", "how", "what", "why", "when",
+            "can", "could", "would", "should", "please", "also", "just",
+            "me", "the", "a", "an", "in", "of", "to", "for", "is", "are",
+            "it", "its", "this", "that", "these", "those", "do", "does",
+            "i", "be", "with", "and", "or", "but", "not", "on", "at",
+            "very", "much", "way", "some", "any", "all", "go", "let",
+            "steps", "done", "again", "same", "like",
+        }
+        
+        # Check if query has at least one content word (a word NOT in common set)
+        content_words = [w for w in words if w not in NON_CONTENT and len(w) > 2]
+        
+        # If short query (≤6 words) has no content words → it's a follow-up
+        if len(words) <= 6 and len(content_words) == 0:
+            return True
+        
+        return False
+
+    @staticmethod
+    def _hydrate_message_urls(doc: dict) -> dict:
+        """Replace stored blob names with fresh 7-day SAS URLs and re-sign embedded content URLs."""
+        if doc.get("image_urls"):
+            doc["image_urls"] = UserUploadService.get_sas_urls(doc["image_urls"])
+        if doc.get("image_url"):
+            doc["image_url"] = UserUploadService.get_sas_urls([doc["image_url"]])[0]
+
+        # Re-sign any Azure Blob URLs found in message content (e.g. ![diagram](url))
+        content = doc.get("content", "")
+        if content and "blob.core.windows.net" in content:
+            def replacer(match):
+                container = match.group(1)
+                blob_name_and_path = match.group(2)
+                try:
+                    return UserUploadService.get_sas_urls([blob_name_and_path])[0]
+                except Exception as exc:
+                    logger.warning("Failed to sign Azure Blob URL: %s", exc)
+                    return match.group(0) # Fallback to original if signing fails
+
+            doc["content"] = _BLOB_URL_PATTERN.sub(replacer, content)
+
+        return doc
+
+    # ── Save a single message ──────────────────────────────────────────────
+    @staticmethod
+    async def save_message(
+        chat_id: str,
+        role: str,
+        content: str,
+        image_url: Optional[str] = None,
+        image_urls: Optional[List[str]] = None,  # permanent blob names
+        sources: Optional[List[Dict[str, Any]]] = None,
+        token_usage: Optional[Dict[str, int]] = None,
+    ) -> dict:
+        db = await get_database()
+        now = datetime.now(timezone.utc)
+
+        msg = {
+            "chat_id": chat_id,
+            "role": role,
+            "content": content,
+            "image_url": image_url,
+            "image_urls": image_urls or [],  # permanent blob names stored in DB
+            "sources": sources or [],
+            "token_usage": token_usage,       # capture input/output tokens
+            "created_at": now,
+        }
+        result = await db[COLLECTION_MESSAGES].insert_one(msg)
+        msg["id"] = str(result.inserted_id)
+        msg.pop("_id", None)
+        return MessageService._hydrate_message_urls(msg)
+
+    # ── Get all messages for a chat ────────────────────────────────────────
+    @staticmethod
+    async def get_messages(chat_id: str) -> List[dict]:
+        db = await get_database()
+        cursor = (
+            db[COLLECTION_MESSAGES]
+            .find({"chat_id": chat_id})
+            .sort("created_at", 1)
+        )
+        messages = []
+        async for doc in cursor:
+            doc["id"] = str(doc.pop("_id"))
+            messages.append(MessageService._hydrate_message_urls(doc))
+        return messages
+
+    # ── Get single message ─────────────────────────────────────────────────
+    @staticmethod
+    async def get_message(chat_id: str, message_id: str) -> dict:
+        db = await get_database()
+        if not ObjectId.is_valid(message_id):
+            raise HTTPException(status_code=400, detail="Invalid message ID format")
+
+        doc = await db[COLLECTION_MESSAGES].find_one({
+            "_id": ObjectId(message_id),
+            "chat_id": chat_id,
+        })
+        if not doc:
+            raise HTTPException(status_code=404, detail="Message not found")
+
+        doc["id"] = str(doc.pop("_id"))
+        return MessageService._hydrate_message_urls(doc)
+
+    # ── Delete single message ──────────────────────────────────────────────
+    @staticmethod
+    async def delete_message(chat_id: str, message_id: str) -> None:
+        db = await get_database()
+        if not ObjectId.is_valid(message_id):
+            raise HTTPException(status_code=400, detail="Invalid message ID format")
+
+        result = await db[COLLECTION_MESSAGES].delete_one({
+            "_id": ObjectId(message_id),
+            "chat_id": chat_id,
+        })
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Message not found")
+
+    # ── Build LangChain messages from history ──────────────────────────────
+    @staticmethod
+    async def _build_history(chat_id: str, limit: int = 20) -> list:
+        """Load last *limit* messages and convert to LangChain message objects."""
+        db = await get_database()
+        cursor = (
+            db[COLLECTION_MESSAGES]
+            .find({"chat_id": chat_id}, {"sources": 0, "token_usage": 0})
+            .sort("created_at", -1)
+            .limit(limit)
+        )
+        raw: list = []
+        async for doc in cursor:
+            raw.append(doc)
+        raw.reverse()  # chronological order
+
+        lc_messages: list = []
+        for m in raw:
+            if m["role"] == MessageRole.USER:
+                # Collect all images on this message (legacy single + new list)
+                all_blob_names: List[str] = list(m.get("image_urls") or [])
+                if m.get("image_url") and m["image_url"] not in all_blob_names:
+                    all_blob_names.append(m["image_url"])
+
+                if all_blob_names:
+                    # Generate fresh SAS URLs for history images
+                    sas_urls = UserUploadService.get_sas_urls(all_blob_names)
+                    content_parts: List[Dict[str, Any]] = [
+                        {"type": "text", "text": m["content"]}
+                    ]
+                    for sas_url in sas_urls:
+                        content_parts.append(
+                            {"type": "image_url", "image_url": {"url": sas_url}}
+                        )
+                    lc_messages.append(HumanMessage(content=content_parts))
+                else:
+                    lc_messages.append(HumanMessage(content=m["content"]))
+            elif m["role"] == MessageRole.ASSISTANT:
+                lc_messages.append(AIMessage(content=m["content"]))
+        return lc_messages
+
+    # ── Generate chat title from first message ─────────────────────────────
+    @staticmethod
+    async def generate_title(query: str) -> str:
+        """Use Gemini 3 Flash to produce a short (≤6 word) chat title from the first query."""
+        try:
+            llm = _get_title_llm()
+            resp = await llm.ainvoke([
+                SystemMessage(content="Generate a concise chat title (maximum 6 words) for the following user message. Return ONLY the title, nothing else."),
+                HumanMessage(content=query),
+            ])
+           
+            # Handle cases where content might be a list (e.g. Gemini 2.0/3.x or tool blocks)
+            content = resp.content
+            if isinstance(content, list):
+                content = "".join([part.get("text", "") if isinstance(part, dict) else str(part) for part in content])
+            
+            return content.strip().strip('"')
+        except Exception as exc:
+            logger.warning("Title generation failed, using fallback: %s", exc)
+            return query[:50] if len(query) <= 50 else query[:47] + "..."
+
+
+    # ── SSE Streaming response ─────────────────────────────────────────────
+    @staticmethod
+    async def stream_response(
+        chat_id: str,
+        query: str,
+        image_url: Optional[str] = None,          # legacy single image blob name
+        image_urls: Optional[List[str]] = None,   # new multi-image blob names
+        request: Optional[Request] = None,
+    ) -> AsyncGenerator[str, None]:
+        """
+        Full RAG pipeline that yields Server-Sent Events:
+          - ``event: token``   → incremental AI text
+          - ``event: sources`` → retrieved document references
+          - ``event: done``    → final message ID
+
+        Image handling:
+          1. Collect all blob names (legacy image_url + new image_urls)
+          2. Promote temp blobs → permanent storage (user-upload/)
+          3. Store permanent blob names on the MongoDB message
+          4. Generate fresh 7-day SAS URLs for RAG + LLM
+        """
+        # ── Collect all image blob names from request ──────────────────────
+        raw_blob_names: List[str] = list(image_urls or [])
+        if image_url and image_url not in raw_blob_names:
+            raw_blob_names.append(image_url)
+
+        _stream_t0 = time.perf_counter()
+        logger.info("[TIMING] stream_response() started — chat_id=%s, has_images=%s", chat_id, bool(raw_blob_names))
+
+        is_trivial = MessageService._is_trivial_query(query)
+        yield json.dumps({"event": "status", "content": "analyzing_query"}) + "\n\n"
+
+        # ── PHASE A: Launch embeddings at t=0 (independent of everything) ──
+        # Embeddings only need the query string. Starting them before image
+        # promotion, save, and history hides ~1.2s of embedding latency.
+        _embed_3072_task = None
+        _embed_vision_task = None
+        if not is_trivial:
+            _embed_3072_task = asyncio.create_task(RagService._embed_text(query, dimensions=3072))
+            _embed_vision_task = asyncio.create_task(RagService._embed_text_vision(query))
+            logger.info("[TIMING] Embeddings launched at t=0 (before save/history/promotion)")
+
+        # ── PHASE B: Image promotion (if needed) — embeddings running in background ──
+        perm_blob_names: List[str] = []
+        perm_sas_urls: List[str] = []
+
+        if raw_blob_names:
+            yield json.dumps({"event": "status", "content": "processing_images"}) + "\n\n"
+            try:
+                _t0 = time.perf_counter()
+                promoted = await UserUploadService.promote_images(raw_blob_names)
+                logger.info("[TIMING] Step 0 — image_promotion: %.3fs | images=%d", time.perf_counter() - _t0, len(promoted))
+                
+                perm_blob_names = [p["blob_name"] for p in promoted]
+                perm_sas_urls = [p["url"] for p in promoted]
+            except Exception as exc:
+                logger.error("Image processing/expansion failed: %s", exc, exc_info=True)
+                yield json.dumps({"event": "error", "content": str(exc)}) + "\n\n"
+                return
+
+        # ── PHASE C: Save + History + Anchor extraction — ALL in parallel ──
+        # touch_chat is fire-and-forget (result not needed anywhere)
+        _t0 = time.perf_counter()
+        
+        async def safe_touch_chat(cid):
+            try:
+                await ChatService.touch_chat(cid)
+            except Exception as e:
+                logger.error("Failed to update chat timestamp: %s", e)
+                
+        asyncio.create_task(safe_touch_chat(chat_id))  # fire-and-forget
+
+        # Anchor context: extract in parallel with save+history (was sequential before)
+        async def _get_anchor():
+            if is_trivial or not MessageService._is_ambiguous_followup(query):
+                return None
+            try:
+                db = await get_database()
+                last_assistant = await db[COLLECTION_MESSAGES].find_one(
+                    {"chat_id": chat_id, "role": MessageRole.ASSISTANT},
+                    sort=[("created_at", -1)]
+                )
+                if last_assistant and last_assistant.get("sources"):
+                    top_src = last_assistant["sources"][0]
+                    anchor = {
+                        "topic_id": top_src.get("topic_id"),
+                        "document_name": top_src.get("document_name"),
+                        "chunk_id": top_src.get("chunk_id")
+                    }
+                    logger.info("Anchoring follow-up to previous context: %s", anchor)
+                    return anchor
+            except Exception as exc:
+                logger.warning("Failed to extract anchor context: %s", exc)
+            return None
+
+        # Run save, history, and anchor extraction ALL in parallel
+        user_msg, history, anchor_context = await asyncio.gather(
+            MessageService.save_message(
+                chat_id=chat_id,
+                role=MessageRole.USER,
+                content=query,
+                image_url=None,
+                image_urls=perm_blob_names,
+            ),
+            MessageService._build_history(chat_id, limit=6),
+            _get_anchor(),
+        )
+        logger.info(
+            "[TIMING] Steps 1+2 — save_user_message + build_history + anchor (parallel): %.3fs | msgs=%d",
+            time.perf_counter() - _t0, len(history),
+        )
+
+        # Build history_text for Gemini analysis (co-reference resolution)
+        history_text = ""
+        for msg in history[-3:]:
+            if isinstance(msg.content, str):
+                history_text += f"{msg.type}: {msg.content}\n"
+            elif isinstance(msg.content, list):
+                text_parts = [p.get("text", "") for p in msg.content if p.get("type") == "text"]
+                history_text += f"{msg.type}: {' '.join(text_parts)}\n"
+
+        # ── PHASE D: RAG Retrieve (embeddings already in-flight since t=0) ──
+        sources: List[Dict[str, Any]] = []
+        context_text = ""
+        rag_image_sas_urls: List[str] = []
+
+        if not is_trivial:
+            yield json.dumps({"event": "status", "content": "searching_literature"}) + "\n\n"
+            try:
+                _t0 = time.perf_counter()
+                raw_sources, analysis, retrieve_usage = await RagService.retrieve(
+                    query, 
+                    image_urls=perm_sas_urls,
+                    anchor_context=anchor_context,
+                    history_text=history_text,
+                    pre_embed_3072_task=_embed_3072_task,
+                    pre_embed_vision_task=_embed_vision_task,
+                )
+             
+                if raw_sources:
+                    _print(f"📚 [RAG] Retrieved {len(raw_sources)} raw sources from search")
+                    # Deduplicate and group sources by (document_name, page, blob_url)
+                    grouped_sources_map = {}
+                    for s in raw_sources:
+                        doc_name = s.get("document_name") or "Unknown"
+                        
+                        # Strip folder paths if any (Defensive check for None)
+                        if doc_name and isinstance(doc_name, str):
+                            if "/" in doc_name:
+                                doc_name = doc_name.split("/")[-1]
+                            if "\\" in doc_name:
+                                doc_name = doc_name.split("\\")[-1]
+                            
+                        # Strip common file extensions
+                        lower_name = doc_name.lower()
+                        if lower_name.endswith(".xlsx"):
+                            doc_name = doc_name[:-5]
+                        elif lower_name.endswith(".pdf"):
+                            doc_name = doc_name[:-4]
+                            
+                        s["document_name"] = doc_name
+                        
+                        page = s.get("page")
+                        blob_url = s.get("blob_url", "")
+                        
+                        key = (doc_name, page, blob_url)
+                        if key in grouped_sources_map:
+                            existing = grouped_sources_map[key]
+                            content_to_add = s.get("content", "").strip()
+                            if content_to_add and content_to_add not in existing.get("content", ""):
+                                # Append the extra snippet content
+                                existing["content"] += "\n...\n" + content_to_add
+                        else:
+                            s_copy = s.copy()
+                            grouped_sources_map[key] = s_copy
+                            sources.append(s_copy)
+
+                    context_parts = []
+                    for i, s in enumerate(sources, 1):
+                        label = s.get("document_name", "Unknown")
+                        page = s.get("page")
+                        page_info = f" (page {page})" if page else ""
+                        
+                        chapter = s.get("chapter_name") or "N/A"
+                        topic = s.get("topic_name") or "N/A"
+                        clinical_desc = s.get("clinical_description") or ""
+                        
+                        content = s.get("content", "").strip()
+                        # Inject image URL into context ONLY for genuinely useful clinical images.
+                        # PDF "figure" chunks are often just OCR text snippets (section headers,
+                        # typographic elements like "7) MISCELLANEOUS") — never send those to the LLM.
+                        # Allow: XLSX-sourced images (always curated clinical photos)
+                        # Allow: PDF figures ONLY if they have a real clinical image description
+                        #        AND that description does NOT indicate it's just a text/heading scan.
+                        is_image_chunk = str(s.get("chunk_type")).lower() in ["figure", "image"]
+                        is_xlsx_image = s.get("source_type") == "xlsx"
+                        
+                        # Detect scanned text/header images by checking description + content
+                        _desc_lower = (clinical_desc or "").lower()
+                        _content_lower = content.lower()
+                        _is_text_scan = any(kw in _desc_lower or kw in _content_lower for kw in [
+                            "textual heading", "section heading", "section title",
+                            "heading for", "title for", "header for",
+                            "typographic", "text-based", "scanned text",
+                            "serves as a heading", "serves as a title",
+                            "chapter heading", "section discussing",
+                            "table index", "figure index",
+                        ])
+                        
+                        # Extra rigorous check for junk images like "TABLE 20.14"
+                        word_count = len(_content_lower.split())
+                        if word_count < 10 and ("table" in _content_lower or "figure" in _content_lower or "part" in _content_lower):
+                            _is_text_scan = True
+                        
+                        has_real_clinical_image = (
+                            bool(clinical_desc and len(clinical_desc) > 20)
+                            and not _is_text_scan
+                        )
+                        
+                        should_show_image = (
+                            s.get("blob_url")
+                            and is_image_chunk
+                            and (is_xlsx_image or has_real_clinical_image)
+                        )
+                        
+                        if should_show_image:
+                            sas_url = s["blob_url"]
+                            s["image_url"] = sas_url  # Send helper URL to frontend source object
+                            
+                            image_context = f"\n[FIGURE CONTEXT]"
+                            if clinical_desc:
+                                image_context += f"\nRETRIEVED CLINICAL DESCRIPTION (Expert Visual Analysis): {clinical_desc}"
+                            image_context += f"\nRETRIEVED IMAGE URL (CITABLE EVIDENCE): {sas_url}"
+                            
+                            content += image_context
+                            
+                            if sas_url not in rag_image_sas_urls:
+                                rag_image_sas_urls.append(sas_url)
+                        
+                        page_str = f"Pg {page}" if page else "No Pg"
+                        context_string = f"[Source: {label} | {page_str}]\n{content}"
+                        context_parts.append(context_string)
+                        
+                    # Log chunks purely for developer debugging
+                    if sources and logger.isEnabledFor(logging.DEBUG):
+                        logger.debug("📄 SENDING %d CHUNKS TO LLM FOR RERANKED CONTEXT:", len(sources))
+                        for idx, s in enumerate(sources, 1):
+                            score = float(s.get('_final_score') or 0.0)
+                            doc_title = s.get('document_name', 'Unknown')
+                            page = s.get('page') or s.get('page_number', '?')
+                            ctype = s.get('chunk_type', 'text')
+                            chapter = s.get('chapter_name') or 'N/A'
+                            topic = s.get('topic_name') or 'N/A'
+                            
+                            signs = s.get('visual_signs') or []
+                            conds = s.get('candidate_conditions') or []
+                            match_info = []
+                            if signs: match_info.append(f"Signs [{', '.join(signs)}]")
+                            if conds: match_info.append(f"Conds [{', '.join(conds)}]")
+                            match_str = f" | Match: {' & '.join(match_info)}" if match_info else ""
+                            
+                            content_full = str(s.get('content', '')).strip()
+                            
+                            logger.debug("[%d] 📘 %s (Pg %s) | Score: %.2f\n    ↳ Path: %s | %s > %s%s\n    ↳ Content: %s",
+                                         idx, doc_title, page, score, ctype.upper(), chapter, topic, match_str, content_full)
+                    
+                    context_text = "\n\n".join(context_parts)
+            except Exception as exc:
+                logger.error("RAG retrieval error: %s", exc, exc_info=True)
+        logger.info("[TIMING] Step 3 — rag_retrieve+context_build: %.3fs | sources=%d", time.perf_counter() - _t0, len(sources))
+
+        # 3. Build system prompt
+        _t0 = time.perf_counter()
+        if context_text:
+            context_block = CONTEXT_TEMPLATE.format(context=context_text)
+        else:
+            _print("⚠️ [RAG] No context text built — LLM will have no retrieved evidence")
+            context_block = ""
+            
+        analysis_block = ""
+        format_instructions = TEXT_FORMAT_INSTRUCTIONS
+        
+        if not is_trivial and perm_sas_urls and analysis:
+            format_instructions = VISUAL_FORMAT_INSTRUCTIONS
+            
+            anatomy_str = ", ".join(analysis.get('anatomy', [])) or "None specified"
+            signs_str = ", ".join(analysis.get('visual_signs', [])) or "None specified"
+            
+            analysis_block = f"""
+            --- IMAGE SEARCH CONTEXT (for matching only) ---
+            The following observations were extracted from the uploaded image to help find matching conditions in the knowledge base.
+            These are NOT a diagnosis. Use them ONLY to identify which retrieved content best matches the image.
+            
+            Image Type: {analysis.get('modality', 'unknown')}
+            Anatomical Region: {anatomy_str}
+            Observed Visual Features: {signs_str}
+            -----------------------------------------------
+
+            CRITICAL: Your response must come ONLY from the retrieved clinical content below.
+            Match the observed visual features against conditions described in the retrieved documents.
+            If no retrieved content describes a matching condition, say so explicitly.
+            Do NOT generate your own clinical assessment or diagnosis from the image.
+            """
+        elif not perm_sas_urls:
+            analysis_block = """
+                TEXT-ONLY RESPONSE REMINDER:
+                This query does not include an uploaded image.
+                Prefer a concise clinical-reference style answer unless the question clearly requires a more detailed explanation.
+                Do NOT use visual-analysis headers.
+                Append citations to the end of factual lines/steps using: *<document name>, Page <page number>.
+                If a source has NO PAGE NUMBER, omit the page portion entirely (just use: *<document name>.).
+                If a RETRIEVED IMAGE URL is provided in the context below and it is a relevant clinical photo or diagram, display it using markdown: ![description](url).
+                """
+            
+        system = SystemMessage(content=SYSTEM_PROMPT.format(
+            format_instructions=format_instructions,
+            analysis_block=analysis_block,
+            context_block=context_block
+        ))
+        logger.info("[TIMING] Step 4 — build_prompt: %.3fs", time.perf_counter() - _t0)
+
+        # 4. Use pre-loaded conversation history + append current user message
+        # The last message in history is the one we just saved; replace
+        # with the current input to avoid duplicate retrieval
+        if history and isinstance(history[-1], HumanMessage):
+            history = history[:-1]
+
+        # Build the current user LangChain message (multimodal if images provided)
+        _print(f"🧠 [LLM] Sending to model: {len(sources)} text chunks | {len(perm_sas_urls)} user images | {len(rag_image_sas_urls)} RAG images")
+
+        if perm_sas_urls or rag_image_sas_urls:
+            content_parts: List[Any] = [{"type": "text", "text": query}]
+            
+            if perm_sas_urls:
+                content_parts.append({"type": "text", "text": "\n[Images provided by user:]"})
+                for sas_url in perm_sas_urls:
+                    content_parts.append({"type": "image_url", "image_url": {"url": sas_url}})
+                    
+            if rag_image_sas_urls:
+                content_parts.append({"type": "text", "text": "\n[SYSTEM INSTRUCTION: The following images are retrieved context data, NOT user uploads. The user CANNOT see them. You are strictly FORBIDDEN from saying 'Based on the images provided' or 'The images you provided'. If the user asks for visual proof, you MUST output the markdown `![description](URL)` using the exact URL printed above the image.]"})
+                for sas_url in rag_image_sas_urls:
+                    content_parts.append({"type": "text", "text": f"URL for the next image: {sas_url}"})
+                    content_parts.append({"type": "image_url", "image_url": {"url": sas_url}})
+                    
+            current_msg = HumanMessage(content=content_parts)
+        else:
+            current_msg = HumanMessage(content=query)
+
+        messages = [system] + history + [current_msg]
+
+        # ── LLM PROMPT MONITOR ───────────────────────────────────────────────
+        # _print("\n" + "█"*40 + " [LLM INPUT MONITOR] " + "█"*40)
+        # _print(f"--- SYSTEM PROMPT ---\n{system.content}\n")
+        
+        # if history:
+        #     _print(f"--- CONVERSATION HISTORY ({len(history)} messages) ---")
+        #     for h_msg in history:
+        #         h_text = h_msg.content if isinstance(h_msg.content, str) else "[Multimodal/Complex Content]"
+        #         _print(f"[{h_msg.type.upper()}]: {h_text}")
+
+        # _print("\n--- CURRENT HUMAN MESSAGE ---")
+        # if isinstance(current_msg.content, str):
+        #     _print(f"{current_msg.content}")
+        # else:
+        #     # Multimodal content list
+        #     for part in current_msg.content:
+        #         if part.get("type") == "text":
+        #             _print(f"[TEXT] {part.get('text')}")
+        #         elif part.get("type") == "image_url":
+        #             _print(f"[IMAGE] {part.get('image_url', {}).get('url', '')[:100]}...")
+        # _print("█"*101 + "\n")
+        # ─────────────────────────────
+
+        # 5. Stream from Google Gemini
+        yield json.dumps({"event": "status", "content": "generating_response"}) + "\n\n"
+        _t0 = time.perf_counter()
+        _first_token_logged = False
+        llm = _get_stream_llm()
+      
+        full_response_parts = []
+        input_tokens = 0
+        output_tokens = 0
+        
+        try:
+            async for chunk in llm.astream(messages):
+                if request and await request.is_disconnected():
+                    logger.info("Client disconnect detected via request object. Aborting stream.")
+                    raise asyncio.CancelledError("Client disconnected")
+
+                # Accumulate usage metadata (input/output tokens are per-chunk in some providers)
+                if hasattr(chunk, "usage_metadata") and chunk.usage_metadata:
+                    usage = chunk.usage_metadata
+                    input_tokens += usage.get("input_tokens", 0)
+                    output_tokens += usage.get("output_tokens", 0)
+
+                content = chunk.content
+                # Handle cases where content might be a list (e.g. Gemini multimodal or tool blocks)
+                if isinstance(content, list):
+                    token = "".join([part.get("text", "") if isinstance(part, dict) else str(part) for part in content])
+                else:
+                    token = content
+                
+                if token:
+                    if not _first_token_logged:
+                        logger.info("[TIMING] Step 5 — llm_first_token: %.3fs", time.perf_counter() - _t0)
+                        _first_token_logged = True
+                    full_response_parts.append(token)
+                    yield json.dumps({"event": "token", "content": token}) + "\n\n"
+        except asyncio.CancelledError:
+            logger.info("Client aborted the stream. Saving partial response in background.")
+            full_response = "".join(full_response_parts)
+            if full_response:
+                final_usage = []
+                if 'retrieve_usage' in locals() and retrieve_usage:
+                    final_usage.extend(retrieve_usage)
+                final_usage.append({
+                    "step": "generation",
+                    "model": settings.GEMINI_CHAT_MODEL,
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "total_tokens": input_tokens + output_tokens
+                })
+                total_in = sum(m.get("input_tokens", 0) for m in final_usage)
+                total_out = sum(m.get("output_tokens", 0) for m in final_usage)
+
+                asyncio.create_task(MessageService.save_message(
+                    chat_id=chat_id,
+                    role=MessageRole.ASSISTANT,
+                    content=full_response,
+                    sources=sources,
+                    token_usage={
+                        "input_tokens": total_in,
+                        "output_tokens": total_out,
+                        "total_tokens": total_in + total_out,
+                        "steps": final_usage
+                    },
+                ))
+            raise
+        except Exception as exc:
+            logger.error("LLM streaming error: %s", exc, exc_info=True)
+            error_msg = "I'm sorry, I encountered an error generating a response. Please try again."
+            full_response_parts = [error_msg]
+            yield json.dumps({"event": "token", "content": error_msg}) + "\n\n"
+            
+        full_response = "".join(full_response_parts)
+        logger.info("[TIMING] Step 5 — llm_streaming_complete: %.3fs | chars=%d | in_tok=%d out_tok=%d",
+                    time.perf_counter() - _t0, len(full_response), input_tokens, output_tokens)
+
+        # 6. Emit sources
+        if sources:
+            # Strip 'content' from sources to reduce payload size
+            clean_sources = [
+                {k: v for k, v in s.items() if k != "content"}
+                for s in sources
+            ]
+            yield json.dumps({"event": "sources", "sources": clean_sources}) + "\n\n"
+
+        # 7. Save assistant message
+        _t0 = time.perf_counter()
+        final_usage = []
+        if 'retrieve_usage' in locals() and retrieve_usage:
+            final_usage.extend(retrieve_usage)
+        final_usage.append({
+            "step": "generation",
+            "model": settings.GEMINI_CHAT_MODEL,
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "total_tokens": input_tokens + output_tokens
+        })
+        total_in = sum(m.get("input_tokens", 0) for m in final_usage)
+        total_out = sum(m.get("output_tokens", 0) for m in final_usage)
+
+        assistant_msg = await MessageService.save_message(
+            chat_id=chat_id,
+            role=MessageRole.ASSISTANT,
+            content=full_response,
+            sources=sources,
+            token_usage={
+                "input_tokens": total_in,
+                "output_tokens": total_out,
+                "total_tokens": total_in + total_out,
+                "steps": final_usage
+            },
+        )
+        logger.info("[TIMING] Step 7 — save_assistant_message: %.3fs", time.perf_counter() - _t0)
+
+        logger.info("[TIMING] stream_response() TOTAL wall-time: %.3fs", time.perf_counter() - _stream_t0)
+
+        # 8. Done event
+        yield json.dumps({"event": "done", "message_id": assistant_msg['id']}) + "\n\n"

@@ -1,0 +1,1354 @@
+"""
+RagService — Azure AI Search vector retrieval with semantic reranking.
+
+Uses two indexes:
+  - Text index  (``dental-text-index``)  → 3072-dim embeddings from ``text-embedding-3-large``
+  - Image index (``dental-image-index``) → 1024-dim content_vector + image_vector
+
+Retrieval strategy:
+  - Hybrid search: keyword + multi-vector + semantic reranker
+  - Text queries → text embedding for text_index, vision text embedding for image_index
+  - Image queries → vision image embedding for image_index
+  - Weighted vectors: text vectors weighted lower when image is provided
+  - Results merged, deduped, sorted by reranker_score first
+  - Figure chunks are prioritized for dental use case
+"""
+import logging
+import re
+import json
+import time
+import asyncio
+from typing import List, Dict, Any, Optional, Tuple
+
+from azure.core.credentials import AzureKeyCredential
+from azure.search.documents.aio import SearchClient as AsyncSearchClient
+from azure.search.documents.models import VectorizedQuery
+import numpy as np
+from langchain_openai import AzureOpenAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
+import httpx
+
+from app.config import settings
+from app.utils.search_utils import ensure_search_index_exists
+
+logger = logging.getLogger(__name__)
+
+# Semantic config name must match what's in setup_search.py
+SEMANTIC_CONFIG_NAME = "my-semantic-config"
+
+CANONICAL_MODALITIES = [
+    "periapical_xray",
+    "panoramic_xray",
+    "intraoral_photo",
+    "bitewing_xray",
+    "cbct",
+    "histology",
+    "clinical_illustration",
+    "diagram",
+]
+
+
+class RagService:
+    """Stateless helper – every method is a ``@staticmethod``."""
+
+    # ── Cached clients (connection reuse) ──────────────────────────────────
+    _embed_client_3072: AzureOpenAIEmbeddings | None = None
+    _embed_client_1024: AzureOpenAIEmbeddings | None = None
+    _vision_http: httpx.AsyncClient | None = None
+    _search_clients: Dict[str, AsyncSearchClient] = {}
+    _embedding_cache: Dict[str, List[float]] = {}
+
+    @classmethod
+    def _get_embed_client(cls, dimensions: int) -> AzureOpenAIEmbeddings:
+        """Return a cached AzureOpenAIEmbeddings client for the given dimension."""
+        endpoint = settings.AZURE_OPENAI_EMBEDDING_ENDPOINT 
+        api_key = settings.AZURE_OPENAI_EMBEDDING_KEY 
+
+        if dimensions == 3072:
+            if cls._embed_client_3072 is None:
+                cls._embed_client_3072 = AzureOpenAIEmbeddings(
+                    azure_endpoint=endpoint,
+                    azure_deployment=settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT,
+                    openai_api_version="2024-12-01-preview",
+                    api_key=api_key,
+                    dimensions=3072,
+                )
+            return cls._embed_client_3072
+        else:
+            if cls._embed_client_1024 is None:
+                cls._embed_client_1024 = AzureOpenAIEmbeddings(
+                    azure_endpoint=endpoint,
+                    azure_deployment=settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT,
+                    openai_api_version="2023-05-15",
+                    api_key=api_key,
+                    dimensions=1024,
+                )
+            return cls._embed_client_1024
+
+    @staticmethod
+    def _slice_vector(vector: List[float], target_dims: int) -> List[float]:
+        """
+        Matryoshka slicing: Truncate a high-dimensional vector to a lower dimension
+        and re-normalize it to maintain quality.
+        """
+        if len(vector) <= target_dims:
+            return vector
+        
+        sliced = vector[:target_dims]
+        # Re-normalize
+        arr = np.array(sliced)
+        norm = np.linalg.norm(arr)
+        if norm > 0:
+            arr = arr / norm
+        return arr.tolist()
+
+    @classmethod
+    def _get_vision_http(cls) -> httpx.AsyncClient:
+        """Return a cached httpx client for Azure Vision API (connection reuse)."""
+        if cls._vision_http is None or cls._vision_http.is_closed:
+            cls._vision_http = httpx.AsyncClient(timeout=30)
+        return cls._vision_http
+
+
+    # ── Text embedding via Azure OpenAI ────────────────────────────────────
+
+    @staticmethod
+    async def _embed_text(text: str, dimensions: int = 3072) -> List[float]:
+        """Return a vector for the text index using OpenAI with specified dimensions."""
+        cache_key = f"{dimensions}_{text}"
+        if cache_key in RagService._embedding_cache:
+            logger.info("[CACHE] HIT: embed_text(%dD)", dimensions)
+            return RagService._embedding_cache[cache_key]
+
+        client = RagService._get_embed_client(dimensions)
+        try:
+            _t0 = time.perf_counter()
+            result = await client.aembed_query(text)
+            logger.info("[TIMING] embed_text(%dD): %.3fs", dimensions, time.perf_counter() - _t0)
+            RagService._embedding_cache[cache_key] = result
+            return result
+        except Exception as e:
+            logger.error(f"{dimensions} embedding failed: {e}")
+            raise e
+
+
+    # ── Vision-based text embedding ────────────────────────────────────────
+
+    @staticmethod
+    async def _embed_text_vision(text: str) -> List[float]:
+        """Return a 1024-dimension vector using Azure Vision's vectorizeText API."""
+        cache_key = f"vision_{text}"
+        if cache_key in RagService._embedding_cache:
+            logger.info("[CACHE] HIT: _embed_text_vision")
+            return RagService._embedding_cache[cache_key]
+
+        url = (
+            f"{settings.AZURE_VISION_ENDPOINT.rstrip('/')}"
+            "/computervision/retrieval:vectorizeText"
+            "?api-version=2024-02-01&model-version=2023-04-15"
+        )
+        headers = {
+            "Ocp-Apim-Subscription-Key": settings.AZURE_VISION_KEY,
+            "Content-Type": "application/json",
+        }
+        body = {"text": text}
+
+        _t0 = time.perf_counter()
+        http = RagService._get_vision_http()
+        resp = await http.post(url, headers=headers, json=body)
+        resp.raise_for_status()
+        result = resp.json()["vector"]
+        logger.info("[TIMING] embed_text_vision: %.3fs", time.perf_counter() - _t0)
+        RagService._embedding_cache[cache_key] = result
+        return result
+
+    @staticmethod
+    async def _embed_image(image_url: str) -> List[float]:
+        """
+        Return a vector for an image using Azure Computer Vision
+        multimodal embeddings (``vectorizeImage`` API).
+        """
+        url = (
+            f"{settings.AZURE_VISION_ENDPOINT.rstrip('/')}"
+            "/computervision/retrieval:vectorizeImage"
+            "?api-version=2024-02-01&model-version=2023-04-15"
+        )
+        headers = {
+            "Ocp-Apim-Subscription-Key": settings.AZURE_VISION_KEY,
+            "Content-Type": "application/json",
+        }
+        body = {"url": image_url}
+
+        _t0 = time.perf_counter()
+        http = RagService._get_vision_http()
+        resp = await http.post(url, headers=headers, json=body)
+        resp.raise_for_status()
+        result = resp.json()["vector"]
+        logger.info("[TIMING] embed_image: %.3fs", time.perf_counter() - _t0)
+        return result
+
+    @staticmethod
+    def _needs_analysis(query: str, image_urls: Optional[List[str]] = None) -> bool:
+        """Heuristic to skip Gemini analysis for simple, self-contained queries.
+        
+        Returns True only when the query genuinely needs LLM interpretation:
+        - Image uploads (always need visual analysis)
+        - Pronoun references / ambiguous follow-ups (need co-reference resolution)
+        - Very short queries (need expansion)
+        
+        Self-contained factual questions (5+ words, no pronouns) use fast 
+        regex extraction instead, saving ~2-3s per query.
+        """
+        if image_urls:
+            return True
+        
+        # Check for pronouns that indicate co-reference
+        pronouns = {"it", "this", "that", "those", "they", "them", "these", "it's"}
+        query_words = set(re.findall(r"\w+", query.lower()))
+        if query_words.intersection(pronouns):
+            return True
+            
+        # Check common ambiguous follow-ups
+        ambiguous = ["show me", "how", "why", "tell me more", "explain", "steps", "more"]
+        clean_q = query.lower().strip()
+        if any(clean_q.startswith(a) for a in ambiguous) or len(clean_q.split()) < 3:
+            return True
+
+        # Clinical scenario signals — always use Gemini for accurate intent extraction
+        # Structural cues (not drug names) that scale to any medical domain
+        clinical_signals = {"patient", "medication", "medications", "drug", "dosage",
+                            "contraindic", "allergy", "allergic", "medical history",
+                            "best", "preferred", "recommend", "first choice"}
+        if any(s in query.lower() for s in clinical_signals):
+            return True
+
+        return False
+
+    # ── Query structure analysis (zero API calls) ──────────────────────────
+    # Stop words for query-term filtering (domain-agnostic, scales to any book)
+    _STOP_WORDS = frozenset({
+        "the", "a", "an", "is", "are", "was", "were", "be", "been",
+        "have", "has", "had", "do", "does", "did", "will", "would",
+        "can", "could", "should", "may", "might", "and", "but", "or",
+        "not", "for", "with", "from", "into", "that", "this", "these",
+        "those", "they", "them", "their", "its", "she", "her", "his",
+        "who", "which", "what", "when", "where", "how", "why",
+        "all", "each", "any", "some", "also", "about", "very", "just",
+        "than", "too", "only", "so", "yet", "such", "own", "same",
+        "need", "needs", "use", "using", "used", "states", "taking",
+        "several", "many", "most", "get", "got", "like",
+    })
+
+    @staticmethod
+    def _fast_query_analysis(query: str) -> Dict[str, Any]:
+        """
+        Zero-cost query structure analysis for self-contained factual queries.
+        Detects intent from question phrasing — does NOT attempt medical NER.
+        Entity matching is delegated to the search engine (embeddings + semantic reranker).
+        """
+        q_lower = query.lower()
+
+        # Detect intent from question structure (scales to any domain)
+        intent = "general_qa"
+        if any(p in q_lower for p in ["best", "preferred", "recommend", "which should",
+                                        "what can i use", "what should i use", "ideal",
+                                        "drug of choice", "first choice", "first line"]):
+            intent = "recommendation"
+        elif any(p in q_lower for p in ["treat", "management", "manage", "procedure",
+                                         "how to", "technique", "protocol"]):
+            intent = "treatment"
+        elif any(p in q_lower for p in ["diagnos", "identify", "differentiat", "classify"]):
+            intent = "diagnosis"
+        elif any(p in q_lower for p in ["explain", "what is", "define", "describe", "mechanism"]):
+            intent = "explanation"
+        elif any(p in q_lower for p in ["compare", "difference", "versus", "vs"]):
+            intent = "comparison"
+
+        # Detect exclusion signals (e.g., "without epi", "no vasoconstrictor")
+        exclusions = re.findall(r"(?:without|no|avoid|cannot use|contraindicated)\s+(\w+)", q_lower)
+
+        # Extract raw query terms (3+ chars) for downstream lexical scoring
+        query_terms = [t for t in re.findall(r"\w+", q_lower) if len(t) > 2]
+
+        return {
+            "standalone_query": query,
+            "modality": "unknown",
+            "modality_confidence": 0.0,
+            "anatomy": [],
+            "visual_signs": [],
+            "candidate_conditions": [],
+            "clinical_entities": [],
+            "query_intent": intent,
+            "query_terms": query_terms,
+            "exclusions": exclusions,
+        }
+
+    # ── Query Analyzer ─────────────────────────────────────────────────────
+    @staticmethod
+    async def analyze_clinical_query(query: str, image_urls: Optional[List[str]] = None, history_text: Optional[str] = None) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        """
+        Pre-retrieval analysis: use Gemini to detect modality, intent, findings, and rewrite the query.
+        """
+        try:
+            model = ChatGoogleGenerativeAI(
+                model=settings.GEMINI_CHAT_MODEL,
+                project=settings.GOOGLE_CLOUD_PROJECT,
+                location=settings.GOOGLE_CLOUD_LOCATION,
+                credentials=settings.get_vertex_credentials(),
+                vertexai=True,
+                temperature=0,
+                thinking_budget=0,
+            )
+            
+            prompt_text = f"""Analyze the user's clinical dental query: '{query}'.
+
+If the query contains pronouns (it, this, that) or refers to a previous turn, use the following chat history to resolve them into a standalone query:
+Chat History: {history_text or "None"}
+
+Identify objective findings to drive a textbook search. Do NOT guess a diagnosis here; focus on observable features.
+
+JSON FIELDS:
+1. "standalone_query": (the query rewritten to be standalone for a search engine, replacing 'it'/'this' with the actual drug/condition from history)
+2. "modality": (one of: {', '.join(CANONICAL_MODALITIES)})
+3. "modality_confidence": (0.0 to 1.0)
+4. "anatomy": (list of specific anatomical locations, teeth, or quadrants involved)
+5. "visual_signs": (list of observable clinical or radiographic signs: e.g., 'radiolucency', 'pitted enamel')
+6. "candidate_conditions": (list of likely diseases - for scoring only)
+7. "clinical_entities": (list of specific drugs, medications, anatomical structures, or substances mentioned)
+8. "query_intent": (one of: 'diagnosis', 'treatment', 'recommendation', 'explanation', 'comparison', 'general_qa')
+
+Return ONLY a JSON object."""
+
+            content_parts = [{"type": "text", "text": prompt_text}]
+            if image_urls:
+                for url in image_urls:
+                    content_parts.append({"type": "image_url", "image_url": {"url": url}})
+                
+            resp = await model.ainvoke([HumanMessage(content=content_parts)])
+            raw_content = resp.content
+            if isinstance(raw_content, list):
+                raw_content = "".join(
+                    part.get("text", "") if isinstance(part, dict) else str(part)
+                    for part in raw_content
+                )
+            content = raw_content.strip()
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].strip()
+
+            
+            usage = {}
+            if hasattr(resp, "usage_metadata") and resp.usage_metadata:
+                usage = resp.usage_metadata
+
+            return json.loads(content), usage
+        except Exception as e:
+            logger.warning(f"Query analysis failed: {e}")
+            return {"modality": "unknown", "modality_confidence": 0, "query_intent": "general"}, {}
+
+    # ── Search helpers ─────────────────────────────────────────────────────
+    @classmethod
+    def _search_client(cls, index_name: str) -> AsyncSearchClient:
+        if index_name not in cls._search_clients:
+            cls._search_clients[index_name] = AsyncSearchClient(
+                endpoint=settings.AZURE_SEARCH_ENDPOINT,
+                index_name=index_name,
+                credential=AzureKeyCredential(settings.AZURE_SEARCH_KEY),
+            )
+        return cls._search_clients[index_name]
+
+    @staticmethod
+    def _format_results(results, top_k: int, query: str = "") -> List[Dict[str, Any]]:
+        """Normalise Azure Search results into a list of dicts."""
+        from app.utils.file_utils import generate_sas_url_with_expiry
+        docs: List[Dict[str, Any]] = []
+        
+        query_terms = set(query.lower().split()) if query else set()
+
+        # Azure Search results is an iterator
+        try:
+            for r in results:
+                blob_name = r.get("blob_name", "")
+                blob_url = r.get("blob_url", r.get("image_url", ""))
+                
+                # Hydrate blob_name into a fresh SAS URL if blob_url is missing
+                if blob_name and not blob_url:
+                    try:
+                        blob_url = generate_sas_url_with_expiry(blob_name)
+                    except Exception as exc:
+                        logger.error("Failed to generate SAS for %s: %s", blob_name, exc)
+
+                chunk_type = str(r.get("chunk_type", "text")).lower()
+                caption = r.get("caption", "")
+                content = r.get("content", "")
+                
+                # Figure Prioritization: boost figure score if caption matches query terms
+                score = r.get("@search.score") or 0
+                reranker_score = r.get("@search.reranker_score") or 0
+                
+                # Visual Match Scoring: give a soft 'tie-breaker' priority to figures with caption keyword overlap.
+                # Lowered to 1.05-1.1x to ensure it's significantly weaker than metadata-aware reranking.
+                if chunk_type in ["figure", "image"] and caption and query_terms:
+                    caption_lower = caption.lower()
+                    match_count = sum(1 for t in query_terms if t in caption_lower)
+                    if match_count > 0:
+                        # Soft boost: 1.05 per match, capped at 1.10 max
+                        boost = min(1.10, 1.0 + (match_count * 0.05))
+                        if reranker_score: reranker_score *= boost
+                        score *= boost
+
+                # Build a rich document name indicating lineage if it comes from an XLSX or XRAY
+                doc_name = r.get("source_filename") or r.get("document_name") or r.get("title") or "Unknown Source"
+                
+                docs.append({
+                    "content": content,
+                    "document_name": doc_name,
+                    "page": r.get("page_number", r.get("page", None)),
+                    "score": score,
+                    "reranker_score": reranker_score,
+                    "blob_url": blob_url,
+                    "blob_name": blob_name,
+                    "chunk_type": chunk_type,
+                    "caption": caption,
+                    "chapter_name": r.get("chapter_name"),
+                    "topic_name": r.get("topic_name"),
+                    "subheading_name": r.get("subheading_name"),
+                    "clinical_description": r.get("clinical_description"),
+                    "modality": r.get("modality"),
+                    "anatomy": r.get("anatomy"),
+                    "visual_signs": r.get("visual_signs"),
+                    "candidate_conditions": r.get("candidate_conditions"),
+                    "chunk_id": r.get("chunk_id"),
+                    "topic_id": r.get("topic_id"),
+                    "source_type": r.get("source_type"),
+                    "context_summary": r.get("context_summary"),
+                })
+
+                if len(docs) >= top_k:
+                    break
+        except Exception as e:
+            logger.error("Error formatting search results: %s", e)
+            
+        return docs
+
+    @staticmethod
+    async def _hybrid_search_text_index(
+        query: str | None,
+        top_k: int,
+        filter_query: Optional[str] = None,
+        pre_embedded_vector: Optional[List[float]] = None,
+    ) -> List[Dict[str, Any]]:
+        """
+        Search the TEXT index (3072-dim content_vector).
+        Uses: text -> content_vector + semantic reranking.
+
+        Args:
+            pre_embedded_vector: Optional pre-computed 3072D vector. When provided
+                (and the search_query equals the originally embedded query) the
+                expensive Azure OpenAI embedding call is skipped entirely.
+        """
+        if not query:
+            return []
+
+        vector_queries = []
+        index_name = settings.AZURE_SEARCH_INDEX_TEXT
+        _fn_t0 = time.perf_counter()
+        
+        try:
+            # 1. Prepare Text Vector (OpenAI 3072D) — reuse pre-computed if available
+            if pre_embedded_vector:
+                text_vector = pre_embedded_vector
+                logger.info("[TIMING] embed_text(3072D): reused pre-computed vector (0.000s)")
+            else:
+                text_vector = await RagService._embed_text(query, dimensions=3072)
+            vector_queries.append(
+                VectorizedQuery(
+                    vector=text_vector,
+                    k_nearest_neighbors=top_k,
+                    fields="content_vector",
+                    weight=1.0
+                )
+            )
+
+            client = RagService._search_client(index_name)  # noqa
+            
+            try:
+                # Hybrid Search with Semantic Reranking (NATIVE ASYNC)
+                _search_t0 = time.perf_counter()
+                results = await client.search(
+                    search_text=query,
+                    vector_queries=vector_queries,
+                    filter=filter_query,
+                    top=top_k,
+                    query_type="semantic",
+                    semantic_configuration_name=SEMANTIC_CONFIG_NAME,
+                    query_caption="extractive",
+                    query_answer="extractive",
+                )
+                formatted = await RagService._format_results_async(results, top_k, query=query)
+                logger.info("[TIMING] text_index_search (semantic): %.3fs | results=%d", time.perf_counter() - _search_t0, len(formatted))
+                logger.info("[TIMING] _hybrid_search_text_index total: %.3fs", time.perf_counter() - _fn_t0)
+                return formatted
+            except Exception as search_error:
+                logger.warning("Semantic search failed for text index, retrying simple hybrid: %s", search_error)
+                _search_t0 = time.perf_counter()
+                results = await client.search(
+                    search_text=query,
+                    vector_queries=vector_queries,
+                    filter=filter_query,
+                    top=top_k,
+                )
+                formatted = await RagService._format_results_async(results, top_k, query=query)
+                logger.info("[TIMING] text_index_search (fallback hybrid): %.3fs | results=%d", time.perf_counter() - _search_t0, len(formatted))
+                logger.info("[TIMING] _hybrid_search_text_index total: %.3fs", time.perf_counter() - _fn_t0)
+                return formatted
+        except Exception as e:
+            # ── Auto-creation on 404 ──────────────────
+            if "Not Found" in str(e) or "404" in str(e):
+                logger.warning(f"[SEARCH] Index '{index_name}' missing during search. Creating...")
+                if await ensure_search_index_exists(index_name):
+                    # retry simple hybrid once
+                    try:
+                        client = RagService._search_client(index_name)
+                        it = await client.search(search_text=query, vector_queries=vector_queries, top=top_k)
+                        return await RagService._format_results_async(it, top_k, query=query)
+                    except Exception as e2:
+                        logger.error("Retry search after creation failed: %s", e2)
+            
+            logger.error("Text index search failed: %s", e)
+            return []
+
+    @staticmethod
+    async def _hybrid_search_image_index(
+        query: str | None,
+        image_urls: List[str] | None,
+        top_k: int,
+        filter_query: Optional[str] = None,
+        pre_embedded_1024: Optional[List[float]] = None,
+        pre_embedded_vision: Optional[List[float]] = None,
+    ) -> List[Dict[str, Any]]:
+        """
+        Search the IMAGE index (1024-dim content_vector + 1024-dim image_vector).
+
+        Multi-vector approach:
+          1. text → content_vector (1024-dim OpenAI text embedding)
+          2. text → image_vector  (1024-dim Vision vectorizeText, cross-field)
+          3. image → image_vector (1024-dim Vision vectorizeImage)
+
+        Pre-computed vectors from retrieve() are reused when available.
+        """
+        _fn_t0 = time.perf_counter()
+        vector_queries = []
+
+        # 1 & 2. Prepare content_vector (1024D) and image_vector (Vision text)
+        if query:
+            # ZERO-QUALITY-LOSS: Matryoshka Slicing (3072D -> 1024D)
+            # We never call embed_text_1024 again.
+            if pre_embedded_1024:
+                # Reuse if provided (e.g. from retrieve)
+                text_embed_result = pre_embedded_1024
+            else:
+                # Compute 3072D and slice
+                vec_3072 = await RagService._embed_text(query, dimensions=3072)
+                text_embed_result = RagService._slice_vector(vec_3072, 1024)
+
+            # Vision vectorizeText for cross-field keyword-visual alignment
+            if pre_embedded_vision:
+                vision_embed_result = pre_embedded_vision
+            else:
+                vision_embed_result = await RagService._embed_text_vision(query)
+
+            vector_queries.append(
+                    VectorizedQuery(
+                        vector=text_embed_result,
+                        k_nearest_neighbors=top_k,
+                        fields="content_vector",
+                        weight=0.9 if image_urls else 1.0,
+                    )
+                )
+
+            if isinstance(vision_embed_result, Exception):
+                logger.error("Vision text embedding failed for image index: %s", vision_embed_result)
+            else:
+                vector_queries.append(
+                    VectorizedQuery(
+                        vector=vision_embed_result,
+                        k_nearest_neighbors=top_k,
+                        fields="image_vector",
+                        weight=0.7 if image_urls else 0.8,
+                    )
+                )
+
+        # 3. Image → image_vector (Vision vectorizeImage)
+        if image_urls:
+            try:
+                # Gather multiple image embed API calls concurrently
+                _img_embed_t0 = time.perf_counter()
+                embed_tasks = [RagService._embed_image(url) for url in image_urls]
+                image_vectors = await asyncio.gather(*embed_tasks, return_exceptions=True)
+                logger.info("[TIMING] image_embeddings (batch %d): %.3fs", len(image_urls), time.perf_counter() - _img_embed_t0)
+                for vec in image_vectors:
+                    if isinstance(vec, Exception):
+                        logger.error("Single image embedding failed: %s", vec)
+                    elif vec:
+                        vector_queries.append(
+                            VectorizedQuery(
+                                vector=vec,
+                                k_nearest_neighbors=top_k,
+                                fields="image_vector",
+                                weight=3.0, # High mult-match priority
+                            )
+                        )
+            except Exception as e:
+                logger.error("Batch image embedding failed for image index: %s", e)
+
+        if not vector_queries and not query:
+            return []
+
+        client = RagService._search_client(settings.AZURE_SEARCH_INDEX_IMAGE)
+
+        try:
+            _search_t0 = time.perf_counter()
+            results = await client.search(
+                search_text=query if query else "*",
+                vector_queries=vector_queries if vector_queries else None,
+                filter=filter_query,
+                top=top_k,
+                query_type="semantic",
+                semantic_configuration_name=SEMANTIC_CONFIG_NAME,
+                query_caption="extractive",
+                query_answer="extractive",
+            )
+            formatted = await RagService._format_results_async(results, top_k)
+            if len(formatted) == 0 and filter_query:
+                logger.info("Image index search got 0 results with filter %s, retrying without filter.", filter_query)
+                _search_t0 = time.perf_counter()
+                results = await client.search(
+                    search_text=query if query else "*",
+                    vector_queries=vector_queries if vector_queries else None,
+                    filter=None,
+                    top=top_k,
+                    query_type="semantic",
+                    semantic_configuration_name=SEMANTIC_CONFIG_NAME,
+                    query_caption="extractive",
+                    query_answer="extractive",
+                )
+                formatted = await RagService._format_results_async(results, top_k)
+            logger.info("[TIMING] image_index_search (semantic): %.3fs | results=%d", time.perf_counter() - _search_t0, len(formatted))
+            logger.info("[TIMING] _hybrid_search_image_index total: %.3fs", time.perf_counter() - _fn_t0)
+            return formatted
+        except Exception as exc:
+            logger.warning("Semantic search failed on image index, falling back to plain: %s", exc)
+            try:
+                _search_t0 = time.perf_counter()
+                results = await client.search(
+                    search_text=query if query else "*",
+                    vector_queries=vector_queries if vector_queries else None,
+                    filter=filter_query,
+                    top=top_k,
+                )
+                formatted = await RagService._format_results_async(results, top_k)
+                if len(formatted) == 0 and filter_query:
+                    logger.info("Image index fallback search got 0 results with filter %s, retrying without filter.", filter_query)
+                    _search_t0 = time.perf_counter()
+                    results = await client.search(
+                        search_text=query if query else "*",
+                        vector_queries=vector_queries if vector_queries else None,
+                        filter=None,
+                        top=top_k,
+                    )
+                    formatted = await RagService._format_results_async(results, top_k)
+                logger.info("[TIMING] image_index_search (fallback): %.3fs | results=%d", time.perf_counter() - _search_t0, len(formatted))
+                logger.info("[TIMING] _hybrid_search_image_index total: %.3fs", time.perf_counter() - _fn_t0)
+                return formatted
+            except Exception as fallback_exc:
+                # ── Auto-creation on 404 ──────────────────
+                if "Not Found" in str(fallback_exc) or "404" in str(fallback_exc):
+                    logger.warning(f"[SEARCH] Image index '{settings.AZURE_SEARCH_INDEX_IMAGE}' missing. Creating...")
+                    if await ensure_search_index_exists(settings.AZURE_SEARCH_INDEX_IMAGE):
+                        try:
+                            # Retry search once
+                            client = RagService._search_client(settings.AZURE_SEARCH_INDEX_IMAGE)
+                            results = await client.search(search_text=query if query else "*", vector_queries=vector_queries if vector_queries else None, top=top_k)
+                            return await RagService._format_results_async(results, top_k)
+                        except Exception as e2:
+                            logger.error("Retry image search failed: %s", e2)
+
+                logger.error("Image index search failed entirely: %s", fallback_exc)
+                return []
+
+    # ── Post-retrieval: figure prioritization ──────────────────────────────
+    @staticmethod
+    async def _format_results_async(results_paged, top_k: int, query: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Asynchronously formats search results from AsyncItemPaged with full metadata mapping.
+        Batches SAS URL generation for performance.
+        """
+        from app.utils.file_utils import generate_sas_url_with_expiry
+        formatted = []
+        count = 0
+        # Track which indices need SAS hydration
+        sas_needed: List[tuple] = []  # (index_in_formatted, blob_name)
+        
+        query_terms = set(query.lower().split()) if query else set()
+
+        async for result in results_paged:
+            if count >= top_k:
+                break
+            
+            blob_name = result.get("blob_name", "")
+            blob_url = result.get("blob_url", result.get("image_url", ""))
+
+            chunk_type = str(result.get("chunk_type", "text")).lower()
+            caption = result.get("caption", "")
+            content = result.get("content", "")
+            
+            score = result.get("@search.score") or 0
+            reranker_score = result.get("@search.reranker_score") or 0
+            
+            # Visual Match Scoring: soft boost for figure caption keyword overlap
+            if chunk_type in ["figure", "image"] and caption and query_terms:
+                caption_lower = caption.lower()
+                match_count = sum(1 for t in query_terms if t in caption_lower)
+                if match_count > 0:
+                    boost = min(1.10, 1.0 + (match_count * 0.05))
+                    if reranker_score: reranker_score *= boost
+                    score *= boost
+
+            # Robust document_name extraction
+            doc_name = (
+                result.get("source_filename") or 
+                result.get("document_name") or 
+                result.get("title") or 
+                "Unknown Source"
+            )
+
+            doc = {
+                "id": result.get("id"),
+                "content": content,
+                "document_name": doc_name,
+                "page": result.get("page_number", result.get("page", None)),
+                "score": score,
+                "reranker_score": reranker_score,
+                "blob_url": blob_url,
+                "blob_name": blob_name,
+                "chunk_type": chunk_type,
+                "caption": caption,
+                "chapter_name": result.get("chapter_name") or result.get("chapter"),
+                "topic_name": result.get("topic_name") or result.get("topic"),
+                "subheading_name": result.get("subheading_name") or result.get("subheading"),
+                "clinical_description": result.get("clinical_findings") or result.get("clinical_description"),
+                "modality": result.get("modality"),
+                "anatomy": result.get("anatomy"),
+                "visual_signs": result.get("signs") or result.get("visual_signs"),
+                "candidate_conditions": result.get("conditions") or result.get("candidate_conditions"),
+                "chunk_id": result.get("chunk_id"),
+                "topic_id": result.get("topic_id"),
+                "source_type": result.get("source_type"),
+                "context_summary": result.get("context_summary"),
+            }
+            
+            # Captions/Answers from Semantic Search
+            captions = result.get("@search.captions")
+            if captions:
+                doc["_caption"] = captions[0].text
+            
+            formatted.append(doc)
+            
+            # Track items that need SAS URL hydration (batched below)
+            if blob_name and not blob_url:
+                sas_needed.append((count, blob_name))
+            
+            count += 1
+
+        # ── Batch SAS URL generation (single thread call vs per-result) ──
+        if sas_needed:
+            try:
+                blob_names_to_hydrate = [bn for _, bn in sas_needed]
+                sas_urls = await asyncio.to_thread(
+                    lambda names: [generate_sas_url_with_expiry(n) for n in names],
+                    blob_names_to_hydrate,
+                )
+                for (idx, _), url in zip(sas_needed, sas_urls):
+                    formatted[idx]["blob_url"] = url
+            except Exception as exc:
+                logger.error("Batch SAS URL generation failed: %s", exc)
+            
+        return formatted
+
+    @staticmethod
+    def _score_figure_match(item: Dict[str, Any], query: str) -> float:
+        """Score a figure chunk based on caption/content match with the query."""
+        content = (item.get("content") or "").lower()
+        caption = (item.get("caption") or "").lower()
+        query_lower = query.lower() if query else ""
+        
+        score = 0.0
+        if not query_lower:
+            return score
+
+        query_terms = [t for t in re.findall(r"\w+", query_lower) if len(t) > 2]
+        
+        # Caption matches are worth more
+        caption_hits = sum(1 for t in query_terms if t in caption)
+        score += caption_hits * 5.0
+        
+        # Content matches
+        content_hits = sum(1 for t in query_terms if t in content)
+        score += content_hits * 1.0
+        
+        return score
+
+    @staticmethod
+    def _prioritize_results(
+        results: List[Dict[str, Any]],
+        query: str,
+        max_items: int,
+        prefer_figures: bool = False,
+    ) -> List[Dict[str, Any]]:
+        """
+        Adaptive post-retrieval prioritization.
+
+        Rules:
+        1. Always sort by _final_score first
+        2. Prefer figures only when the query is image-driven / diagnostic
+        3. Deduplicate near-identical chunks
+        4. Keep the final context compact for the LLM
+        """
+        if not results:
+            return results
+
+        # Pre-sort by final score
+        ranked = sorted(
+            results,
+            key=lambda x: (x.get("_final_score", 0), x.get("score", 0)),
+            reverse=True,
+        )
+
+        figures = [r for r in ranked if str(r.get("chunk_type", "")).lower() in ("figure", "image", "xray")]
+        
+        selected: List[Dict[str, Any]] = []
+        seen_keys = set()
+        doc_counts = {} # For Diversity Capping
+
+        def _content_key(item: Dict[str, Any]) -> str:
+            content = (item.get("content") or "").strip().lower()
+            page = item.get("page")
+            doc = (item.get("document_name") or "").strip().lower()
+            return f"{doc}|{page}|{content[:220]}"
+
+        # 1. Force a figure near the top when explicitly preferred
+        if prefer_figures and figures:
+            best_fig = figures[0]
+            key = _content_key(best_fig)
+            doc_name = (best_fig.get("document_name") or "Unknown").strip().lower()
+            selected.append(best_fig)
+            seen_keys.add(key)
+            doc_counts[doc_name] = 1
+
+        # 2. Fill with diverse chunks from multiple sources
+        # DIVERSITY CAP: Limit to 3 chunks per unique document
+        for item in ranked:
+            if len(selected) >= max_items:
+                break
+            
+            key = _content_key(item)
+            if not key.strip("|") or key in seen_keys:
+                continue
+                
+            doc_name = (item.get("document_name") or "Unknown").strip().lower()
+            
+            # Diversity Rule: if we already have 3 chunks from this doc, skip (unless we have no other options)
+            if doc_counts.get(doc_name, 0) >= 3:
+                continue
+                
+            selected.append(item)
+            seen_keys.add(key)
+            doc_counts[doc_name] = doc_counts.get(doc_name, 0) + 1
+
+        # 3. If we still need more items to fill max_items, relax diversity rule
+        if len(selected) < max_items:
+            for item in ranked:
+                if len(selected) >= max_items:
+                    break
+                key = _content_key(item)
+                if key not in seen_keys:
+                    selected.append(item)
+                    seen_keys.add(key)
+
+        return selected[:max_items]
+
+    # ── Public API ─────────────────────────────────────────────────────────
+    @staticmethod
+    async def retrieve(
+        query: str,
+        image_urls: List[str] | None = None,
+        top_text: int = 12,
+        top_image: int = 6,
+        anchor_context: Dict[str, Any] | None = None,
+        history_text: Optional[str] = None,
+        pre_embed_3072_task: Optional[asyncio.Task] = None,
+        pre_embed_vision_task: Optional[asyncio.Task] = None,
+    ) -> Tuple[List[Dict[str, Any]], Dict[str, Any], List[Dict[str, Any]]]:
+        """
+        Unified clinical retrieval with high-performance barrier-free orchestration.
+        Includes 10s timeouts for individual search indexes to prevent global hangs.
+
+        Args:
+            pre_embed_3072_task: Optional pre-started asyncio.Task for 3072D embedding.
+                When provided, skips creating a new embedding task (saves ~1s overlap).
+            pre_embed_vision_task: Optional pre-started asyncio.Task for vision embedding.
+                When provided, skips creating a new vision embedding task.
+        """
+        _retrieve_t0 = time.perf_counter()
+        logger.info("[TIMING] retrieve() started — query=%r, has_images=%s", query[:80], bool(image_urls))
+
+        # ── 1. Start all parallel Step 1 & 2 tasks immediately ──────────────
+        _t0 = time.perf_counter()
+        needs_analysis = RagService._needs_analysis(query, image_urls)
+        
+        # Reuse pre-started embedding tasks if caller already launched them,
+        # otherwise create fresh ones here.
+        embed_3072_task = pre_embed_3072_task or asyncio.create_task(RagService._embed_text(query, dimensions=3072))
+        embed_vision_task = pre_embed_vision_task or asyncio.create_task(RagService._embed_text_vision(query))
+        if pre_embed_3072_task:
+            logger.info("[TIMING] embed_3072: reusing pre-started task from caller")
+        if pre_embed_vision_task:
+            logger.info("[TIMING] embed_vision: reusing pre-started task from caller")
+        
+        if needs_analysis:
+            analysis_task = asyncio.create_task(RagService.analyze_clinical_query(query, image_urls=image_urls, history_text=history_text))
+        else:
+            analysis_task = None
+
+        # We will share these results across flows
+        analysis_memo = {}
+        usage_metrics = []
+
+        try:
+            import tiktoken
+            encoding = tiktoken.encoding_for_model("text-embedding-3-large")
+            query_tokens = len(encoding.encode(query))
+            usage_metrics.append({"step": "embed_text", "model": settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT, "input_tokens": query_tokens, "output_tokens": 0, "total_tokens": query_tokens})
+            usage_metrics.append({"step": "embed_text_vision", "model": "computervision", "calls": 1})
+            if image_urls:
+                usage_metrics.append({"step": "embed_image_vision", "model": "computervision", "calls": len(image_urls)})
+        except ImportError:
+            pass
+
+        # ── Query Expansion for Drug Recommendations ──
+        # Detect common clinical exclusion patterns and add positive target terms
+        expansion_terms = []
+        q_lower = query.lower()
+        if any(re.search(pat, q_lower) for pat in [
+            r"\b(?:without|no|avoid|contraindicated)\b.*\b(?:epi|epinephrine|vasoconstrictor)\b",
+            r"\b(?:free|plain)\s+(?:formulation|anesthetic|epinephrine)\b"
+        ]):
+            expansion_terms = ["mepivacaine plain", "prilocaine plain", "carbocaine", "citanest plain", "anesthetic without epinephrine"]
+            logger.info("[EXPANSION] Added plain-anesthetic terms to search query")
+
+        async def _get_analysis():
+            """Internal helper to get analysis result once and memoize."""
+            if not analysis_task:
+                # Use fast regex extraction instead of empty dict
+                if not analysis_memo:
+                    fast_result = RagService._fast_query_analysis(query)
+                    analysis_memo.update(fast_result)
+                    logger.info("[TIMING] Step 1 — query_analysis (fast regex, skipped Gemini): 0.000s")
+                return analysis_memo
+            if not analysis_memo:
+                try:
+                    if analysis_task.done():
+                        res, usage = analysis_task.result()
+                    else:
+                        res, usage = await analysis_task
+                    analysis_memo.update(res)
+                    if usage:
+                        usage_metrics.append({
+                            "step": "query_analysis",
+                            "model": settings.GEMINI_CHAT_MODEL,
+                            "input_tokens": usage.get("input_tokens", 0),
+                            "output_tokens": usage.get("output_tokens", 0),
+                            "total_tokens": usage.get("total_tokens", usage.get("input_tokens", 0) + usage.get("output_tokens", 0))
+                        })
+                    logger.info("[TIMING] Step 1 — query_analysis (Gemini): %.3fs", time.perf_counter() - _t0)
+                except (asyncio.CancelledError, Exception) as exc:
+                    logger.warning("[FALLBACK] Gemini analysis unavailable (%s), using fast regex", type(exc).__name__)
+                    fast_result = RagService._fast_query_analysis(query)
+                    analysis_memo.update(fast_result)
+            return analysis_memo
+
+        # ── Build search query: ALWAYS wait for Gemini analysis ──────────────
+        # Never skip analysis — accuracy over speed. The enriched query
+        # (standalone_query + visual signs + anatomy) is critical for
+        # both image and text follow-up queries.
+        search_q = query
+        if analysis_task:
+            try:
+                analysis_for_search, usage = await analysis_task
+                standalone_q = analysis_for_search.get("standalone_query") or query
+
+                if image_urls:
+                    # Image queries: enrich with visual signs + anatomy + conditions
+                    vs = analysis_for_search.get("visual_signs", [])
+                    ana = analysis_for_search.get("anatomy", [])
+                    conds = analysis_for_search.get("candidate_conditions", [])
+                    search_q = " ".join([standalone_q] + vs[:5] + ana[:3] + conds[:3])
+                else:
+                    # Text queries: use standalone_query for co-reference resolution
+                    search_q = standalone_q
+
+                logger.info("[TIMING] Analysis ready, search query: %s", search_q[:150])
+                analysis_memo.update(analysis_for_search)
+                if usage and not any(m.get("step") == "query_analysis" for m in usage_metrics):
+                    usage_metrics.append({
+                        "step": "query_analysis",
+                        "model": settings.GEMINI_CHAT_MODEL,
+                        "input_tokens": usage.get("input_tokens", 0),
+                        "output_tokens": usage.get("output_tokens", 0),
+                        "total_tokens": usage.get("total_tokens", usage.get("input_tokens", 0) + usage.get("output_tokens", 0))
+                    })
+            except Exception as exc:
+                logger.warning("[FALLBACK] Analysis failed (%s), using raw query", type(exc).__name__)
+        
+        if expansion_terms:
+            search_q += " " + " ".join(expansion_terms)
+
+        print(f"🔍 [SEARCH] Query used for retrieval: '{search_q}'", flush=True)
+
+        # ── 2. Barrier-Free Search Tasks (with 10s Timeouts) ───────────────
+        # Searches now only wait for embeddings (~2s), NOT for Gemini analysis (~9s)
+        async def search_text_flow():
+            try:
+                vec = await embed_3072_task
+
+                return await RagService._hybrid_search_text_index(
+                    query=search_q,
+                    top_k=top_text,
+                    pre_embedded_vector=vec
+                )
+            except Exception as e:
+                logger.error("[ERROR] Text index search failed: %s", e)
+                return []
+
+        async def search_image_flow():
+            try:
+                v3072, v_vis = await asyncio.gather(
+                    embed_3072_task,
+                    embed_vision_task
+                )
+                
+                v1024 = RagService._slice_vector(v3072, 1024)
+
+                return await RagService._hybrid_search_image_index(
+                    query=search_q,
+                    image_urls=image_urls,
+                    top_k=top_image,
+                    pre_embedded_1024=v1024,
+                    pre_embedded_vision=v_vis
+                )
+            except Exception as e:
+                logger.error("[ERROR] Image index search failed: %s", e)
+                return []
+        # Launch search coroutines immediately
+        _search_t0 = time.perf_counter()
+        results = await asyncio.gather(search_text_flow(), search_image_flow())
+        logger.info("[TIMING] Step 3 — parallel_search (text + image): %.3fs", time.perf_counter() - _search_t0)
+
+        # Ensure analysis is finalized — cap at 5s so image analysis doesn't
+        # block the entire pipeline (it took 23s in prod). If it times out,
+        # fall back to fast regex analysis which is instant.
+        if analysis_task and not analysis_task.done():
+            try:
+                await asyncio.wait_for(asyncio.shield(analysis_task), timeout=5.0)
+            except asyncio.TimeoutError:
+                logger.warning("[TIMEOUT] Gemini analysis took >5s — falling back to fast regex")
+                analysis_task.cancel()
+        
+        analysis = await _get_analysis()  # returns cached result or fast fallback
+        
+        intent = analysis.get("query_intent", "general_qa")
+        modality = analysis.get("modality")
+        confidence = float(analysis.get("modality_confidence") or 0.0)
+        anatomy = [a.lower() for a in (analysis.get("anatomy") or [])]
+        visual_signs = [s.lower() for s in (analysis.get("visual_signs") or [])]
+        candidate_conditions = [c.lower() for c in (analysis.get("candidate_conditions") or [])]
+        clinical_entities = [e.lower() for e in (analysis.get("clinical_entities") or [])]
+        exclusions = [exc.lower() for exc in (analysis.get("exclusions") or [])]
+        
+        # If Gemini didn't find exclusions, try regex as fallback
+        if not exclusions:
+            exclusions = re.findall(r"(?:without|no|avoid|cannot use|contraindicated)\s+(\w+)", q_lower)
+
+
+        # ── 4. Primary merge + dedupe ──────────────────────────────────────
+        _t0 = time.perf_counter()
+        primary_results: List[Dict[str, Any]] = []
+        topic_ids_to_expand = set()
+        seen_keys = set()
+
+        def _primary_key(d: Dict[str, Any]) -> str:
+            # Prefer chunk_id as primary key, fallback to blob_name + page
+            return d.get("chunk_id") or f"{d.get('blob_name')}_{d.get('page')}"
+
+        for task_results in results:
+            for d in task_results:
+                key = _primary_key(d)
+                if key in seen_keys:
+                    continue
+                primary_results.append(d)
+                seen_keys.add(key)
+
+                # Only expand related topic text when the user actually uploaded an image
+                # or when a visually-oriented diagnosis/treatment flow is likely.
+                if (
+                    d.get("chunk_type") in ["figure", "image", "xray"]
+                    and d.get("topic_id")
+                    and (image_urls or intent in {"diagnosis", "treatment"})
+                ):
+                    topic_ids_to_expand.add(d["topic_id"])
+        logger.info("[TIMING] Step 4 — merge_dedupe: %.3fs | merged=%d, topic_ids=%d",
+                    time.perf_counter() - _t0, len(primary_results), len(topic_ids_to_expand))
+
+        # ── 5. Topic expansion (keyword-only — no re-embedding) ───────────
+        _t0 = time.perf_counter()
+        secondary_results: List[Dict[str, Any]] = []
+        if topic_ids_to_expand and (image_urls or intent in {"treatment", "diagnosis"}):
+            topic_filter = " or ".join(
+                [f"topic_id eq '{tid}'" for tid in list(topic_ids_to_expand)[:3]]
+            )
+            # Use keyword-only search (no vector query) to avoid an expensive
+            # re-embedding call (~7-8s). The topic_id filter already constrains
+            # results to the relevant topics, so BM25 keyword matching suffices.
+            try:
+                client = RagService._search_client(settings.AZURE_SEARCH_INDEX_TEXT)
+                results_iter = await client.search(
+                    search_text=f"{query} management treatment",
+                    filter=topic_filter,
+                    top=3,
+                )
+                secondary_results = await RagService._format_results_async(results_iter, 3, query=query)
+            except Exception as _te:
+                logger.warning("Topic expansion keyword search failed: %s", _te)
+        logger.info("[TIMING] Step 5 — topic_expansion: %.3fs | secondary=%d",
+                    time.perf_counter() - _t0, len(secondary_results))
+
+        all_docs = list(primary_results)
+        for d in secondary_results:
+            key = _primary_key(d)
+            if key not in seen_keys:
+                all_docs.append(d)
+                seen_keys.add(key)
+
+        # ── 7. Scoring & reranking ─────────────────────────────────────────
+        _t0 = time.perf_counter()
+        PROCEDURAL_TERMS = {
+            "sectioning", "division", "dividing", "separating", "split", "splitting",
+            "elevation", "elevating", "luxation", "suturing", "flap", "incising",
+            "bone removal", "ostectomy", "root removal", "fragment removal"
+        }
+
+        for d in all_docs:
+            score = float(d.get("reranker_score") or d.get("score") or 0)
+
+            chunk_content = (d.get("content") or "").lower()
+            chunk_caption = (d.get("caption") or "").lower()
+            chunk_clinical = (d.get("clinical_description") or "").lower()
+            chunk_chapter = (d.get("chapter_name") or "").lower()
+            chunk_topic = (d.get("topic_name") or "").lower()
+            chunk_subheading = (d.get("subheading_name") or "").lower()
+
+            chunk_anatomy = [a.lower() for a in d.get("anatomy", [])]
+            chunk_signs = [s.lower() for s in d.get("visual_signs", [])]
+            chunk_conditions = [c.lower() for c in d.get("candidate_conditions", [])]
+
+            combined_text = " ".join([
+                chunk_content, chunk_caption, chunk_clinical,
+                chunk_chapter, chunk_topic, chunk_subheading,
+            ]).lower()
+
+            query_terms = [
+                t for t in re.findall(r"\w+", query.lower()) 
+                if len(t) > 2 and t not in RagService._STOP_WORDS
+            ]
+
+            # ── Generic metadata-aware lexical boost (Strict Word Boundaries) ──
+            metadata_text = " ".join([chunk_chapter, chunk_topic, chunk_subheading])
+            metadata_hits = sum(1 for t in query_terms if re.search(rf"\b{re.escape(t)}\b", metadata_text))
+            if metadata_hits > 0:
+                score *= min(1.20, 1.0 + (metadata_hits * 0.05))
+
+            # ── Generic all-field lexical agreement boost (Strict Word Boundaries) ──
+            field_match_score = 0.0
+            for field_text in [
+                chunk_chapter, chunk_topic, chunk_subheading,
+                chunk_content, chunk_caption, chunk_clinical,
+            ]:
+                if not field_text:
+                    continue
+                hits = sum(1 for t in query_terms if re.search(rf"\b{re.escape(t)}\b", field_text))
+                field_match_score += hits
+
+            if field_match_score > 0:
+                score *= min(1.30, 1.0 + (field_match_score * 0.03))
+
+            # ── Query-term density boost (Scalable fallback for NER) ──
+            if query_terms:
+                query_term_hits = sum(1 for t in query_terms if re.search(rf"\b{re.escape(t)}\b", combined_text))
+                query_term_density = query_term_hits / max(len(query_terms), 1)
+                if query_term_density > 0.4:
+                    score *= (1.0 + (query_term_density * 0.5))  # Up to 1.5x boost for density
+
+            # Modality boost
+            if modality and modality != "unknown" and d.get("modality") == modality:
+                score *= (1.0 + (confidence * 0.2))
+
+            # Anatomy boost
+            if anatomy:
+                anatomy_match = any(re.search(rf"\b{re.escape(a)}\b", combined_text) or re.search(rf"\b{re.escape(a)}\b", " ".join(chunk_anatomy)) for a in anatomy)
+                if anatomy_match:
+                    score *= 1.3
+
+            # Visual signs boost
+            if visual_signs:
+                hits = sum(1 for vs in visual_signs if re.search(rf"\b{re.escape(vs)}\b", combined_text) or re.search(rf"\b{re.escape(vs)}\b", " ".join(chunk_signs)))
+                if hits > 0:
+                    multiplier = min(2.0, 1.0 + (0.5 * hits))
+                    if d.get("chunk_type") in ["figure", "image", "xray"]:
+                        score *= multiplier
+                    else:
+                        score *= min(1.3, multiplier)
+
+            # Procedure-specific boosts only for visual or procedural flows
+            if d.get("chunk_type") in ["figure", "image", "xray"] and (image_urls or intent in {"diagnosis", "treatment"}):
+                proc_hits = sum(1 for pt in PROCEDURAL_TERMS if re.search(rf"\b{re.escape(pt)}\b", combined_text))
+                if proc_hits > 0:
+                    score *= 1.8
+
+                if intent == "treatment" and any(pt in chunk_caption for pt in ["procedure", "step", "how", "technique", "management"]):
+                    score *= 1.3
+                elif intent == "diagnosis" and any(dt in chunk_caption for dt in ["pathology", "disease", "condition", "signs", "findings"]):
+                    score *= 1.3
+
+            # Contextual anchoring
+            if anchor_context:
+                anchor_topic = anchor_context.get("topic_id")
+                anchor_doc = anchor_context.get("document_name")
+                anchor_chunk = anchor_context.get("chunk_id")
+
+                if anchor_chunk and d.get("chunk_id") == anchor_chunk:
+                    score *= 2.0
+                elif anchor_topic and d.get("topic_id") == anchor_topic:
+                    score *= 1.5
+                elif anchor_doc and d.get("document_name") == anchor_doc:
+                    score *= 1.1
+
+            # Candidate condition boost
+            if candidate_conditions:
+                cond_hits = sum(1 for c in candidate_conditions if re.search(rf"\b{re.escape(c)}\b", combined_text) or re.search(rf"\b{re.escape(c)}\b", " ".join(chunk_conditions)))
+                if cond_hits > 0:
+                    base_cond_boost = 1.2 + (0.3 * confidence)
+                    score *= base_cond_boost
+
+            # Intent weighting
+            if intent == "treatment" and d.get("chunk_type") == "text":
+                score *= 1.2
+            elif intent == "diagnosis" and d.get("chunk_type") in ["figure", "image", "xray"]:
+                score *= 1.1
+
+            # Custom Clinical Case (XLSX) Boost
+            if d.get("source_type") == "xlsx":
+                score *= 5.0
+
+            # ── Exclusion-signal penalty (Critical for "Anesthetic without Epi") ──
+            for exc_term in exclusions:
+                if exc_term in chunk_topic or exc_term in chunk_subheading or exc_term in chunk_chapter:
+                    # If query says "without X", but the chunk IS about X, penalize it heavily.
+                    # Exception: if the chunk clearly mentions alternatives or exclusions itself.
+                    has_alternative_content = any(w in chunk_content for w in 
+                        ["without", "plain", "alternative", "substitute", "instead", "no vasoconstrictor"])
+                    if not has_alternative_content:
+                        score *= 0.2
+                        logger.debug("[PENALTY] Exclusion target %s matched in metadata for %s", exc_term, d.get("chunk_id"))
+
+            d["_final_score"] = score
+
+        # ── Off-topic relevance gate (demote low-overlap noise) ──
+        if all_docs and query_terms:
+            scores = [d["_final_score"] for d in all_docs]
+            median_score = np.median(scores)
+            
+            for d in all_docs:
+                metadata_text = " ".join([
+                    (d.get("chapter_name") or ""),
+                    (d.get("topic_name") or ""),
+                    (d.get("subheading_name") or "")
+                ]).lower()
+                
+                # If none of the user's key query terms appear in the chunk's topic hierarchy,
+                # and the chunk's score is in the bottom half, it's likely noise (e.g. record-keeping).
+                topic_relevance = any(re.search(rf"\b{re.escape(t)}\b", metadata_text) for t in query_terms)
+                if not topic_relevance and d["_final_score"] < median_score:
+                    d["_final_score"] *= 0.5
+                    logger.debug("[GATE] Demoting off-topic chunk: %s", d.get("chunk_id"))
+
+        # ── Image Relevance Gate (score-relative, no keyword lists) ───────
+        # For text-only queries: compare each image's BASE reranker score
+        # against the best text chunk. If the image scored much lower at the
+        # search level, Azure's semantic reranker already decided it's not very
+        # relevant — our custom boosts shouldn't override that.
+        # This is domain-agnostic: works for pharmacology, surgery, anything.
+        if not image_urls:
+            # Find the best text chunk's reranker score as a relevance baseline
+            best_text_reranker = 0.0
+            for d in all_docs:
+                if d.get("chunk_type") == "text":
+                    base_reranker = float(d.get("reranker_score") or d.get("score") or 0)
+                    if base_reranker > best_text_reranker:
+                        best_text_reranker = base_reranker
+
+            if best_text_reranker > 0:
+                for d in all_docs:
+                    if d.get("chunk_type") not in ["figure", "image", "xray"]:
+                        continue
+                    img_base_reranker = float(d.get("reranker_score") or d.get("score") or 0)
+                    relevance_ratio = img_base_reranker / best_text_reranker
+
+                    # If image's base relevance is <40% of best text → heavy penalty
+                    # If 40-70% → moderate penalty
+                    # If >70% → image is genuinely relevant, keep as-is
+                    if relevance_ratio < 0.4:
+                        d["_final_score"] *= 0.1
+                        logger.debug("[GATE] Image %s: base_ratio=%.2f (<0.4) → 0.1x penalty",
+                                     d.get("chunk_id"), relevance_ratio)
+                    elif relevance_ratio < 0.7:
+                        d["_final_score"] *= 0.4
+                        logger.debug("[GATE] Image %s: base_ratio=%.2f (<0.7) → 0.4x penalty",
+                                     d.get("chunk_id"), relevance_ratio)
+
+        logger.info("[TIMING] Step 7 — scoring_reranking: %.3fs | docs=%d",
+                    time.perf_counter() - _t0, len(all_docs))
+
+        # ── 8. Final sort + compact context selection ──────────────────────
+        _t0 = time.perf_counter()
+        all_docs.sort(key=lambda x: x.get("_final_score", 0), reverse=True)
+
+        prefer_figures = bool(image_urls) or intent in {"diagnosis", "comparison"}
+
+        if image_urls:
+            max_return = 8
+        else:
+            max_return = 6
+
+        prioritized = RagService._prioritize_results(
+            results=all_docs,
+            query=query,
+            max_items=max_return,
+            prefer_figures=prefer_figures,
+        )
+        logger.info("[TIMING] Step 8 — sort_prioritize: %.3fs | final=%d",
+                    time.perf_counter() - _t0, len(prioritized))
+
+        return prioritized, analysis, usage_metrics
