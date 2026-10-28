@@ -1,0 +1,4880 @@
+[
+  {
+    "code": "D8999",
+    "description": "Unspecified orthodontic procedure, by report; Used for procedures not adequately described by a code",
+    "category": "Other Orthodontic Services",
+    "score": 0.589
+  },
+  {
+    "code": "D9952",
+    "description": "Occlusal adjustment - complete",
+    "category": "Miscellaneous Services",
+    "score": 0.587
+  },
+  {
+    "code": "D0801",
+    "description": "3D Intraoral surface scan - direct",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.586
+  },
+  {
+    "code": "D8080",
+    "description": "Comprehensive orthodontic treatment of adolescent dentition",
+    "category": "Orthodontics",
+    "score": 0.584
+  },
+  {
+    "code": "D0803",
+    "description": "3D facial surface scan - direct",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.583
+  },
+  {
+    "code": "D6950",
+    "description": "Precision attachments",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.583
+  },
+  {
+    "code": "D5225",
+    "description": "Maxillary partial denture - flexible base",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.583
+  },
+  {
+    "code": "D5226",
+    "description": "Mandibular partial denture - flexible base",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.583
+  },
+  {
+    "code": "D1999",
+    "description": "Unspecified preventative procedure, by report",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.582
+  },
+  {
+    "code": "D6999",
+    "description": "Unspecified fixed prosthodontic procedure, by report",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.582
+  },
+  {
+    "code": "D1520",
+    "description": "Space maintainer - removable - bilateral",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.582
+  },
+  {
+    "code": "D1516",
+    "description": "Space maintainer - fixed - bilateral, maxillary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.582
+  },
+  {
+    "code": "D6056",
+    "description": "Prefabricated abutment, including placement",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.581
+  },
+  {
+    "code": "D0804",
+    "description": "3D facial surface scan - indirect",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.581
+  },
+  {
+    "code": "D9972",
+    "description": "External bleaching - per arch performed in office",
+    "category": "Miscellaneous Services",
+    "score": 0.581
+  },
+  {
+    "code": "D9999",
+    "description": "Unspecified adjunctive procedure by report",
+    "category": "Miscellaneous Services",
+    "score": 0.581
+  },
+  {
+    "code": "D9951",
+    "description": "Occlusal adjustment - limited",
+    "category": "Miscellaneous Services",
+    "score": 0.581
+  },
+  {
+    "code": "D5862",
+    "description": "Precision attachment, by report",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.581
+  },
+  {
+    "code": "D6064",
+    "description": "Abutment-supported cast metal crown (noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.581
+  },
+  {
+    "code": "D2335",
+    "description": "Resin-based composite, 4 or more surfaces or involving incisal angle, anterior",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.581
+  },
+  {
+    "code": "D6211",
+    "description": "Pontic - cast predominantly base metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.581
+  },
+  {
+    "code": "D9971",
+    "description": "Odontoplasty 1-2 teeth; includes removal of enamel projections",
+    "category": "Miscellaneous Services",
+    "score": 0.581
+  },
+  {
+    "code": "D2957",
+    "description": "Each additional prefabricated post - same tooth",
+    "category": "Other Restorative Services",
+    "score": 0.58
+  },
+  {
+    "code": "D5228",
+    "description": "Immediate mandibular partial denture - flexible base (including any clasps, rests and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.58
+  },
+  {
+    "code": "D6062",
+    "description": "Abutment-supported cast metal crown (high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.58
+  },
+  {
+    "code": "D9970",
+    "description": "Enamel microabrasion",
+    "category": "Miscellaneous Services",
+    "score": 0.58
+  },
+  {
+    "code": "D9945",
+    "description": "Occlusal guard - soft appliance, full arch",
+    "category": "Miscellaneous Services",
+    "score": 0.58
+  },
+  {
+    "code": "D5227",
+    "description": "Immediate maxillary partial denture - flexible base (including any clasps, rests and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.58
+  },
+  {
+    "code": "D9975",
+    "description": "External bleaching for home application per arch; includes materials and fabrication of custom trays",
+    "category": "Miscellaneous Services",
+    "score": 0.58
+  },
+  {
+    "code": "D6063",
+    "description": "Abutment-supported cast metal crown (predominantly base metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.58
+  },
+  {
+    "code": "D5221",
+    "description": "Immediate maxillary partial denture - resin base (including any conventional clasps, rests and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.58
+  },
+  {
+    "code": "D1575",
+    "description": "Distal shoe space maintainer-fixed-unilateral",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.58
+  },
+  {
+    "code": "D5211",
+    "description": "Maxillary partial denture - resin base (including retentive/clasping materials, rests, and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.58
+  },
+  {
+    "code": "D6059",
+    "description": "Abutment-supported porcelain fused to metal crown (high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.579
+  },
+  {
+    "code": "D6192",
+    "description": "semi-precision attachment - placement",
+    "category": "Other Implant Services",
+    "score": 0.579
+  },
+  {
+    "code": "D5212",
+    "description": "Mandibular partial denture - resin base (including retentive/clasping materials, rests, and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.579
+  },
+  {
+    "code": "D9947",
+    "description": "Custom sleep apnea appliance fabrication and placement",
+    "category": "Miscellaneous Services",
+    "score": 0.579
+  },
+  {
+    "code": "D2161",
+    "description": "Amalgam - 4 or more surfaces, permanent or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.579
+  },
+  {
+    "code": "D6191",
+    "description": "semi-precision abutment - placement",
+    "category": "Other Implant Services",
+    "score": 0.579
+  },
+  {
+    "code": "D5864",
+    "description": "Overdenture - partial maxillary",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.579
+  },
+  {
+    "code": "D5999",
+    "description": "Unspecified maxillofacial prosthesis, by report",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.579
+  },
+  {
+    "code": "D5899",
+    "description": "Unspecified removable prosthodontic procedure, by report",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.579
+  },
+  {
+    "code": "D1517",
+    "description": "Space maintainer - fixed - bilateral, mandibular",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.579
+  },
+  {
+    "code": "D5214",
+    "description": "Mandibular partial denture - cast metal framework with resin denture bases",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.579
+  },
+  {
+    "code": "D6057",
+    "description": "Custom abutment, including placement",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.579
+  },
+  {
+    "code": "D5850",
+    "description": "Tissue conditioning, maxillary",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.579
+  },
+  {
+    "code": "D6061",
+    "description": "Abutment-supported porcelain fused to metal crown (noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.579
+  },
+  {
+    "code": "D5222",
+    "description": "Immediate mandibular partial denture - resin base (including any conventional clasps, rests and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.579
+  },
+  {
+    "code": "D0802",
+    "description": "3D dental surface scan - indirect",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.579
+  },
+  {
+    "code": "D5213",
+    "description": "Maxillary partial denture - cast metal framework with resin denture bases",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.578
+  },
+  {
+    "code": "D7295",
+    "description": "Harvest of bone for use in autogenous grafting procedures",
+    "category": "Vestibuloplasty",
+    "score": 0.578
+  },
+  {
+    "code": "D2330",
+    "description": "Resin-based composite, 1 surface, anterior",
+    "category": "General",
+    "score": 0.578
+  },
+  {
+    "code": "D1527",
+    "description": "Space maintainer - removable - bilateral, mandibular",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.578
+  },
+  {
+    "code": "D6085",
+    "description": "Provisional implant crown",
+    "category": "Other Implant Services",
+    "score": 0.578
+  },
+  {
+    "code": "D0701",
+    "description": "Panoramic radiographic image - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.578
+  },
+  {
+    "code": "D6087",
+    "description": "Implant supported crown - noble alloys",
+    "category": "Other Implant Services",
+    "score": 0.578
+  },
+  {
+    "code": "D5925",
+    "description": "Facial augmentation implant prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.578
+  },
+  {
+    "code": "D0708",
+    "description": "Intraoral - bitewing radiographic image - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.578
+  },
+  {
+    "code": "D0705",
+    "description": "Extra-oral posterior dental radiographic image - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.578
+  },
+  {
+    "code": "D9973",
+    "description": "External bleaching - per tooth",
+    "category": "Miscellaneous Services",
+    "score": 0.578
+  },
+  {
+    "code": "D5851",
+    "description": "Tissue conditioning, mandibular",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.578
+  },
+  {
+    "code": "D1526",
+    "description": "Space maintainer - removable - bilateral, maxillary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.578
+  },
+  {
+    "code": "D5224",
+    "description": "Immediate mandibular partial denture - cast metal framework with resin denture bases (including any conventional clasps, rests and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.578
+  },
+  {
+    "code": "D2953",
+    "description": "Each additional cast post - same tooth; indirectly fabricated",
+    "category": "Other Restorative Services",
+    "score": 0.578
+  },
+  {
+    "code": "D6199",
+    "description": "Unspecified implant procedure, by report",
+    "category": "Other Implant Services",
+    "score": 0.577
+  },
+  {
+    "code": "D6920",
+    "description": "Connector bar",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.577
+  },
+  {
+    "code": "D8681",
+    "description": "Removable orthodontic retainer adjustment",
+    "category": "Other Orthodontic Services",
+    "score": 0.577
+  },
+  {
+    "code": "D5223",
+    "description": "Immediate maxillary partial denture - cast metal framework with resin denture bases (including any conventional clasps, rests, and teeth)",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.577
+  },
+  {
+    "code": "D6210",
+    "description": "Pontic - cast high noble",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.577
+  },
+  {
+    "code": "D6082",
+    "description": "Implant supported crown - porcelain fused to predominantly base alloys",
+    "category": "Other Implant Services",
+    "score": 0.577
+  },
+  {
+    "code": "D0702",
+    "description": "2-D cephalometric radiographic image - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.577
+  },
+  {
+    "code": "D2160",
+    "description": "Amalgam - 3 surfaces, permanent or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.577
+  },
+  {
+    "code": "D6212",
+    "description": "Pontic - cast noble metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.577
+  },
+  {
+    "code": "D6058",
+    "description": "Abutment-supported porcelain/ceramic crown",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.577
+  },
+  {
+    "code": "D6116",
+    "description": "Implant/abutment supported fixed denture for partially edentulous arch-maxillary",
+    "category": "Other Implant Services",
+    "score": 0.577
+  },
+  {
+    "code": "D9959",
+    "description": "Unspecified sleep apnea services procedure, by report",
+    "category": "Miscellaneous Services",
+    "score": 0.577
+  },
+  {
+    "code": "D5954",
+    "description": "Palatal augmentation prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.577
+  },
+  {
+    "code": "D8680",
+    "description": "Orthodontic retention (removal of appliances, construction and placement of retainer(s)",
+    "category": "Other Orthodontic Services",
+    "score": 0.577
+  },
+  {
+    "code": "D5933",
+    "description": "Obturator prosthesis, modification",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.576
+  },
+  {
+    "code": "D9946",
+    "description": "Occlusal guard - hard appliance, partial arch",
+    "category": "Miscellaneous Services",
+    "score": 0.576
+  },
+  {
+    "code": "D9948",
+    "description": "Adjustment of custom sleep apnea appliance",
+    "category": "Miscellaneous Services",
+    "score": 0.576
+  },
+  {
+    "code": "D6060",
+    "description": "Abutment-supported porcelain fused to metal crown (predominantly base metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.576
+  },
+  {
+    "code": "D5282",
+    "description": "Removable unilateral partial denture - one piece cast metal (including clasps and teeth), maxillary",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.576
+  },
+  {
+    "code": "D8660",
+    "description": "Pre-orthodontic treatment examination to monitor growth and development",
+    "category": "Other Orthodontic Services",
+    "score": 0.576
+  },
+  {
+    "code": "D6205",
+    "description": "Pontic - indirect resin-based composite",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.576
+  },
+  {
+    "code": "D5284",
+    "description": "Removable unilateral partial denture - one piece flexible base (including clasps and teeth) - per quadrant",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.576
+  },
+  {
+    "code": "D5912",
+    "description": "Facial moulage (complete)",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.576
+  },
+  {
+    "code": "D6065",
+    "description": "Implant-supported porcelain/ceramic crown",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.576
+  },
+  {
+    "code": "D7293",
+    "description": "Surgical placement of temporary anchorage devise requiring flap",
+    "category": "Vestibuloplasty",
+    "score": 0.576
+  },
+  {
+    "code": "D5863",
+    "description": "Overdenture - complete maxillary",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.576
+  },
+  {
+    "code": "D5951",
+    "description": "Feeding aid",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.576
+  },
+  {
+    "code": "D0210",
+    "description": "Intraoral comprehensive series intraoral - complete series of radiographic images",
+    "category": "General",
+    "score": 0.576
+  },
+  {
+    "code": "D9956",
+    "description": "Administration of home sleep apnea test",
+    "category": "Miscellaneous Services",
+    "score": 0.575
+  },
+  {
+    "code": "D9974",
+    "description": "Internal bleaching - per tooth",
+    "category": "Miscellaneous Services",
+    "score": 0.575
+  },
+  {
+    "code": "D6114",
+    "description": "Implant/abutment supported fixed denture for edentulous arch-maxillary",
+    "category": "Other Implant Services",
+    "score": 0.575
+  },
+  {
+    "code": "D0999",
+    "description": "Unspecified diagnostic procedure, by report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.575
+  },
+  {
+    "code": "D2932",
+    "description": "Prefabricated resin crown",
+    "category": "Other Restorative Services",
+    "score": 0.575
+  },
+  {
+    "code": "D5915",
+    "description": "Orbital prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.575
+  },
+  {
+    "code": "D5120",
+    "description": "Complete denture - mandibular",
+    "category": "Complete Dentures (Including Routine Post-Delivery Care)",
+    "score": 0.575
+  },
+  {
+    "code": "D6086",
+    "description": "Implant supported crown - predominantly base alloys",
+    "category": "Other Implant Services",
+    "score": 0.575
+  },
+  {
+    "code": "D1510",
+    "description": "Space maintainer - fixed, unilateral - per quadrant",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.575
+  },
+  {
+    "code": "D2393",
+    "description": "Resin-based composite, 3 surface, posterior, permanent, or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.575
+  },
+  {
+    "code": "D7880",
+    "description": "Occlusal orthotic device, by report",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.575
+  },
+  {
+    "code": "D2332",
+    "description": "Resin-based composite, 3 surfaces, anterior",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.575
+  },
+  {
+    "code": "D6117",
+    "description": "Implant/abutment supported fixed denture for partially edentulous arch-mandibular",
+    "category": "Other Implant Services",
+    "score": 0.575
+  },
+  {
+    "code": "D5928",
+    "description": "Orbital prosthesis, replacement",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.575
+  },
+  {
+    "code": "D6253",
+    "description": "Interim pontic - further treatment or completion of diagnosis necessary prior to final impression",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.575
+  },
+  {
+    "code": "D6190",
+    "description": "Radiographic/Surgical implant index, by report",
+    "category": "Other Implant Services",
+    "score": 0.575
+  },
+  {
+    "code": "D7291",
+    "description": "Transseptal fiberotomy/supra crestal fiberotomy, by report",
+    "category": "Other Surgical Procedures",
+    "score": 0.575
+  },
+  {
+    "code": "D5866",
+    "description": "Overdenture - partial mandibular",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.575
+  },
+  {
+    "code": "D2663",
+    "description": "Onlay - resin-based composite, 3 surfaces",
+    "category": "Gold Foil Restorations",
+    "score": 0.575
+  },
+  {
+    "code": "D5919",
+    "description": "Facial prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.575
+  },
+  {
+    "code": "D4999",
+    "description": "Unspecified periodontal procedure, by report",
+    "category": "Other Periodontal Services",
+    "score": 0.575
+  },
+  {
+    "code": "D0703",
+    "description": "2-D oral/facial photographic image obtained intra- orally or extra-orally - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.575
+  },
+  {
+    "code": "D5820",
+    "description": "Interim partial denture (maxillary)",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.575
+  },
+  {
+    "code": "D3221",
+    "description": "Pulpal debridement, primary and permanent teeth not to be used for apexogenesis",
+    "category": "Pulpotomy: Therapeutic Pulpotomy (Excluding Final Restoration)",
+    "score": 0.575
+  },
+  {
+    "code": "D7996",
+    "description": "Implant - mandible for augmentation purposes (excluding alveolar ridge), by report",
+    "category": "Other Repair Procedures",
+    "score": 0.574
+  },
+  {
+    "code": "D5421",
+    "description": "Adjust partial denture - maxillary",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.574
+  },
+  {
+    "code": "D2976",
+    "description": "Band stabilization - per tooth",
+    "category": "Other Restorative Services",
+    "score": 0.574
+  },
+  {
+    "code": "D9944",
+    "description": "Occlusal guard - hard appliance, full arch",
+    "category": "Miscellaneous Services",
+    "score": 0.574
+  },
+  {
+    "code": "D6083",
+    "description": "Implant supported crown - porcelain fused to noble alloys",
+    "category": "Other Implant Services",
+    "score": 0.574
+  },
+  {
+    "code": "D0120",
+    "description": "Periodic oral evaluation",
+    "category": "General",
+    "score": 0.574
+  },
+  {
+    "code": "D2520",
+    "description": "Inlay - metallic, 2 surfaces (D2150)",
+    "category": "Gold Foil Restorations",
+    "score": 0.574
+  },
+  {
+    "code": "D5932",
+    "description": "Obturator prosthesis, definitive",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.574
+  },
+  {
+    "code": "D4322",
+    "description": "Splint - intra-coronal; natural teeth or prosthetic crowns",
+    "category": "General",
+    "score": 0.574
+  },
+  {
+    "code": "D4355",
+    "description": "Full mouth debridement to enable a comprehensive periodontal evaluation and diagnosis on a subsequent visit",
+    "category": "General",
+    "score": 0.574
+  },
+  {
+    "code": "D5865",
+    "description": "Overdenture - complete mandibular",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.574
+  },
+  {
+    "code": "D5286",
+    "description": "Removable unilateral partial denture - one piece resin (including clasps and teeth) - per quadrant",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.574
+  },
+  {
+    "code": "D5876",
+    "description": "Add metal substructure to acrylic full denture (per arch)",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.574
+  },
+  {
+    "code": "D5931",
+    "description": "Obturator prosthesis, surgical",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.574
+  },
+  {
+    "code": "D3999",
+    "description": "Unspecified endodontic procedure, by report",
+    "category": "Other Endodontic Procedures",
+    "score": 0.574
+  },
+  {
+    "code": "D5410",
+    "description": "Adjust complete denture - maxillary",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.574
+  },
+  {
+    "code": "D6110",
+    "description": "Implant/abutment supported removable denture for edentulous arch-maxillary",
+    "category": "Other Implant Services",
+    "score": 0.574
+  },
+  {
+    "code": "D6070",
+    "description": "Abutment-supported retainer for porcelain fused to metal FPD (predominately base metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.574
+  },
+  {
+    "code": "D8220",
+    "description": "Fixed appliance therapy to control harmful habits",
+    "category": "Orthodontics",
+    "score": 0.574
+  },
+  {
+    "code": "D6098",
+    "description": "Implant supported retainer - porcelain fused to predominantly base alloys",
+    "category": "Other Implant Services",
+    "score": 0.574
+  },
+  {
+    "code": "D6119",
+    "description": "Implant/abutment supported interim fixed denture for edentulous arch-maxillary",
+    "category": "Other Implant Services",
+    "score": 0.574
+  },
+  {
+    "code": "D2331",
+    "description": "Resin-based composite, 2 surfaces, anterior",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.574
+  },
+  {
+    "code": "D2150",
+    "description": "Amalgam - 2 surfaces, permanent or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.574
+  },
+  {
+    "code": "D2999",
+    "description": "Unspecified restorative procedure, by report",
+    "category": "Other Restorative Services",
+    "score": 0.574
+  },
+  {
+    "code": "D6118",
+    "description": "Implant/abutment supported interim fixed denture for edentulous arch-mandibular",
+    "category": "Other Implant Services",
+    "score": 0.574
+  },
+  {
+    "code": "D6613",
+    "description": "Retainer Onlay - cast predominately base metal, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.574
+  },
+  {
+    "code": "D6113",
+    "description": "Implant/abutment supported removable denture for partially edentulous arch-mandibular",
+    "category": "Other Implant Services",
+    "score": 0.573
+  },
+  {
+    "code": "D9943",
+    "description": "Occlusal guard adjustment",
+    "category": "Miscellaneous Services",
+    "score": 0.573
+  },
+  {
+    "code": "D9954",
+    "description": "Fabrication and delivery of oral appliance therapy (OAT) morning repositioning device",
+    "category": "Miscellaneous Services",
+    "score": 0.573
+  },
+  {
+    "code": "D6611",
+    "description": "Retainer Onlay - cast high noble, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.573
+  },
+  {
+    "code": "D5283",
+    "description": "Removable unilateral partial denture - one piece cast metal (including clasps and teeth), mandibular",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.573
+  },
+  {
+    "code": "D5821",
+    "description": "Interim partial denture (mandibular)",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.573
+  },
+  {
+    "code": "D6071",
+    "description": "Abutment-supported retainer for porcelain fused to metal FPD (noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.573
+  },
+  {
+    "code": "D6214",
+    "description": "Pontic - titanium",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.573
+  },
+  {
+    "code": "D6111",
+    "description": "Implant/abutment supported removable denture for edentulous arch-mandibular",
+    "category": "Other Implant Services",
+    "score": 0.573
+  },
+  {
+    "code": "D6250",
+    "description": "Pontic - resin with high noble metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.573
+  },
+  {
+    "code": "D9953",
+    "description": "Reline custom sleep apnea appliance (indirect)",
+    "category": "Miscellaneous Services",
+    "score": 0.573
+  },
+  {
+    "code": "D2543",
+    "description": "Onlay - metallic, 3 surfaces (D2160)",
+    "category": "Gold Foil Restorations",
+    "score": 0.573
+  },
+  {
+    "code": "D5959",
+    "description": "Palatal lift prosthesis, modification",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.573
+  },
+  {
+    "code": "D5936",
+    "description": "Obturator prosthesis, interim",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.573
+  },
+  {
+    "code": "D6610",
+    "description": "Retainer Onlay - cast high noble metal, 2 surface",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.573
+  },
+  {
+    "code": "D6055",
+    "description": "Dental implant connecting bar - implant supported or abutment supported",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.573
+  },
+  {
+    "code": "D6252",
+    "description": "Pontic - resin with noble metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.573
+  },
+  {
+    "code": "D5810",
+    "description": "Interim complete denture (maxillary)",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.573
+  },
+  {
+    "code": "D5929",
+    "description": "Facial prosthesis, replacement",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.573
+  },
+  {
+    "code": "D8210",
+    "description": "Removable appliance therapy to control harmful habits",
+    "category": "Orthodontics",
+    "score": 0.573
+  },
+  {
+    "code": "D7252",
+    "description": "Partial extraction for immediate implant placement",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.573
+  },
+  {
+    "code": "D6115",
+    "description": "Implant/abutment supported fixed denture for edentulous arch-mandibular",
+    "category": "Other Implant Services",
+    "score": 0.573
+  },
+  {
+    "code": "D6050",
+    "description": "Surgical placement, transosteal implant",
+    "category": "Implant Services",
+    "score": 0.573
+  },
+  {
+    "code": "D2954",
+    "description": "Prefabricated post and core in addition to crown",
+    "category": "Other Restorative Services",
+    "score": 0.573
+  },
+  {
+    "code": "D6067",
+    "description": "Implant supported metal crown (titanium, titanium alloy, high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.573
+  },
+  {
+    "code": "D6751",
+    "description": "Retainer Crown - porcelain fused to predominantly base metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.573
+  },
+  {
+    "code": "D5411",
+    "description": "Adjust complete denture - mandibular",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.572
+  },
+  {
+    "code": "D6112",
+    "description": "Implant/abutment supported removable denture for partially edentulous arch-maxillary",
+    "category": "Other Implant Services",
+    "score": 0.572
+  },
+  {
+    "code": "D2530",
+    "description": "Inlay - metallic, 3 or more surfaces (D2160)",
+    "category": "Gold Foil Restorations",
+    "score": 0.572
+  },
+  {
+    "code": "D2392",
+    "description": "Resin-based composite, 2 surfaces, posterior, permanent, or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.572
+  },
+  {
+    "code": "D6251",
+    "description": "Pontic - resin with high noble metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.572
+  },
+  {
+    "code": "D8030",
+    "description": "Limited orthodontic treatment of adolescent dentition",
+    "category": "Orthodontics",
+    "score": 0.572
+  },
+  {
+    "code": "D5937",
+    "description": "Trismus appliance (not for TMD treatment)",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.572
+  },
+  {
+    "code": "D6985",
+    "description": "Pediatric fixed partial denture",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.572
+  },
+  {
+    "code": "D3120",
+    "description": "Pulp cap indirect (excluding final restoration)",
+    "category": "Pulp Capping",
+    "score": 0.572
+  },
+  {
+    "code": "D9920",
+    "description": "Behavior management, by report",
+    "category": "Miscellaneous Services",
+    "score": 0.572
+  },
+  {
+    "code": "D9996",
+    "description": "Teledentistry- asynchronous; information stored and forwarded to dentist for subsequent review",
+    "category": "Miscellaneous Services",
+    "score": 0.572
+  },
+  {
+    "code": "D8090",
+    "description": "Comprehensive orthodontic treatment of adult dentition",
+    "category": "Orthodontics",
+    "score": 0.572
+  },
+  {
+    "code": "D2394",
+    "description": "Resin-based composite, 4 or more surfaces, posterior permanent, or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.572
+  },
+  {
+    "code": "D2391",
+    "description": "Resin-based composite, 1 surface, posterior, permanent or primary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.572
+  },
+  {
+    "code": "D5958",
+    "description": "Palatal lift prosthesis, interim",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.572
+  },
+  {
+    "code": "D0251",
+    "description": "Extra-oral posterior dental radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.572
+  },
+  {
+    "code": "D9941",
+    "description": "Fabrication of athletic mouth-guard",
+    "category": "Miscellaneous Services",
+    "score": 0.572
+  },
+  {
+    "code": "D6781",
+    "description": "Retainer Crown - 3/4 cast predominately base metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.572
+  },
+  {
+    "code": "D0250",
+    "description": "Extraoral, 2D radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.572
+  },
+  {
+    "code": "D8020",
+    "description": "Limited orthodontic treatment of transitional dentition",
+    "category": "Orthodontics",
+    "score": 0.572
+  },
+  {
+    "code": "D9955",
+    "description": "Oral appliance therapy (OAT) titration visit",
+    "category": "Miscellaneous Services",
+    "score": 0.572
+  },
+  {
+    "code": "D7970",
+    "description": "Excision of hyperplastic tissue - per arch",
+    "category": "Other Repair Procedures",
+    "score": 0.572
+  },
+  {
+    "code": "D5422",
+    "description": "Adjust partial denture - mandibular",
+    "category": "Partial Dentures: For The Following Codes, Denture Base Presumed To Include Any Conventional Clasps,",
+    "score": 0.572
+  },
+  {
+    "code": "D5992",
+    "description": "Adjust maxillofacial prosthetic appliance, by report",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.572
+  },
+  {
+    "code": "D6614",
+    "description": "Retainer Onlay - cast noble metal, 2 surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.572
+  },
+  {
+    "code": "D6122",
+    "description": "Implant supported retainer for metal FPD - noble alloys",
+    "category": "Other Implant Services",
+    "score": 0.572
+  },
+  {
+    "code": "D2652",
+    "description": "Inlay - resin-based composite, 3 or more surfaces (D2160)",
+    "category": "Gold Foil Restorations",
+    "score": 0.572
+  },
+  {
+    "code": "D6241",
+    "description": "Pontic - porcelain fused to predominantly base metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.571
+  },
+  {
+    "code": "D6088",
+    "description": "Implant supported crown - titanium and titanium alloys",
+    "category": "Other Implant Services",
+    "score": 0.571
+  },
+  {
+    "code": "D1782",
+    "description": "Vaccine administration - human papillomavirus - Dose 2",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.571
+  },
+  {
+    "code": "D6782",
+    "description": "Retainer Crown - 3/4 cast noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.571
+  },
+  {
+    "code": "D8696",
+    "description": "Repair of orthodontic appliance - maxillary",
+    "category": "Other Orthodontic Services",
+    "score": 0.571
+  },
+  {
+    "code": "D2950",
+    "description": "Core build-up, including any pins when required",
+    "category": "Other Restorative Services",
+    "score": 0.571
+  },
+  {
+    "code": "D0470",
+    "description": "Diagnostic casts",
+    "category": "Tests And Examinations",
+    "score": 0.571
+  },
+  {
+    "code": "D0321",
+    "description": "Other temporomandibular joint radiographic image, by report",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.571
+  },
+  {
+    "code": "D6710",
+    "description": "Retainer Crown - indirect resin-based composite",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.571
+  },
+  {
+    "code": "D6752",
+    "description": "Retainer Crown - porcelain fused to noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.571
+  },
+  {
+    "code": "D6069",
+    "description": "Abutment-supported retainer for porcelain fused to metal FPD (high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.571
+  },
+  {
+    "code": "D2662",
+    "description": "Onlay - resin-based composite, 2 surfaces (D2150)",
+    "category": "Gold Foil Restorations",
+    "score": 0.571
+  },
+  {
+    "code": "D8010",
+    "description": "Limited orthodontic treatment of primary dentition",
+    "category": "Orthodontics",
+    "score": 0.571
+  },
+  {
+    "code": "D6792",
+    "description": "Retainer Crown - full cast noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.571
+  },
+  {
+    "code": "D0706",
+    "description": "Intraoral - occlusal radiographic image - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.571
+  },
+  {
+    "code": "D6072",
+    "description": "Abutment-supported retainer for cast metal FPD (high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.571
+  },
+  {
+    "code": "D0230",
+    "description": "Intraoral periapical - each additional radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.571
+  },
+  {
+    "code": "D7997",
+    "description": "Appliance removal (not by dentist who place appliance), includes removal of archbar",
+    "category": "Other Repair Procedures",
+    "score": 0.571
+  },
+  {
+    "code": "D5916",
+    "description": "Ocular prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.571
+  },
+  {
+    "code": "D6603",
+    "description": "Retainer Inlay - high-noble metal, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.571
+  },
+  {
+    "code": "D9985",
+    "description": "Sales tax",
+    "category": "Miscellaneous Services",
+    "score": 0.571
+  },
+  {
+    "code": "D5955",
+    "description": "Palatal lift prosthesis, definitive",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.571
+  },
+  {
+    "code": "D5913",
+    "description": "Nasal prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.571
+  },
+  {
+    "code": "D6605",
+    "description": "Retainer Inlay - cast, predominately base metal, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.571
+  },
+  {
+    "code": "D6791",
+    "description": "Retainer Crown - full cast predominantly base metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.571
+  },
+  {
+    "code": "D6780",
+    "description": "Retainer Crown - 3/4 cast high noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.571
+  },
+  {
+    "code": "D2664",
+    "description": "Onlay - resin-based composite, 4 or more surfaces",
+    "category": "Gold Foil Restorations",
+    "score": 0.571
+  },
+  {
+    "code": "D5622",
+    "description": "Repair cast partial framework, maxillary",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.571
+  },
+  {
+    "code": "D6612",
+    "description": "Retainer Onlay - cast predominately base metal, 2 surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.571
+  },
+  {
+    "code": "D2390",
+    "description": "Resin-based composite crown, anterior",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.571
+  },
+  {
+    "code": "D6121",
+    "description": "Implant supported retainer for metal FPD - predominantly base alloys",
+    "category": "Other Implant Services",
+    "score": 0.571
+  },
+  {
+    "code": "D1781",
+    "description": "Vaccine administration - human papillomavirus - Dose 1",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.571
+  },
+  {
+    "code": "D1783",
+    "description": "Vaccine administration - human papillomavirus - Dose 3",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.571
+  },
+  {
+    "code": "D5621",
+    "description": "Repair cast partial framework, mandibular",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.57
+  },
+  {
+    "code": "D0707",
+    "description": "Intraoral - periapical radiographic image - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.57
+  },
+  {
+    "code": "D6615",
+    "description": "Retainer Onlay - cast noble metal, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.57
+  },
+  {
+    "code": "D9938",
+    "description": "Fabrication of a custom removable clear plastic temporary aesthetic appliance",
+    "category": "Miscellaneous Services",
+    "score": 0.57
+  },
+  {
+    "code": "D5960",
+    "description": "Speech aid prosthesis, modification",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.57
+  },
+  {
+    "code": "D3222",
+    "description": "Partial pulpotomy for apexogenesis - permanent tooth with incomplete root development",
+    "category": "Pulpotomy: Therapeutic Pulpotomy (Excluding Final Restoration)",
+    "score": 0.57
+  },
+  {
+    "code": "D6103",
+    "description": "Bone graft for repair of peri-implant defect does not include flap entry and closure. Placement of a barrier membrane or biologic materials to aid in osseous regeneration are reported separately.",
+    "category": "Other Implant Services",
+    "score": 0.57
+  },
+  {
+    "code": "D7944",
+    "description": "Osteotomy - segmented or sub-apical, per sextant or quadrant",
+    "category": "Other Repair Procedures",
+    "score": 0.57
+  },
+  {
+    "code": "D6075",
+    "description": "Implant-supported retainer for ceramic FPD",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.57
+  },
+  {
+    "code": "D0709",
+    "description": "Intraoral - comprehensive series of radiographic images - image capture only",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.57
+  },
+  {
+    "code": "D0502",
+    "description": "Other oral pathology procedures, by report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.57
+  },
+  {
+    "code": "D6094",
+    "description": "Abutment supported crown, titanium",
+    "category": "Other Implant Services",
+    "score": 0.57
+  },
+  {
+    "code": "D6099",
+    "description": "Implant supported retainer for FPD - porcelain fused to noble alloys",
+    "category": "Other Implant Services",
+    "score": 0.57
+  },
+  {
+    "code": "D8070",
+    "description": "Comprehensive orthodontic treatment of transitional dentition",
+    "category": "Orthodontics",
+    "score": 0.57
+  },
+  {
+    "code": "D5911",
+    "description": "Facial moulage (sectional)",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.57
+  },
+  {
+    "code": "D6604",
+    "description": "Retainer Inlay - cast, predominately base metal, 2 surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.57
+  },
+  {
+    "code": "D2510",
+    "description": "Inlay - metallic, 1 surfaces (D2140)",
+    "category": "Gold Foil Restorations",
+    "score": 0.57
+  },
+  {
+    "code": "D2651",
+    "description": "Inlay - resin-based composite, 2 surfaces (D2150)",
+    "category": "Gold Foil Restorations",
+    "score": 0.57
+  },
+  {
+    "code": "D5924",
+    "description": "Cranial prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.57
+  },
+  {
+    "code": "D7296",
+    "description": "Corticotomy - 1 to 3 teeth or tooth spaces, per quadrant",
+    "category": "Vestibuloplasty",
+    "score": 0.57
+  },
+  {
+    "code": "D6040",
+    "description": "Surgical placement, eposteal implant",
+    "category": "Implant Services",
+    "score": 0.57
+  },
+  {
+    "code": "D0479",
+    "description": "Tissue in-site hybridization, including interpretation",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.57
+  },
+  {
+    "code": "D5130",
+    "description": "Immediate denture - maxillary",
+    "category": "Complete Dentures (Including Routine Post-Delivery Care)",
+    "score": 0.57
+  },
+  {
+    "code": "D6091",
+    "description": "Replacement of semi-precision or precision attachment of implant/abutment supported prosthesis, per attachment",
+    "category": "Other Implant Services",
+    "score": 0.57
+  },
+  {
+    "code": "D6602",
+    "description": "Retainer Inlay - high-noble metal, 2 surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.57
+  },
+  {
+    "code": "D7297",
+    "description": "Corticotomy - 4 or more teeth or tooth spaces, per quadrant",
+    "category": "Vestibuloplasty",
+    "score": 0.57
+  },
+  {
+    "code": "D6721",
+    "description": "Retainer Crown - resin with predominantly base metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.569
+  },
+  {
+    "code": "D7881",
+    "description": "Occlusal orthotic device adjustment",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.569
+  },
+  {
+    "code": "D6722",
+    "description": "Retainer Crown - resin with noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.569
+  },
+  {
+    "code": "D2960",
+    "description": "Labial veneer (resin laminate) - chair side",
+    "category": "Other Restorative Services",
+    "score": 0.569
+  },
+  {
+    "code": "D2952",
+    "description": "Post and core in addition to crown; indirectly fabricated (D2954)",
+    "category": "Other Restorative Services",
+    "score": 0.569
+  },
+  {
+    "code": "D8040",
+    "description": "Limited orthodontic treatment of adult dentition",
+    "category": "Orthodontics",
+    "score": 0.569
+  },
+  {
+    "code": "D9995",
+    "description": "Teledentistry- synchronous; real-time encounter",
+    "category": "Miscellaneous Services",
+    "score": 0.569
+  },
+  {
+    "code": "D0366",
+    "description": "Cone beam CT capture and interpretation with field of view of one full dental arch - maxilla, with or without cranium",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.569
+  },
+  {
+    "code": "D9911",
+    "description": "Application of desensitizing resin for cervical and/or root surface, per tooth",
+    "category": "Miscellaneous Services",
+    "score": 0.569
+  },
+  {
+    "code": "D9934",
+    "description": "Cleaning and inspection of removable partial denture, maxillary",
+    "category": "Miscellaneous Services",
+    "score": 0.569
+  },
+  {
+    "code": "D2542",
+    "description": "Onlay - metallic, 2 surfaces (D2150)",
+    "category": "Gold Foil Restorations",
+    "score": 0.569
+  },
+  {
+    "code": "D9990",
+    "description": "Certified translation or sign-language services per visit",
+    "category": "Miscellaneous Services",
+    "score": 0.569
+  },
+  {
+    "code": "D2544",
+    "description": "Onlay - metallic, 4 or more surfaces (D2161)",
+    "category": "Gold Foil Restorations",
+    "score": 0.569
+  },
+  {
+    "code": "D8670",
+    "description": "Periodic orthodontic treatment visit",
+    "category": "Other Orthodontic Services",
+    "score": 0.569
+  },
+  {
+    "code": "D6545",
+    "description": "Retainer - cast metal for resin-bonded fixed prosthesis",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.569
+  },
+  {
+    "code": "D6073",
+    "description": "Abutment-supported retainer for cast metal FPD (predominately base metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.569
+  },
+  {
+    "code": "D6084",
+    "description": "Implant supported crown - porcelain fused to titanium and titanium alloys",
+    "category": "Other Implant Services",
+    "score": 0.569
+  },
+  {
+    "code": "D0481",
+    "description": "Electron microscopy",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.569
+  },
+  {
+    "code": "D7956",
+    "description": "Guided tissue regeneration, edentulous area - resorbable barrier, per site",
+    "category": "Other Repair Procedures",
+    "score": 0.569
+  },
+  {
+    "code": "D1551",
+    "description": "Re-cement or re-bond bilateral space maintainer - maxillary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.569
+  },
+  {
+    "code": "D5867",
+    "description": "Replacement of replaceable part or semi-precision or precision attachment (male or female component)",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.569
+  },
+  {
+    "code": "D6607",
+    "description": "Retainer Inlay - cast noble metal, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.569
+  },
+  {
+    "code": "D2929",
+    "description": "Prefabricated porcelain/ceramic crown - primary tooth",
+    "category": "Other Restorative Services",
+    "score": 0.569
+  },
+  {
+    "code": "D6548",
+    "description": "Retainer - porcelain/ ceramic for resin-bonded fixed prosthesis",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.569
+  },
+  {
+    "code": "D5811",
+    "description": "Interim complete denture (mandibular)",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.569
+  },
+  {
+    "code": "D0365",
+    "description": "Cone beam CT capture and interpretation with field of view of one full dental arch - mandible",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.569
+  },
+  {
+    "code": "D2971",
+    "description": "Additional procedures to construct new crown under existing partial denture framework",
+    "category": "Other Restorative Services",
+    "score": 0.569
+  },
+  {
+    "code": "D0396",
+    "description": "3D printing of a 3D dental surface scan",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.569
+  },
+  {
+    "code": "D6012",
+    "description": "Surgical placement of interim implant body for transitional prosthesis, endosteal implant",
+    "category": "Implant Services",
+    "score": 0.569
+  },
+  {
+    "code": "D6720",
+    "description": "Retainer Crown - resin with high noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.569
+  },
+  {
+    "code": "D8698",
+    "description": "Re-cement or re-bond fixed retainer - maxillary",
+    "category": "Other Orthodontic Services",
+    "score": 0.569
+  },
+  {
+    "code": "D6074",
+    "description": "Abutment-supported retainer for cast metal FPD (noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.569
+  },
+  {
+    "code": "D9950",
+    "description": "Occlusion analysis - mounted case",
+    "category": "Miscellaneous Services",
+    "score": 0.569
+  },
+  {
+    "code": "D7111",
+    "description": "Extraction - coronal remnants, deciduous tooth",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.569
+  },
+  {
+    "code": "D5935",
+    "description": "Mandibular resection prosthesis without guide flange",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.568
+  },
+  {
+    "code": "D6104",
+    "description": "Bone graft at time of implant placement",
+    "category": "Other Implant Services",
+    "score": 0.568
+  },
+  {
+    "code": "D3110",
+    "description": "Pulp cap direct (excluding final restoration)",
+    "category": "Pulp Capping",
+    "score": 0.568
+  },
+  {
+    "code": "D1552",
+    "description": "Re-cement or re-bond bilateral space maintainer - mandibular",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.568
+  },
+  {
+    "code": "D2140",
+    "description": "Amalgam - 1 surface, permanent or primary",
+    "category": "General",
+    "score": 0.568
+  },
+  {
+    "code": "D0381",
+    "description": "Cone beam CT capture and interpretation with field of view of one full dental arch - mandible",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.568
+  },
+  {
+    "code": "D0277",
+    "description": "Vertical bitewings - 7 to 8 radiographic images",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.568
+  },
+  {
+    "code": "D5953",
+    "description": "Speech aid prosthesis, adult",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.568
+  },
+  {
+    "code": "D5934",
+    "description": "Mandibular resection prosthesis with flange",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.568
+  },
+  {
+    "code": "D0388",
+    "description": "Intraoral tomosynthesis - bitewing radiographic image - image capture only",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.568
+  },
+  {
+    "code": "D5982",
+    "description": "Surgical stent",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.568
+  },
+  {
+    "code": "D3950",
+    "description": "Canal preparation and fitting of preformed dowel or post",
+    "category": "Other Endodontic Procedures",
+    "score": 0.568
+  },
+  {
+    "code": "D6940",
+    "description": "Stress breaker",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.568
+  },
+  {
+    "code": "D6606",
+    "description": "Retainer Inlay - cast noble metal, 2 surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.568
+  },
+  {
+    "code": "D9939",
+    "description": "Placement of a custom removable clear plastic temporary aesthetic appliance",
+    "category": "Miscellaneous Services",
+    "score": 0.568
+  },
+  {
+    "code": "D6010",
+    "description": "Surgical placement of implant body, endosteal implant",
+    "category": "Implant Services",
+    "score": 0.568
+  },
+  {
+    "code": "D7939",
+    "description": "Indexing for osteotomy using dynamic robotic assisted or dynamic navigation",
+    "category": "Other Repair Procedures",
+    "score": 0.568
+  },
+  {
+    "code": "D6120",
+    "description": "Implant supported retainer - porcelain fused to titanium and titanium alloys",
+    "category": "Other Implant Services",
+    "score": 0.568
+  },
+  {
+    "code": "D8701",
+    "description": "Repair of fixed retainer, includes reattachment - maxillary",
+    "category": "Other Orthodontic Services",
+    "score": 0.568
+  },
+  {
+    "code": "D6245",
+    "description": "Pontic - porcelain/ceramic",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.568
+  },
+  {
+    "code": "D2710",
+    "description": "Crown - resin-based composite (indirect)",
+    "category": "General",
+    "score": 0.568
+  },
+  {
+    "code": "D6624",
+    "description": "Retainer Inlay - titanium",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.568
+  },
+  {
+    "code": "D5914",
+    "description": "Auricula prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.568
+  },
+  {
+    "code": "D2930",
+    "description": "Prefabricated stainless steel crown - primary tooth",
+    "category": "Other Restorative Services",
+    "score": 0.568
+  },
+  {
+    "code": "D1553",
+    "description": "Re-cement or re-bond unilateral space maintainer - per quadrant",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.568
+  },
+  {
+    "code": "D7294",
+    "description": "Surgical placement of temporary anchorage device without flap",
+    "category": "Vestibuloplasty",
+    "score": 0.568
+  },
+  {
+    "code": "D6793",
+    "description": "Interim retainer crown - further treatment or completion of diagnosis necessary prior to final impression",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.568
+  },
+  {
+    "code": "D0382",
+    "description": "Cone beam CT capture and interpretation with full dental arch - maxilla, with or without cranium",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.568
+  },
+  {
+    "code": "D9935",
+    "description": "Cleaning and inspection of removable partial denture, mandibular",
+    "category": "Miscellaneous Services",
+    "score": 0.568
+  },
+  {
+    "code": "D6783",
+    "description": "Retainer Crown - 3/4 porcelain/ceramic",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.568
+  },
+  {
+    "code": "D6608",
+    "description": "Retainer Onlay - porcelain ceramic, 2 surface",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.568
+  },
+  {
+    "code": "D6600",
+    "description": "Retainer Inlay - porcelain/ceramic, 2 surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.568
+  },
+  {
+    "code": "D0480",
+    "description": "Processing and interpretation of exfoliative cytologic smears, including preparation and transmission of written report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.568
+  },
+  {
+    "code": "D6790",
+    "description": "Retainer Crown - full cast high noble metal",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.567
+  },
+  {
+    "code": "D5923",
+    "description": "Ocular prosthesis, interim",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D1711",
+    "description": "Moderna Covid-19 vaccine administration - booster dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.567
+  },
+  {
+    "code": "D2644",
+    "description": "Onlay - porcelain/ceramic, 4 or more surfaces",
+    "category": "Gold Foil Restorations",
+    "score": 0.567
+  },
+  {
+    "code": "D6051",
+    "description": "Placement of interim implant abutment",
+    "category": "Implant Services",
+    "score": 0.567
+  },
+  {
+    "code": "D7680",
+    "description": "Facial bones - complicated reduction with fixation and multiple surgical approaches",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.567
+  },
+  {
+    "code": "D5922",
+    "description": "Nasal septal prosthesis",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D6549",
+    "description": "Resin retainer - for resin bonded fixed prosthesis",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.567
+  },
+  {
+    "code": "D0367",
+    "description": "Cone beam CT capture and interpretation with field of view of both jaws, with or without cranium",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.567
+  },
+  {
+    "code": "D6750",
+    "description": "Retainer Crown - porcelain fused to high noble",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.567
+  },
+  {
+    "code": "D5140",
+    "description": "Immediate denture - mandibular",
+    "category": "Complete Dentures (Including Routine Post-Delivery Care)",
+    "score": 0.567
+  },
+  {
+    "code": "D5927",
+    "description": "Auricular prosthesis, replacement",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D3426",
+    "description": "Apicoectomy - (each additional root)",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.567
+  },
+  {
+    "code": "D2650",
+    "description": "Inlay - resin-based composite, 1 surface (D2140)",
+    "category": "Gold Foil Restorations",
+    "score": 0.567
+  },
+  {
+    "code": "D5110",
+    "description": "Complete denture - maxillary",
+    "category": "Complete Dentures (Including Routine Post-Delivery Care)",
+    "score": 0.567
+  },
+  {
+    "code": "D7999",
+    "description": "Unspecified oral surgery procedure, by report",
+    "category": "Other Repair Procedures",
+    "score": 0.567
+  },
+  {
+    "code": "D4920",
+    "description": "Unscheduled dressing change (performed by other than treating dentist or their staff)",
+    "category": "Other Periodontal Services",
+    "score": 0.567
+  },
+  {
+    "code": "D9997",
+    "description": "Dental case management - patients with special health care needs",
+    "category": "Miscellaneous Services",
+    "score": 0.567
+  },
+  {
+    "code": "D0273",
+    "description": "Bitewings - three radiographic images",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.567
+  },
+  {
+    "code": "D5988",
+    "description": "Surgical splint",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D8697",
+    "description": "Repair of orthodontic appliance - mandibular",
+    "category": "Other Orthodontic Services",
+    "score": 0.567
+  },
+  {
+    "code": "D2928",
+    "description": "prefabricated porcelain/ceramic crown - permanent tooth",
+    "category": "Other Restorative Services",
+    "score": 0.567
+  },
+  {
+    "code": "D9961",
+    "description": "Duplicate/copy patient's records",
+    "category": "Miscellaneous Services",
+    "score": 0.567
+  },
+  {
+    "code": "D2712",
+    "description": "Crown - 3/4 resin-based composite (indirect), does not include facial veneers",
+    "category": "Gold Foil Restorations",
+    "score": 0.567
+  },
+  {
+    "code": "D9120",
+    "description": "Fixed partial denture sectioning",
+    "category": "Unclassified Treatment",
+    "score": 0.567
+  },
+  {
+    "code": "D4323",
+    "description": "Splint - extra-coronal; natural teeth or prosthetic crowns",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.567
+  },
+  {
+    "code": "D4264",
+    "description": "Bone replacement graft - each additional site in quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.567
+  },
+  {
+    "code": "D0150",
+    "description": "Comprehensive oral evaluation, new or established patient",
+    "category": "Excluded Services 100",
+    "score": 0.567
+  },
+  {
+    "code": "D6068",
+    "description": "Abutment supported retainer for porcelain/ceramic FPD",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D6634",
+    "description": "Retainer Onlay - titanium",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.567
+  },
+  {
+    "code": "D8695",
+    "description": "Removal of fixed orthodontic appliances for reasons other than completion of treatment",
+    "category": "Other Orthodontic Services",
+    "score": 0.567
+  },
+  {
+    "code": "D7283",
+    "description": "Placement of device to facilitate eruption of impacted tooth",
+    "category": "Other Surgical Procedures",
+    "score": 0.567
+  },
+  {
+    "code": "D6195",
+    "description": "Abutment supported retainer - porcelain fused to titanium and titanium alloys",
+    "category": "Other Implant Services",
+    "score": 0.567
+  },
+  {
+    "code": "D6242",
+    "description": "Pontic - porcelain fused to noble metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.567
+  },
+  {
+    "code": "D6066",
+    "description": "Implant-supported porcelain fused to metal crown (titanium, titanium alloy, high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D3432",
+    "description": "Guided tissue regeneration, resorbable barrier, per site, in conjunction with periradicular surgery",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.567
+  },
+  {
+    "code": "D7770",
+    "description": "Alveolus - open reduction stabilization of teeth",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.567
+  },
+  {
+    "code": "D7953",
+    "description": "Bone replacement graft for ridge preservation - per site",
+    "category": "Other Repair Procedures",
+    "score": 0.567
+  },
+  {
+    "code": "D5952",
+    "description": "Speech aid prosthesis, pediatric",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.567
+  },
+  {
+    "code": "D2931",
+    "description": "Prefabricated stainless steel crown - permanent tooth",
+    "category": "Other Restorative Services",
+    "score": 0.566
+  },
+  {
+    "code": "D0373",
+    "description": "Intraoral tomosynthesis - bitewing radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D3431",
+    "description": "Biologic materials to aid in soft and osseous tissue regeneration in conjunction with periradicular surgery",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.566
+  },
+  {
+    "code": "D4910",
+    "description": "Periodontal maintenance procedures (following active therapy)",
+    "category": "General",
+    "score": 0.566
+  },
+  {
+    "code": "D6194",
+    "description": "Abutment-supported retainer crown for FPD, titanium",
+    "category": "Other Implant Services",
+    "score": 0.566
+  },
+  {
+    "code": "D0330",
+    "description": "Panoramic radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D9957",
+    "description": "Screening for sleep related breathing disorders",
+    "category": "Miscellaneous Services",
+    "score": 0.566
+  },
+  {
+    "code": "D3460",
+    "description": "Endodontic endosseous implant",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.566
+  },
+  {
+    "code": "D0350",
+    "description": "2D oral/facial photographic images obtained intraorally or extraorally",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D4212",
+    "description": "Gingivectomy or gingivoplasty to allow access for restorative procedure, per tooth",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.566
+  },
+  {
+    "code": "D0478",
+    "description": "Immunohistochemical stains",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.566
+  },
+  {
+    "code": "D0171",
+    "description": "Re-evaluation-post operative visit",
+    "category": "Excluded Services 100",
+    "score": 0.566
+  },
+  {
+    "code": "D0272",
+    "description": "Bitewings - two radiographic images",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D3450",
+    "description": "Root amputation - per root",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.566
+  },
+  {
+    "code": "D7957",
+    "description": "Guided tissue regeneration, edentulous area - non- resorbable barrier, per site",
+    "category": "Other Repair Procedures",
+    "score": 0.566
+  },
+  {
+    "code": "D6601",
+    "description": "Retainer Inlay - porcelain/ceramic, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.566
+  },
+  {
+    "code": "D7610",
+    "description": "Maxilla - open reduction (teeth immobilized, if present)",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.566
+  },
+  {
+    "code": "D8699",
+    "description": "Re-cement or re-bond fixed retainer - mandibular",
+    "category": "Other Orthodontic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D6077",
+    "description": "Implant-supported retainer for cast metal FPD (titanium, titanium alloy, or high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.566
+  },
+  {
+    "code": "D9987",
+    "description": "Cancelled appointment",
+    "category": "Miscellaneous Services",
+    "score": 0.566
+  },
+  {
+    "code": "D0220",
+    "description": "Intraoral periapical - first radiographic image.",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D7288",
+    "description": "Brush biopsy - transepithelial sample collection",
+    "category": "Other Surgical Procedures",
+    "score": 0.566
+  },
+  {
+    "code": "D0477",
+    "description": "Special stains, not for microorganisms",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.566
+  },
+  {
+    "code": "D8702",
+    "description": "Repair of fixed retainer, includes reattachment - mandibular",
+    "category": "Other Orthodontic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D8703",
+    "description": "Replacement of lost or broken retainer - maxillary",
+    "category": "Other Orthodontic Services",
+    "score": 0.566
+  },
+  {
+    "code": "D4211",
+    "description": "Gingivectomy or gingivoplasty - 1 to 3 contiguous teeth or tooth bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.566
+  },
+  {
+    "code": "D2642",
+    "description": "Onlay - porcelain/ceramic, 2 surfaces (D2150)",
+    "category": "Gold Foil Restorations",
+    "score": 0.566
+  },
+  {
+    "code": "D6092",
+    "description": "Re-cement or re-bond implant/abutment-supported crown",
+    "category": "Other Implant Services",
+    "score": 0.566
+  },
+  {
+    "code": "D6609",
+    "description": "Retainer Onlay - porcelain ceramic, 3 or more surfaces",
+    "category": "Fixed Partial Denture Retainers - Inlays/Onlays",
+    "score": 0.565
+  },
+  {
+    "code": "D6123",
+    "description": "Implant supported retainer for metal FPD - titanium and titanium alloys",
+    "category": "Other Implant Services",
+    "score": 0.565
+  },
+  {
+    "code": "D5985",
+    "description": "Radiation cone locator",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.565
+  },
+  {
+    "code": "D7292",
+    "description": "Surgical placement of temporary anchorage device (screw retained plate) requiring flap",
+    "category": "Other Surgical Procedures",
+    "score": 0.565
+  },
+  {
+    "code": "D0411",
+    "description": "HbA1c in-office point of service testing",
+    "category": "Tests And Examinations",
+    "score": 0.565
+  },
+  {
+    "code": "D6097",
+    "description": "Abutment supported crown - porcelain fused to titanium and titanium alloys",
+    "category": "Other Implant Services",
+    "score": 0.565
+  },
+  {
+    "code": "D5926",
+    "description": "Nasal prosthesis, replacement",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.565
+  },
+  {
+    "code": "D5987",
+    "description": "Commissure splint",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.565
+  },
+  {
+    "code": "D4266",
+    "description": "Guided tissue regeneration, natural teeth- resorbable barrier, per site",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.565
+  },
+  {
+    "code": "D6106",
+    "description": "Guided tissue regeneration - resorbable barrier, per implant",
+    "category": "Other Implant Services",
+    "score": 0.565
+  },
+  {
+    "code": "D0270",
+    "description": "Bitewing - single radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.565
+  },
+  {
+    "code": "D2643",
+    "description": "Onlay - porcelain/ceramic, 3 surfaces",
+    "category": "Gold Foil Restorations",
+    "score": 0.565
+  },
+  {
+    "code": "D1557",
+    "description": "Removal of fixed bilateral space maintainer - maxillary",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.565
+  },
+  {
+    "code": "D7650",
+    "description": "Malar and/or zygomatic arch - open reduction",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.565
+  },
+  {
+    "code": "D6076",
+    "description": "Implant-supported retainer for porcelain fused to metal FPD (titanium, titanium alloy, or high noble metal)",
+    "category": "Implant-Supported Prosthetics",
+    "score": 0.565
+  },
+  {
+    "code": "D2781",
+    "description": "Crown - 3/4 cast predominantly base metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.565
+  },
+  {
+    "code": "D0387",
+    "description": "Intraoral tomosynthesis - comprehensive series of radiographic images - image capture only",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.565
+  },
+  {
+    "code": "D9994",
+    "description": "Dental case management - patient education to improve oral health literacy",
+    "category": "Miscellaneous Services",
+    "score": 0.565
+  },
+  {
+    "code": "D2951",
+    "description": "Pin retention - per tooth, in addition to restoration",
+    "category": "Other Restorative Services",
+    "score": 0.565
+  },
+  {
+    "code": "D3320",
+    "description": "Bicuspid tooth (excluding final restoration)",
+    "category": "Endodontic Therapy (Including Treatment Plan, Clinical Procedures And Follow Up Care)",
+    "score": 0.565
+  },
+  {
+    "code": "D0340",
+    "description": "Cephalometric radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.565
+  },
+  {
+    "code": "D7321",
+    "description": "Alveoloplasty, not in conjunction with extractions - one to three teeth or tooth spaces, per quadrant",
+    "category": "Alveoplasty: Surgical Preparation Of Ridge For Dentures",
+    "score": 0.565
+  },
+  {
+    "code": "D5875",
+    "description": "Modification of removable prosthesis following implant surgery",
+    "category": "Other Removable Prosthetic Services",
+    "score": 0.565
+  },
+  {
+    "code": "D6101",
+    "description": "Debridement of a peri-implant defect or defects surrounding a single implant, and surface cleaning of the exposed implant surfaces, including flap entry and closure",
+    "category": "Other Implant Services",
+    "score": 0.565
+  },
+  {
+    "code": "D7940",
+    "description": "Osteoplasty - for orthognathic deformities",
+    "category": "Other Repair Procedures",
+    "score": 0.565
+  },
+  {
+    "code": "D2915",
+    "description": "Re-cement or re-bond indirectly fabricated or prefabricated post and core",
+    "category": "Other Restorative Services",
+    "score": 0.565
+  },
+  {
+    "code": "D7948",
+    "description": "LeFort II or LeFort III (osteoplasty of facial bones for midface hypoplasia or retrusion) - without bone graft",
+    "category": "Other Repair Procedures",
+    "score": 0.565
+  },
+  {
+    "code": "D4265",
+    "description": "Biologic materials to aid in soft and osseous tissue regeneration, per site",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.565
+  },
+  {
+    "code": "D7850",
+    "description": "Surgical disectomy; with or without implant",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.565
+  },
+  {
+    "code": "D8091",
+    "description": "Comprehensive orthodontic treatment associated with orthognathic surgery when additional surgical intervention is planned",
+    "category": "Orthodontics",
+    "score": 0.565
+  },
+  {
+    "code": "D0383",
+    "description": "Cone beam CT capture and interpretation with field of view of both jaws, with or without cranium",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.565
+  },
+  {
+    "code": "D0389",
+    "description": "Intraoral tomosynthesis - periapical radiographic image - image capture only",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.565
+  },
+  {
+    "code": "D2961",
+    "description": "Labial veneer (resin laminate) - laboratory",
+    "category": "Other Restorative Services",
+    "score": 0.565
+  },
+  {
+    "code": "D9986",
+    "description": "Missed appointment",
+    "category": "Miscellaneous Services",
+    "score": 0.565
+  },
+  {
+    "code": "D6240",
+    "description": "Pontic - porcelain fused to high noble metal",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.564
+  },
+  {
+    "code": "D9949",
+    "description": "Repair of custom sleep apnea appliance",
+    "category": "Miscellaneous Services",
+    "score": 0.564
+  },
+  {
+    "code": "D6013",
+    "description": "Surgical placement of mini implant.",
+    "category": "Implant Services",
+    "score": 0.564
+  },
+  {
+    "code": "D7286",
+    "description": "Incisional biopsy of oral tissue - soft (all others)",
+    "category": "Other Surgical Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D7671",
+    "description": "Alveolus - open reduction, may include stabilization of teeth",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.564
+  },
+  {
+    "code": "D7860",
+    "description": "Arthrotomy",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.564
+  },
+  {
+    "code": "D7282",
+    "description": "Mobilization of erupted or mal-positioned tooth to aid eruption",
+    "category": "Other Surgical Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D3920",
+    "description": "Hemisection (including any root removal), not including root canal therapy",
+    "category": "Other Endodontic Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D6093",
+    "description": "Re-cement or re-bond implant/abutment-supported fixed partial denture",
+    "category": "Other Implant Services",
+    "score": 0.564
+  },
+  {
+    "code": "D4210",
+    "description": "Gingivectomy or gingivoplasty - 4 or more contiguous teeth or tooth-bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.564
+  },
+  {
+    "code": "D7994",
+    "description": "surgical placement: zygomatic implant",
+    "category": "Other Repair Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D1556",
+    "description": "Removal of fixed unilateral space maintainer - per quadrant",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.564
+  },
+  {
+    "code": "D0380",
+    "description": "Cone bean CT image capture with limited field of view - less than one whole jaw",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.564
+  },
+  {
+    "code": "D3470",
+    "description": "Intentional reimplantation (including necessary splinting)",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.564
+  },
+  {
+    "code": "D2791",
+    "description": "Crown - full-cast predominantly base metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.564
+  },
+  {
+    "code": "D5660",
+    "description": "Add clasp to existing partial denture - per tooth",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.564
+  },
+  {
+    "code": "D7852",
+    "description": "Disc repair",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.564
+  },
+  {
+    "code": "D7995",
+    "description": "Synthetic graft, mandible or facial bones, by report",
+    "category": "Other Repair Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D6980",
+    "description": "Fixed partial denture (bridge) repair, necessitated by restorative material failure",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.564
+  },
+  {
+    "code": "D9932",
+    "description": "Cleaning and inspection of removable complete denture, maxillary",
+    "category": "Miscellaneous Services",
+    "score": 0.564
+  },
+  {
+    "code": "D4276",
+    "description": "Interim crown - further treatment or completion of diagnosis necessary prior to final impression",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.564
+  },
+  {
+    "code": "D7998",
+    "description": "Intraoral placement of a fixation device not in conjunction with a fracture",
+    "category": "Other Repair Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D3911",
+    "description": "Intraorifice barrier",
+    "category": "Other Endodontic Procedures",
+    "score": 0.564
+  },
+  {
+    "code": "D3347",
+    "description": "Retreatment of previous root canal therapy, bicuspid, by report",
+    "category": "Endodontic Retreatment",
+    "score": 0.564
+  },
+  {
+    "code": "D0180",
+    "description": "Comprehensive periodontal evaluation: new or established patient",
+    "category": "Excluded Services 100",
+    "score": 0.564
+  },
+  {
+    "code": "D7311",
+    "description": "Alveoloplasty in conjunction with extractions - one to three teeth or tooth spaces, per quadrant",
+    "category": "Alveoplasty: Surgical Preparation Of Ridge For Dentures",
+    "score": 0.564
+  },
+  {
+    "code": "D9930",
+    "description": "Treatment of complications (post-surgical) - unusual circumstances, by report",
+    "category": "Miscellaneous Services",
+    "score": 0.564
+  },
+  {
+    "code": "D3331",
+    "description": "Treatment of root canal obstruction; non-surgical access in lieu of surgery. Root canal blocked by foreign bodies or calcification of 50% or more of root.",
+    "category": "Endodontic Therapy (Including Treatment Plan, Clinical Procedures And Follow Up Care)",
+    "score": 0.564
+  },
+  {
+    "code": "D8704",
+    "description": "Replacement of lost or broken retainer - mandibular",
+    "category": "Other Orthodontic Services",
+    "score": 0.563
+  },
+  {
+    "code": "D7250",
+    "description": "Surgical removal of residual tooth roots (cutting procedure)",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.563
+  },
+  {
+    "code": "D0372",
+    "description": "Intraoral tomosynthesis -comprehensive series of radiographic images",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.563
+  },
+  {
+    "code": "D7941",
+    "description": "Osteotomy - mandibular rami",
+    "category": "Other Repair Procedures",
+    "score": 0.563
+  },
+  {
+    "code": "D7961",
+    "description": "Buccal / labial frenectomy (frenulectomy)",
+    "category": "Other Repair Procedures",
+    "score": 0.563
+  },
+  {
+    "code": "D8671",
+    "description": "Periodic orthodontic treatment visit for comprehensive treatment associated with orthognathic surgery",
+    "category": "Other Orthodontic Services",
+    "score": 0.563
+  },
+  {
+    "code": "D6107",
+    "description": "Guided tissue regeneration - non-resorbable barrier, per implant",
+    "category": "Other Implant Services",
+    "score": 0.563
+  },
+  {
+    "code": "D9630",
+    "description": "Other drugs and/or medicaments, by report",
+    "category": "Drugs",
+    "score": 0.563
+  },
+  {
+    "code": "D6930",
+    "description": "Re-cement or re-bond bridge",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.563
+  },
+  {
+    "code": "D0160",
+    "description": "Detailed and extensive oral evaluation - problem focused, by report",
+    "category": "Excluded Services 100",
+    "score": 0.563
+  },
+  {
+    "code": "D9933",
+    "description": "Cleaning and inspection of removable complete denture, mandibular",
+    "category": "Miscellaneous Services",
+    "score": 0.563
+  },
+  {
+    "code": "D2955",
+    "description": "Post removal",
+    "category": "Other Restorative Services",
+    "score": 0.563
+  },
+  {
+    "code": "D7962",
+    "description": "Lingual frenectomy (frenulectomy)",
+    "category": "Other Repair Procedures",
+    "score": 0.563
+  },
+  {
+    "code": "D6243",
+    "description": "Pontic - porcelain fused to titanium and titanium alloys",
+    "category": "Fixed Partial Denture Pontics",
+    "score": 0.563
+  },
+  {
+    "code": "D0240",
+    "description": "Intraoral occlusal radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.563
+  },
+  {
+    "code": "D6089",
+    "description": "Accessing and retorquing loose implant screw - per screw",
+    "category": "Other Implant Services",
+    "score": 0.563
+  },
+  {
+    "code": "D9992",
+    "description": "Dental case management - care coordination",
+    "category": "Miscellaneous Services",
+    "score": 0.563
+  },
+  {
+    "code": "D1558",
+    "description": "Removal of fixed bilateral space maintainer - mandibular",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.563
+  },
+  {
+    "code": "D2751",
+    "description": "Crown - porcelain fused to predominantly base metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.563
+  },
+  {
+    "code": "D6784",
+    "description": "Retainer crown 3/4 - titanium and titanium alloys",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.563
+  },
+  {
+    "code": "D6102",
+    "description": "Debridement and osseous contouring of a peri-implant defect or defects surrounding a single implant and includes surface cleaning of the exposed implant surfaces, including flat entry and closure",
+    "category": "Other Implant Services",
+    "score": 0.563
+  },
+  {
+    "code": "D2991",
+    "description": "Application of hydroxyapatite regeneration medicament - per tooth",
+    "category": "Other Restorative Services",
+    "score": 0.563
+  },
+  {
+    "code": "D7952",
+    "description": "Sinus augmentation via a vertical approach",
+    "category": "Other Repair Procedures",
+    "score": 0.563
+  },
+  {
+    "code": "D7461",
+    "description": "Processing and interpretation of exfoliative cytologic smears, including preparation and transmission of written report",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.563
+  },
+  {
+    "code": "D7950",
+    "description": "Osseous, osteoperiosteal, or cartilage graft of the mandible or maxilla, autogenous or nonautogenous, by report",
+    "category": "Other Repair Procedures",
+    "score": 0.563
+  },
+  {
+    "code": "D7140",
+    "description": "Extraction - erupted tooth or exposed root (elevation and/or forcep removal)",
+    "category": "Other Fixed Partial Denture Services",
+    "score": 0.563
+  },
+  {
+    "code": "D1710",
+    "description": "Moderna Covid-19 vaccine administration - third dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.563
+  },
+  {
+    "code": "D4263",
+    "description": "Bone replacement graft - first site in quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.563
+  },
+  {
+    "code": "D6740",
+    "description": "Retainer Crown - porcelain/ceramic",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.563
+  },
+  {
+    "code": "D7865",
+    "description": "Arthroplasty",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.563
+  },
+  {
+    "code": "D3428",
+    "description": "Bone graft in conjunction with periradicular surgery - per tooth, single site.",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.563
+  },
+  {
+    "code": "D9912",
+    "description": "Pre-visit patient screenings.",
+    "category": "Miscellaneous Services",
+    "score": 0.563
+  },
+  {
+    "code": "D6081",
+    "description": "Scaling and debridement of a single implant in the presence of mucositis including inflammation, bleeding upon probing, and increased pocket depths. Includes cleaning of the implant surfaces, without flap entry and closure",
+    "category": "Other Implant Services",
+    "score": 0.562
+  },
+  {
+    "code": "D2934",
+    "description": "Prefabricated esthetic coated stainless steel crown - primary tooth (D2930)",
+    "category": "Other Restorative Services",
+    "score": 0.562
+  },
+  {
+    "code": "D2780",
+    "description": "Crown - 3/4 cast high noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.562
+  },
+  {
+    "code": "D0274",
+    "description": "Bitewings - four radiographic images",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.562
+  },
+  {
+    "code": "D2630",
+    "description": "Inlay - porcelain/ceramic, 3 or more surfaces (D2160)",
+    "category": "Gold Foil Restorations",
+    "score": 0.562
+  },
+  {
+    "code": "D7943",
+    "description": "Osteotomy - mandibular rami with bone graft; includes obtaining the graft",
+    "category": "Other Repair Procedures",
+    "score": 0.562
+  },
+  {
+    "code": "D0600",
+    "description": "Non-ionizing diagnostic procedure capable of quantifying, monitoring, and recording changes in structure of enamel, dentin, and cementum",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.562
+  },
+  {
+    "code": "D7340",
+    "description": "Vestibuloplasty - ridge extension (secondary epithelialization)",
+    "category": "Vestibuloplasty",
+    "score": 0.562
+  },
+  {
+    "code": "D6753",
+    "description": "Retainer crown - porcelain fused to titanium and titanium alloys",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.562
+  },
+  {
+    "code": "D3332",
+    "description": "Incomplete endodontic therapy; inoperable, unrestorable, or fractured tooth",
+    "category": "Endodontic Therapy (Including Treatment Plan, Clinical Procedures And Follow Up Care)",
+    "score": 0.562
+  },
+  {
+    "code": "D6794",
+    "description": "Retainer Crown - titanium",
+    "category": "Fixed Partial Denture Retainers - Crowns",
+    "score": 0.562
+  },
+  {
+    "code": "D0475",
+    "description": "Decalcification procedure",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.562
+  },
+  {
+    "code": "D7320",
+    "description": "Alveoloplasty, not in conjunction with extractions - per quadrant",
+    "category": "Alveoplasty: Surgical Preparation Of Ridge For Dentures",
+    "score": 0.562
+  },
+  {
+    "code": "D0190",
+    "description": "Screening of a patient: A screening, including state or federally mandated screenings, to determine an individual's need to be seen by a dentist for diagnosis",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.562
+  },
+  {
+    "code": "D7771",
+    "description": "Alveolus - closed reduction, stabilization of teeth",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.562
+  },
+  {
+    "code": "D7310",
+    "description": "Alveoloplasty in conjunction with extractions - per quadrant",
+    "category": "Alveoplasty: Surgical Preparation Of Ridge For Dentures",
+    "score": 0.562
+  },
+  {
+    "code": "D2949",
+    "description": "Restorative foundation for an indirect restoration",
+    "category": "Other Restorative Services",
+    "score": 0.562
+  },
+  {
+    "code": "D9910",
+    "description": "Application of desensitizing medicament",
+    "category": "Miscellaneous Services",
+    "score": 0.562
+  },
+  {
+    "code": "D0364",
+    "description": "Cone beam CT capture and interpretation with limited field of view - less than one whole jaw",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.562
+  },
+  {
+    "code": "D3429",
+    "description": "Bone graft in conjunction with periradicular surgery - each additional contiguous tooth in the same surgical site",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.562
+  },
+  {
+    "code": "D3430",
+    "description": "Retrograde filling - per root",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.562
+  },
+  {
+    "code": "D6198",
+    "description": "Remove interim implant component",
+    "category": "Other Implant Services",
+    "score": 0.562
+  },
+  {
+    "code": "D5671",
+    "description": "Replace all teeth and acrylic on cast metal framework - mandibular",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.562
+  },
+  {
+    "code": "D6197",
+    "description": "Replacement of restorative material used to close an access opening of a screw-retained implant supported prosthesis, per implant",
+    "category": "Other Implant Services",
+    "score": 0.562
+  },
+  {
+    "code": "D7630",
+    "description": "Mandible - open reduction (teeth immobilized, if present)",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.562
+  },
+  {
+    "code": "D3330",
+    "description": "Molar tooth (excluding final restoration)",
+    "category": "Endodontic Therapy (Including Treatment Plan, Clinical Procedures And Follow Up Care)",
+    "score": 0.562
+  },
+  {
+    "code": "D0482",
+    "description": "Direct immunofluorescence",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.562
+  },
+  {
+    "code": "D2975",
+    "description": "Coping",
+    "category": "Other Restorative Services",
+    "score": 0.562
+  },
+  {
+    "code": "D4261",
+    "description": "Osseous surgery, one to three contiguous teeth or tooth bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.562
+  },
+  {
+    "code": "D0425",
+    "description": "Caries susceptibility tests",
+    "category": "Tests And Examinations",
+    "score": 0.562
+  },
+  {
+    "code": "D6090",
+    "description": "Repair of implant/abutment supported prosthesis",
+    "category": "Other Implant Services",
+    "score": 0.561
+  },
+  {
+    "code": "D7870",
+    "description": "Arthrocentesis",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.561
+  },
+  {
+    "code": "D7550",
+    "description": "Partial ostectomy, sequestrectomy for removal of nonvital bone",
+    "category": "Surgical Incision",
+    "score": 0.561
+  },
+  {
+    "code": "D0472",
+    "description": "Accession of tissue, gross examination, including preparation and transmission of written report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.561
+  },
+  {
+    "code": "D0374",
+    "description": "Intraoral tomosynthesis - periapical radiographic image",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.561
+  },
+  {
+    "code": "D3333",
+    "description": "Internal root repair of perforation defects",
+    "category": "Endodontic Therapy (Including Treatment Plan, Clinical Procedures And Follow Up Care)",
+    "score": 0.561
+  },
+  {
+    "code": "D3357",
+    "description": "Pulpal regeneration - completion of treatment",
+    "category": "Pulpal Regeneration",
+    "score": 0.561
+  },
+  {
+    "code": "D7465",
+    "description": "Destruction of lesion(s) by physical or chemical methods, by report",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.561
+  },
+  {
+    "code": "D6011",
+    "description": "Surgical access to an implant body (second stage implant surgery)",
+    "category": "Implant Services",
+    "score": 0.561
+  },
+  {
+    "code": "D1330",
+    "description": "Oral hygiene instructions",
+    "category": "Other Preventive Services",
+    "score": 0.561
+  },
+  {
+    "code": "D7287",
+    "description": "Cytology exfoliative sample collection",
+    "category": "Other Surgical Procedures",
+    "score": 0.561
+  },
+  {
+    "code": "D2962",
+    "description": "Labial veneer (porcelain laminate) - laboratory",
+    "category": "Other Restorative Services",
+    "score": 0.561
+  },
+  {
+    "code": "D2920",
+    "description": "Re-cement or re-bondcrown",
+    "category": "Other Restorative Services",
+    "score": 0.561
+  },
+  {
+    "code": "D5725",
+    "description": "Rebase hybrid prosthesis",
+    "category": "Denture Rebase Procedures: Process Of Refitting A Denture By Replacing The Base Material",
+    "score": 0.561
+  },
+  {
+    "code": "D0384",
+    "description": "Cone beam CT capture and interpretation for TMJ series including two or more exposures",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.561
+  },
+  {
+    "code": "D1714",
+    "description": "Pfizer-BioNTech Covid-19 vaccine administration tris- sucrose pediatric - second dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.561
+  },
+  {
+    "code": "D5993",
+    "description": "Maintenance and cleaning of a maxillofacial prosthesis (extra or intraoral) other than required adjustments, by report",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.561
+  },
+  {
+    "code": "D2782",
+    "description": "Crown - 3/4 cast noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.561
+  },
+  {
+    "code": "D7730",
+    "description": "Mandible - open reduction",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.561
+  },
+  {
+    "code": "D7520",
+    "description": "Incision and drainage of abscess - extraoral soft tissue",
+    "category": "Surgical Incision",
+    "score": 0.561
+  },
+  {
+    "code": "D1713",
+    "description": "Pfizer-BioNTech Covid-19 vaccine administration tris- sucrose pediatric - first dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.561
+  },
+  {
+    "code": "D2990",
+    "description": "Resin infiltration of incipient smooth surface lesions",
+    "category": "Other Restorative Services",
+    "score": 0.561
+  },
+  {
+    "code": "D7280",
+    "description": "Surgical access of unerupted tooth",
+    "category": "Other Surgical Procedures",
+    "score": 0.561
+  },
+  {
+    "code": "D5670",
+    "description": "Replace all teeth and acrylic on cast metal framework - maxillary",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.561
+  },
+  {
+    "code": "D0322",
+    "description": "Tomographic survey",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.561
+  },
+  {
+    "code": "D7922",
+    "description": "Placement of intra-socket biological dressing to aid in hemostasis or clot stabilization, per site",
+    "category": "Other Repair Procedures",
+    "score": 0.561
+  },
+  {
+    "code": "D7858",
+    "description": "Joint reconstruction",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.561
+  },
+  {
+    "code": "D7251",
+    "description": "Coronectomy - intentional partial tooth removal, impacted teeth only",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.561
+  },
+  {
+    "code": "D2933",
+    "description": "Prefabricated stainless steel crown with resin window (D2930)",
+    "category": "Other Restorative Services",
+    "score": 0.561
+  },
+  {
+    "code": "D1110",
+    "description": "Prophylaxis - adult age 14+",
+    "category": "Dental Prophylaxis",
+    "score": 0.56
+  },
+  {
+    "code": "D3356",
+    "description": "Pulpal regeneration - interim medication replacement",
+    "category": "Pulpal Regeneration",
+    "score": 0.56
+  },
+  {
+    "code": "D0484",
+    "description": "Consultation on slides prepared elsewhere",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.56
+  },
+  {
+    "code": "D4278",
+    "description": "Free soft tissue graft procedure (including recipient and donor surgical sites), each additional contiguous tooth, implant, or edentulous tooth position in same graft site",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.56
+  },
+  {
+    "code": "D2940",
+    "description": "Placement of interim direct restoration",
+    "category": "Other Restorative Services",
+    "score": 0.56
+  },
+  {
+    "code": "D0368",
+    "description": "Cone beam CT capture and interpretation for TMJ series including two or more exposures",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.56
+  },
+  {
+    "code": "D5612",
+    "description": "Repair resin partial denture base, maxillary",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.56
+  },
+  {
+    "code": "D7780",
+    "description": "Facial bones - complicated reduction with fixation and multiple surgical approaches",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.56
+  },
+  {
+    "code": "D5983",
+    "description": "Radiation carrier",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.56
+  },
+  {
+    "code": "D4341",
+    "description": "Periodontal scaling and root planing, 4 or more teeth per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.56
+  },
+  {
+    "code": "D4231",
+    "description": "Anatomical crown exposure - 1 to 3 teeth or tooth bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.56
+  },
+  {
+    "code": "D0145",
+    "description": "Oral evaluation for a patient less than 3 years of age and counseling with primary caregiver",
+    "category": "Excluded Services 100",
+    "score": 0.56
+  },
+  {
+    "code": "D7490",
+    "description": "Radical resection of maxilla mandible",
+    "category": "Excision Of Bone Tissue",
+    "score": 0.56
+  },
+  {
+    "code": "D1208",
+    "description": "Topical application of fluoride - excluding varnish",
+    "category": "Topical Fluoride Treatment Office Procedure",
+    "score": 0.56
+  },
+  {
+    "code": "D5995",
+    "description": "periodontal medicament carrier with peripheral seal - laboratory processed - maxillary",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.56
+  },
+  {
+    "code": "D0603",
+    "description": "Caries risk assessment and documentation, with a finding of high risk",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.56
+  },
+  {
+    "code": "D7949",
+    "description": "LeFort II or LeFort II - with bone graft",
+    "category": "Other Repair Procedures",
+    "score": 0.56
+  },
+  {
+    "code": "D2420",
+    "description": "Gold foil, 2 surfaces",
+    "category": "Gold Foil Restorations",
+    "score": 0.56
+  },
+  {
+    "code": "D7830",
+    "description": "Manipulation under anesthesia",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.56
+  },
+  {
+    "code": "D4241",
+    "description": "Gingival flap procedure - 1 to 3 contiguous teeth or tooth bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.56
+  },
+  {
+    "code": "D7945",
+    "description": "Osteotomy - body of mandible",
+    "category": "Other Repair Procedures",
+    "score": 0.56
+  },
+  {
+    "code": "D7990",
+    "description": "Emergency tracheotomy",
+    "category": "Other Repair Procedures",
+    "score": 0.56
+  },
+  {
+    "code": "D2620",
+    "description": "Inlay - porcelain/ceramic, 2 surfaces (D2150)",
+    "category": "Gold Foil Restorations",
+    "score": 0.56
+  },
+  {
+    "code": "D7946",
+    "description": "LeFort I (maxilla - total)",
+    "category": "Other Repair Procedures",
+    "score": 0.56
+  },
+  {
+    "code": "D2956",
+    "description": "Removal of an indirect restoration on a natural tooth",
+    "category": "Other Restorative Services",
+    "score": 0.56
+  },
+  {
+    "code": "D2982",
+    "description": "Only repair necessitated by restorative material failure",
+    "category": "Other Restorative Services",
+    "score": 0.56
+  },
+  {
+    "code": "D2610",
+    "description": "Inlay - porcelain/ceramic, 1 surface (D2140)",
+    "category": "Gold Foil Restorations",
+    "score": 0.56
+  },
+  {
+    "code": "D3421",
+    "description": "Apicoectomy - bicuspid (first root)",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.56
+  },
+  {
+    "code": "D7877",
+    "description": "Arthroscopy - surgical: debridement",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.56
+  },
+  {
+    "code": "D4267",
+    "description": "Guided tissue regeneration, natural teeth- non- resorbable barrier, per site (includes membrane removal)",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.559
+  },
+  {
+    "code": "D4346",
+    "description": "Scaling in presence of generalized moderate or severe gingival inflammation - full mouth, after evaluation",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.559
+  },
+  {
+    "code": "D7951",
+    "description": "Sinus augmentation with bone or bone substitutes via a lateral open approach",
+    "category": "Other Repair Procedures",
+    "score": 0.559
+  },
+  {
+    "code": "D7873",
+    "description": "Arthroscopy - surgical: lavage and lysis of adhesions",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.559
+  },
+  {
+    "code": "D0386",
+    "description": "Maxillofacial ultrasound capture and interpretation",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.559
+  },
+  {
+    "code": "D7920",
+    "description": "Skin grafts (identify defect covered, location, and type of graft)",
+    "category": "Other Repair Procedures",
+    "score": 0.559
+  },
+  {
+    "code": "D7230",
+    "description": "Removal of impacted tooth - partially bony",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.559
+  },
+  {
+    "code": "D6105",
+    "description": "Removal of implant body not requiring bone removal nor flap elevation",
+    "category": "Other Implant Services",
+    "score": 0.559
+  },
+  {
+    "code": "D4260",
+    "description": "Osseous surgery (including flap and closure) - four or more contiguous teeth or tooth-bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.559
+  },
+  {
+    "code": "D9991",
+    "description": "Dental case management - addressing appointment compliance barriers",
+    "category": "Miscellaneous Services",
+    "score": 0.559
+  },
+  {
+    "code": "D7971",
+    "description": "Excision of pericoronal gingiva",
+    "category": "Other Repair Procedures",
+    "score": 0.559
+  },
+  {
+    "code": "D5996",
+    "description": "periodontal medicament carrier with peripheral seal - laboratory processed - mandibular",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.559
+  },
+  {
+    "code": "D7760",
+    "description": "Malar and/or zygomatic arch - closed reduction",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.559
+  },
+  {
+    "code": "D1712",
+    "description": "Janssen Covid-19 Vaccine Administration - booster dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.559
+  },
+  {
+    "code": "D7912",
+    "description": "Complicated suture > 5 cm",
+    "category": "Complicated Suturing - Reconstruction Requiring Delicate Handling Of Tissues And Wide Undermining Fo",
+    "score": 0.559
+  },
+  {
+    "code": "D7620",
+    "description": "Maxilla - closed reduction (teeth immobilized, if present)",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.559
+  },
+  {
+    "code": "D6193",
+    "description": "Replacement of an implant screw",
+    "category": "Other Implant Services",
+    "score": 0.559
+  },
+  {
+    "code": "D1354",
+    "description": "Application of caries arresting medicament - per tooth",
+    "category": "Other Preventive Services",
+    "score": 0.559
+  },
+  {
+    "code": "D0473",
+    "description": "Accession of tissue, gross and microscopic examination, preparation and transmission of written report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.559
+  },
+  {
+    "code": "D7871",
+    "description": "Non-anthroscopic lysis and lavage",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.559
+  },
+  {
+    "code": "D4286",
+    "description": "Removal of non-resorbable barrier",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.559
+  },
+  {
+    "code": "D4274",
+    "description": "Distal or proximal wedge procedure (when not performed in conjunction with surgical procedures on the same anatomical area)",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.559
+  },
+  {
+    "code": "D4249",
+    "description": "Clinical crown lengthening hard tissue",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.559
+  },
+  {
+    "code": "D5650",
+    "description": "Add tooth to existing partial denture - per tooth",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.559
+  },
+  {
+    "code": "D7660",
+    "description": "Malar and/or zygomatic arch - closed reduction",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.559
+  },
+  {
+    "code": "D7530",
+    "description": "Removal of foreign body, mucosa, skin, or subcutaneous alveolar tissue",
+    "category": "Surgical Incision",
+    "score": 0.559
+  },
+  {
+    "code": "D9993",
+    "description": "Dental case management - motivational interviewing",
+    "category": "Miscellaneous Services",
+    "score": 0.559
+  },
+  {
+    "code": "D9430",
+    "description": "Office visit for observation during regular scheduled hours - no other services performed",
+    "category": "Professional Visits",
+    "score": 0.559
+  },
+  {
+    "code": "D3348",
+    "description": "Retreatment of previous root canal therapy, molar, by report",
+    "category": "Endodontic Retreatment",
+    "score": 0.559
+  },
+  {
+    "code": "D7270",
+    "description": "Tooth reimplantation and/or stabilization of accidentally evulsed or displaced tooth",
+    "category": "Other Surgical Procedures",
+    "score": 0.559
+  },
+  {
+    "code": "D3310",
+    "description": "Anterior tooth (excluding final restoration)",
+    "category": "Endodontic Therapy (Including Treatment Plan, Clinical Procedures And Follow Up Care)",
+    "score": 0.559
+  },
+  {
+    "code": "D7272",
+    "description": "Tooth transplantation (includes reimplantation from one site to another and splinting and/or stabilization)",
+    "category": "Other Surgical Procedures",
+    "score": 0.559
+  },
+  {
+    "code": "D9913",
+    "description": "Administration of neuromodulators",
+    "category": "Miscellaneous Services",
+    "score": 0.559
+  },
+  {
+    "code": "D2752",
+    "description": "Crown - porcelain fused to noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.559
+  },
+  {
+    "code": "D7947",
+    "description": "LeFort I (maxilla - segmented)",
+    "category": "Other Repair Procedures",
+    "score": 0.559
+  },
+  {
+    "code": "D3351",
+    "description": "Apexification/recalcification: initial visit (apical closure/ calcific repair of perforations, root resorption, etc.)",
+    "category": "Apexification/Recalcification And Pulpal Regeneration Procedures",
+    "score": 0.558
+  },
+  {
+    "code": "D4277",
+    "description": "Free soft tissue graft procedure (including recipient and donor surgical site), first tooth, implant, or edentulous tooth position in graft",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.558
+  },
+  {
+    "code": "D5986",
+    "description": "Fluoride gel carrier",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.558
+  },
+  {
+    "code": "D3353",
+    "description": "Apexification/recalcification: final visit (includes completed root canal therapy - apical closure/calcific repair of perforations, root resorption, etc.)",
+    "category": "Apexification/Recalcification And Pulpal Regeneration Procedures",
+    "score": 0.558
+  },
+  {
+    "code": "D3355",
+    "description": "Pulpal regeneration - initial visit",
+    "category": "Pulpal Regeneration",
+    "score": 0.558
+  },
+  {
+    "code": "D6180",
+    "description": "Implant maintenance procedures when a full arch fixed hybrid prosthesis is not removed including cleansing of prothesis and abutments",
+    "category": "Other Implant Services",
+    "score": 0.558
+  },
+  {
+    "code": "D2783",
+    "description": "Crown - 3/4 porcelain/ceramic (not veneers)",
+    "category": "Gold Foil Restorations",
+    "score": 0.558
+  },
+  {
+    "code": "D7911",
+    "description": "Complicated suture up to 5 cm",
+    "category": "Complicated Suturing - Reconstruction Requiring Delicate Handling Of Tissues And Wide Undermining Fo",
+    "score": 0.558
+  },
+  {
+    "code": "D2794",
+    "description": "Crown - titanium",
+    "category": "Gold Foil Restorations",
+    "score": 0.558
+  },
+  {
+    "code": "D9914",
+    "description": "Administration of dermal fillers",
+    "category": "Miscellaneous Services",
+    "score": 0.558
+  },
+  {
+    "code": "D7290",
+    "description": "Surgical repositioning of teeth - grafting procedures are additional",
+    "category": "Other Surgical Procedures",
+    "score": 0.558
+  },
+  {
+    "code": "D9219",
+    "description": "Evaluation for moderate sedation, deep sedation or general anesthesia",
+    "category": "Anesthesia",
+    "score": 0.558
+  },
+  {
+    "code": "D2430",
+    "description": "Gold foil, 3 surfaces",
+    "category": "Gold Foil Restorations",
+    "score": 0.558
+  },
+  {
+    "code": "D7750",
+    "description": "Malar and/or zygomatic arch - open reduction",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.558
+  },
+  {
+    "code": "D7285",
+    "description": "Incisional biopsy of oral tissue - hard (bone, tooth)",
+    "category": "Other Surgical Procedures",
+    "score": 0.558
+  },
+  {
+    "code": "D0476",
+    "description": "Special stains for microorganisms",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.558
+  },
+  {
+    "code": "D3346",
+    "description": "Retreatment of previous root canal therapy, anterior, by report",
+    "category": "Endodontic Retreatment",
+    "score": 0.558
+  },
+  {
+    "code": "D7350",
+    "description": "Vestibuloplasty - ridge extension (incl. soft tissue grafts, muscle re-attachment, revision of soft tissue attachment and management of hypertrophied and hyperplastic tissue)",
+    "category": "Vestibuloplasty",
+    "score": 0.558
+  },
+  {
+    "code": "D2799",
+    "description": "Interim crown - further treatment or completion of diagnosis necessary prior to final impression",
+    "category": "Gold Foil Restorations",
+    "score": 0.558
+  },
+  {
+    "code": "D0393",
+    "description": "Virtual treatment simulation using 3D image volume or surface scan",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.558
+  },
+  {
+    "code": "D4283",
+    "description": "Autogenous connective tissue graft procedure (including donor and recipient surgical sites) - each additional contiguous tooth, implant or edentulous tooth position in same graft site",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.558
+  },
+  {
+    "code": "D7240",
+    "description": "Removal of impacted tooth - completely bony",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.558
+  },
+  {
+    "code": "D7963",
+    "description": "Frenuloplasty",
+    "category": "Other Repair Procedures",
+    "score": 0.558
+  },
+  {
+    "code": "D5991",
+    "description": "Vesiculobullous disease medicament carrier",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.558
+  },
+  {
+    "code": "D4342",
+    "description": "Periodontal scaling and root planing, 1 - 3 teeth per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.558
+  },
+  {
+    "code": "D7710",
+    "description": "Maxilla - open reduction, stabilization of teeth",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.558
+  },
+  {
+    "code": "D7720",
+    "description": "Maxilla - closed reduction",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.558
+  },
+  {
+    "code": "D2410",
+    "description": "Gold foil, 1 surface",
+    "category": "Gold Foil Restorations",
+    "score": 0.558
+  },
+  {
+    "code": "D0602",
+    "description": "Caries risk assessment and documentation, with a finding of moderate risk",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.558
+  },
+  {
+    "code": "D0460",
+    "description": "Pulp vitality tests",
+    "category": "Tests And Examinations",
+    "score": 0.558
+  },
+  {
+    "code": "D2989",
+    "description": "Excavation of a tooth resulting in the determination of non-restorability",
+    "category": "Other Restorative Services",
+    "score": 0.558
+  },
+  {
+    "code": "D9110",
+    "description": "Palliative treatment of dental pain - per visit",
+    "category": "Unclassified Treatment",
+    "score": 0.558
+  },
+  {
+    "code": "D0310",
+    "description": "Sialography",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.558
+  },
+  {
+    "code": "D4381",
+    "description": "Localized delivery of antimicrobial agents via a controlledrelease vehicle into diseased crevicular tissue, per tooth, by report (only to be used as a site specific adjunct to localized disease)",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.558
+  },
+  {
+    "code": "D6080",
+    "description": "Implant maintenance procedures when a full arch fixed hybrid prosthesis is removed and reinserted, including cleansing of prosthesis and abutments.",
+    "category": "Other Implant Services",
+    "score": 0.558
+  },
+  {
+    "code": "D2753",
+    "description": "Crown - porcelain fused to titanium and titanium alloys",
+    "category": "Gold Foil Restorations",
+    "score": 0.557
+  },
+  {
+    "code": "D4285",
+    "description": "Non-autogenous connective tissue graft procedure (including recipient surgical site and donor material) - each additional contiguous tooth, implant, or edentulous tooth position in same graft site",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.557
+  },
+  {
+    "code": "D7241",
+    "description": "Removal of impacted tooth - completely bony, with unusual surgical complications",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.557
+  },
+  {
+    "code": "D7521",
+    "description": "Incision and drainage of abscess extraoral soft tissue complicated (includes drainage of multiple fascial spaces)",
+    "category": "Surgical Incision",
+    "score": 0.557
+  },
+  {
+    "code": "D2921",
+    "description": "Reattachment of tooth fragment, incisal edge or cusp.",
+    "category": "Other Restorative Services",
+    "score": 0.557
+  },
+  {
+    "code": "D2721",
+    "description": "Crown - resin with predominantly base metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.557
+  },
+  {
+    "code": "D0483",
+    "description": "Indirect immunofluorescence",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.557
+  },
+  {
+    "code": "D7220",
+    "description": "Removal of impacted tooth - soft tissue",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.557
+  },
+  {
+    "code": "D3352",
+    "description": "Apexification/recalcification: interim medication replacement",
+    "category": "Apexification/Recalcification And Pulpal Regeneration Procedures",
+    "score": 0.557
+  },
+  {
+    "code": "D4240",
+    "description": "Gingival flap procedure, including root planing - 4 or more contiguous teeth or tooth-bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.557
+  },
+  {
+    "code": "D3502",
+    "description": "surgical exposure of root surface without apicoectomy or repair of root resorption - premolar",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.557
+  },
+  {
+    "code": "D4921",
+    "description": "Gingival irrigation with a medical agent- per quadrant",
+    "category": "Other Periodontal Services",
+    "score": 0.557
+  },
+  {
+    "code": "D0423",
+    "description": "Genetic test for susceptibility to diseases - specimen analysis",
+    "category": "Tests And Examinations",
+    "score": 0.557
+  },
+  {
+    "code": "D7981",
+    "description": "Excision of salivary gland, by report",
+    "category": "Other Repair Procedures",
+    "score": 0.557
+  },
+  {
+    "code": "D0320",
+    "description": "Temporomandibular joint arthrogram, including injection",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.557
+  },
+  {
+    "code": "D4230",
+    "description": "Anatomical crown exposure - 4 or more contiguous teeth or tooth bounded spaces per quadrant",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.557
+  },
+  {
+    "code": "D0140",
+    "description": "Limited oral evaluation: problem-focused",
+    "category": "Excluded Services 100",
+    "score": 0.557
+  },
+  {
+    "code": "D6100",
+    "description": "Implant removal, by report",
+    "category": "Other Implant Services",
+    "score": 0.557
+  },
+  {
+    "code": "D1709",
+    "description": "Pfizer-BioNTech Covid-19 vaccine administration - booster dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.557
+  },
+  {
+    "code": "D9223",
+    "description": "Deep sedation/general anesthesia each 15 minute increment",
+    "category": "Anesthesia",
+    "score": 0.557
+  },
+  {
+    "code": "D1355",
+    "description": "caries preventive medicament application - per tooth",
+    "category": "Other Preventive Services",
+    "score": 0.557
+  },
+  {
+    "code": "D0605",
+    "description": "Antibody testing for a public health related pathogen, including coronavirus",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.557
+  },
+  {
+    "code": "D7740",
+    "description": "Mandible - closed reduction",
+    "category": "Treatment Of Fractures - Compound",
+    "score": 0.557
+  },
+  {
+    "code": "D2750",
+    "description": "Crown - porcelain fused to high-noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.557
+  },
+  {
+    "code": "D2722",
+    "description": "Crown - resin with noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.557
+  },
+  {
+    "code": "D4268",
+    "description": "Surgical revision procedure, per tooth",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.557
+  },
+  {
+    "code": "D5611",
+    "description": "Repair resin partial denture base, mandibular",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.557
+  },
+  {
+    "code": "D9942",
+    "description": "Repair and/ or reline of occlusal guard",
+    "category": "Miscellaneous Services",
+    "score": 0.557
+  },
+  {
+    "code": "D9410",
+    "description": "House call",
+    "category": "Professional Visits",
+    "score": 0.557
+  },
+  {
+    "code": "D7872",
+    "description": "Arthroscopy - diagnosis",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.557
+  },
+  {
+    "code": "D0395",
+    "description": "Fusion of two or more 3D image volumes of one or more modalities",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.557
+  },
+  {
+    "code": "D5765",
+    "description": "Soft liner for complete or partial removable denture - indirect",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.557
+  },
+  {
+    "code": "D2910",
+    "description": "Re-cement or re-bond inlay, onlay, veneer, or partial coverage restoration",
+    "category": "Other Restorative Services",
+    "score": 0.557
+  },
+  {
+    "code": "D7921",
+    "description": "Collection and application of autologous blood concentrate product",
+    "category": "Other Repair Procedures",
+    "score": 0.557
+  },
+  {
+    "code": "D0601",
+    "description": "Caries risk assessment and documentation, with a finding of low risk",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.556
+  },
+  {
+    "code": "D1708",
+    "description": "Pfizer-BioNTech Covid-19 vaccine administration - third dose",
+    "category": "Space Maintenance (Passive Appliances): Designed To Prevent Tooth Movement",
+    "score": 0.556
+  },
+  {
+    "code": "D0422",
+    "description": "Collection and preparation of genetic sample material for laboratory analysis and report",
+    "category": "Tests And Examinations",
+    "score": 0.556
+  },
+  {
+    "code": "D0474",
+    "description": "Accession of tissue, gross and microscopic examination, including assessment of surgical margins for presence of disease, preparation and transmission of written report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.556
+  },
+  {
+    "code": "D7840",
+    "description": "Condylectomy",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.556
+  },
+  {
+    "code": "D7440",
+    "description": "Excision of malignant tumor-lesion, diameter up to 1.25 cm",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.556
+  },
+  {
+    "code": "D3503",
+    "description": "surgical exposure of root surface without apicoectomy or repair of root resorption - molar",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.556
+  },
+  {
+    "code": "D3240",
+    "description": "Pulpal therapy (resorbable filling) posterior primary tooth (excluding final restoration)",
+    "category": "Endodontic Therapy On Primary Teeth",
+    "score": 0.556
+  },
+  {
+    "code": "D2740",
+    "description": "Crown - porcelain/ceramic substrate",
+    "category": "Gold Foil Restorations",
+    "score": 0.556
+  },
+  {
+    "code": "D3472",
+    "description": "surgical repair of root resorption - premolar",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.556
+  },
+  {
+    "code": "D7471",
+    "description": "Removal of exostosis - per site",
+    "category": "Excision Of Bone Tissue",
+    "score": 0.556
+  },
+  {
+    "code": "D7460",
+    "description": "Removal of benign non-odontogenic cyst or tumor, lesion, diameter up to 1.25 cm",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.556
+  },
+  {
+    "code": "D7856",
+    "description": "Myotomy",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.556
+  },
+  {
+    "code": "D7875",
+    "description": "Arthroscopy - surgical: synovectomy",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.556
+  },
+  {
+    "code": "D0394",
+    "description": "Digital subtraction of two or more images or image volumes of the same modality",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.556
+  },
+  {
+    "code": "D7876",
+    "description": "Arthroscopy - surgical: disectomy",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.556
+  },
+  {
+    "code": "D3501",
+    "description": "surgical exposure of root surface without apicoectomy or repair of root resorption - anterior",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.556
+  },
+  {
+    "code": "D7640",
+    "description": "Mandible - closed reduction (teeth immobilized, if present)",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.556
+  },
+  {
+    "code": "D2720",
+    "description": "Crown - resin with high-noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.556
+  },
+  {
+    "code": "D7260",
+    "description": "Oroantral fistula closure",
+    "category": "Other Surgical Procedures",
+    "score": 0.556
+  },
+  {
+    "code": "D6096",
+    "description": "Remove broken implant retaining screw",
+    "category": "Other Implant Services",
+    "score": 0.556
+  },
+  {
+    "code": "D9440",
+    "description": "Office visit - after regularly scheduled hours",
+    "category": "Professional Visits",
+    "score": 0.555
+  },
+  {
+    "code": "D3473",
+    "description": "surgical repair of root resorption - molar",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.555
+  },
+  {
+    "code": "D0416",
+    "description": "Viral Culture",
+    "category": "Tests And Examinations",
+    "score": 0.555
+  },
+  {
+    "code": "D5720",
+    "description": "Rebase maxillary partial denture",
+    "category": "Denture Rebase Procedures: Process Of Refitting A Denture By Replacing The Base Material",
+    "score": 0.555
+  },
+  {
+    "code": "D3471",
+    "description": "surgical repair of root resorption - anterior",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.555
+  },
+  {
+    "code": "D7955",
+    "description": "Repair of maxillofacial soft and/or hard tissue defect",
+    "category": "Other Repair Procedures",
+    "score": 0.555
+  },
+  {
+    "code": "D7991",
+    "description": "Coronoidectomy",
+    "category": "Other Repair Procedures",
+    "score": 0.555
+  },
+  {
+    "code": "D2792",
+    "description": "Crown - full-cast noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.555
+  },
+  {
+    "code": "D7899",
+    "description": "Unspecified TMD therapy, by report",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.555
+  },
+  {
+    "code": "D0391",
+    "description": "Interpretation of diagnostic image by practitioner not associated with capture of image, including report",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.555
+  },
+  {
+    "code": "D0604",
+    "description": "Antigen testing for a public health related pathogen including coronavirus",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.555
+  },
+  {
+    "code": "D5721",
+    "description": "Rebase mandibular partial denture",
+    "category": "Denture Rebase Procedures: Process Of Refitting A Denture By Replacing The Base Material",
+    "score": 0.555
+  },
+  {
+    "code": "D5630",
+    "description": "Repair or replace broken retentive/clasping materials per tooth",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.555
+  },
+  {
+    "code": "D7670",
+    "description": "Alveolus - closed reduction, may include stabilization of teeth",
+    "category": "Treatment Of Fractures - Simple",
+    "score": 0.555
+  },
+  {
+    "code": "D7511",
+    "description": "Incision and drainage of abscess intraoral soft tissue - complicated (includes drainage of multiple fascial spaces)",
+    "category": "Surgical Incision",
+    "score": 0.555
+  },
+  {
+    "code": "D4275",
+    "description": "Non-autogenous connective tissue graft (including recipient site and donor material) first tooth, implant, or edentulous tooth position in graft",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.555
+  },
+  {
+    "code": "D1351",
+    "description": "Sealant - per tooth",
+    "category": "Other Preventive Services",
+    "score": 0.555
+  },
+  {
+    "code": "D7560",
+    "description": "Maxillary sinusotomy for removal of tooth fragment or foreign body",
+    "category": "Surgical Incision",
+    "score": 0.555
+  },
+  {
+    "code": "D3220",
+    "description": "Therapeutic pulpotomy (excluding final restoration) - removal of pulp coronal to dentinocemental junction and application of medicament (not to be used for apexogenesis)",
+    "category": "Pulpotomy: Therapeutic Pulpotomy (Excluding Final Restoration)",
+    "score": 0.554
+  },
+  {
+    "code": "D5710",
+    "description": "Rebase complete maxillary denture",
+    "category": "Denture Rebase Procedures: Process Of Refitting A Denture By Replacing The Base Material",
+    "score": 0.554
+  },
+  {
+    "code": "D1120",
+    "description": "Prophylaxis - child through age 13 (up to 14th birthday)",
+    "category": "Dental Prophylaxis",
+    "score": 0.554
+  },
+  {
+    "code": "D5984",
+    "description": "Radiation shield",
+    "category": "Maxillofacial Prosthetics",
+    "score": 0.554
+  },
+  {
+    "code": "D2981",
+    "description": "Inlay repair necessitated by restorative material failure",
+    "category": "Other Restorative Services",
+    "score": 0.554
+  },
+  {
+    "code": "D7441",
+    "description": "Excision of malignant tumor-lesion, diameter >1.25 cm",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.554
+  },
+  {
+    "code": "D0191",
+    "description": "Assessment of a patient: A limited clinical inspection that is performed to identify possible signs of oral or systemic disease, malformation, or injury, and the potential need for referral for diagnosis and treatment",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.554
+  },
+  {
+    "code": "D7980",
+    "description": "Sialolithotomy",
+    "category": "Other Repair Procedures",
+    "score": 0.554
+  },
+  {
+    "code": "D7982",
+    "description": "Sialodochoplasty",
+    "category": "Other Repair Procedures",
+    "score": 0.554
+  },
+  {
+    "code": "D1353",
+    "description": "Sealant repair-per tooth",
+    "category": "Other Preventive Services",
+    "score": 0.554
+  },
+  {
+    "code": "D7510",
+    "description": "Incision and drainage of abscess - intraoral soft tissue",
+    "category": "Surgical Incision",
+    "score": 0.554
+  },
+  {
+    "code": "D3230",
+    "description": "Pulpal therapy (resorbable filling) anterior, primary tooth (excluding final restoration)",
+    "category": "Endodontic Therapy On Primary Teeth",
+    "score": 0.554
+  },
+  {
+    "code": "D0486",
+    "description": "Laboratory accession of transepithelial cytologic sample, microscopic examination, preparation and transmission of written report",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.554
+  },
+  {
+    "code": "D7874",
+    "description": "Arthroscopy - surgical: disc repositioning and stabilization",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.554
+  },
+  {
+    "code": "D7972",
+    "description": "Surgical reduction of fibrous tuberosity",
+    "category": "Other Repair Procedures",
+    "score": 0.554
+  },
+  {
+    "code": "D1206",
+    "description": "Topical application of fluoride varnish",
+    "category": "Topical Fluoride Treatment Office Procedure",
+    "score": 0.554
+  },
+  {
+    "code": "D4273",
+    "description": "Autogenous connective tissue graft procedure, (including donor and recipient surgical sites) first tooth, implant, or edentulous tooth position in graft",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.553
+  },
+  {
+    "code": "D5740",
+    "description": "Reline maxillary partial denture (chair side)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.553
+  },
+  {
+    "code": "D5640",
+    "description": "Repair missing of broken teeth - partial denture - per tooth",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.553
+  },
+  {
+    "code": "D7413",
+    "description": "Excision of malignant lesion, up to 1.25 cm",
+    "category": "Surgical Excision Of Reactive Soft Tissue Lesions",
+    "score": 0.553
+  },
+  {
+    "code": "D2980",
+    "description": "Crown repair, necessary by restorative material failure",
+    "category": "Other Restorative Services",
+    "score": 0.553
+  },
+  {
+    "code": "D5711",
+    "description": "Rebase complete mandibular denture",
+    "category": "Denture Rebase Procedures: Process Of Refitting A Denture By Replacing The Base Material",
+    "score": 0.553
+  },
+  {
+    "code": "D7414",
+    "description": "Excision of malignant lesion > 1.25 cm",
+    "category": "Surgical Excision Of Reactive Soft Tissue Lesions",
+    "score": 0.553
+  },
+  {
+    "code": "D7298",
+    "description": "Removal of temporary anchorage device [screw retained plate], requiring flap",
+    "category": "Other Surgical Procedures",
+    "score": 0.553
+  },
+  {
+    "code": "D0170",
+    "description": "Re-evaluation: limited, problem focused (established patient, not post-operative visit)",
+    "category": "Excluded Services 100",
+    "score": 0.553
+  },
+  {
+    "code": "D3410",
+    "description": "Apicoectomy - anterior",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.553
+  },
+  {
+    "code": "D7979",
+    "description": "Non-surgical sialolithotomy",
+    "category": "Other Repair Procedures",
+    "score": 0.553
+  },
+  {
+    "code": "D9222",
+    "description": "Deep sedation/general anesthesia - first 15 minutes",
+    "category": "Anesthesia",
+    "score": 0.553
+  },
+  {
+    "code": "D4245",
+    "description": "Apically repositioned flap",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.553
+  },
+  {
+    "code": "D2790",
+    "description": "Crown - full cast high-noble metal",
+    "category": "Gold Foil Restorations",
+    "score": 0.553
+  },
+  {
+    "code": "D5512",
+    "description": "Repair broken complete denture base, maxillary",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.552
+  },
+  {
+    "code": "D7472",
+    "description": "Removal of torus palatinus",
+    "category": "Excision Of Bone Tissue",
+    "score": 0.552
+  },
+  {
+    "code": "D5760",
+    "description": "Reline upper maxillary denture (laboratory)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.552
+  },
+  {
+    "code": "D5741",
+    "description": "Reline mandibular partial denture (chair side)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.552
+  },
+  {
+    "code": "D0370",
+    "description": "Maxillofacial ultrasound capture and interpretation",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.552
+  },
+  {
+    "code": "D0431",
+    "description": "Adjunctive pre-diagnostic test that aids in detection of mucosal abnormalities including premalignant and malignant lesions; does not include cytology or biopsy procedures",
+    "category": "Tests And Examinations",
+    "score": 0.552
+  },
+  {
+    "code": "D7810",
+    "description": "Open reduction of dislocation",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.552
+  },
+  {
+    "code": "D5520",
+    "description": "Replace missing or broken teeth - complete denture - per tooth",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.552
+  },
+  {
+    "code": "D9211",
+    "description": "Regional block anesthesia",
+    "category": "Anesthesia",
+    "score": 0.552
+  },
+  {
+    "code": "D7473",
+    "description": "Removal of torus mandibularis",
+    "category": "Excision Of Bone Tissue",
+    "score": 0.552
+  },
+  {
+    "code": "D7210",
+    "description": "Surgical removal of an erupted tooth requiring removal of bone and/or sectioning of tooth and including elevation of mucoperiosteal flap if indicated",
+    "category": "Surgical Extractions (Includes Local Anesthesia, Suturing, If Needed, And Routine Postoperative Care",
+    "score": 0.552
+  },
+  {
+    "code": "D4270",
+    "description": "Pedicle soft tissue graft procedure",
+    "category": "Surgical Services (Including Usual Post-Operative Services)",
+    "score": 0.552
+  },
+  {
+    "code": "D3921",
+    "description": "Decoronation or submergence of an erupted tooth",
+    "category": "Other Endodontic Procedures",
+    "score": 0.552
+  },
+  {
+    "code": "D7284",
+    "description": "Excisional biopsy of minor salivary glands",
+    "category": "Other Surgical Procedures",
+    "score": 0.552
+  },
+  {
+    "code": "D5761",
+    "description": "Reline mandibular partial denture (laboratory)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.552
+  },
+  {
+    "code": "D1352",
+    "description": "Preventive resin restoration in a moderate to high caries risk patient; permanent tooth",
+    "category": "Other Preventive Services",
+    "score": 0.551
+  },
+  {
+    "code": "D7299",
+    "description": "Removal of temporary anchorage device, requiring flap",
+    "category": "Other Surgical Procedures",
+    "score": 0.551
+  },
+  {
+    "code": "D7410",
+    "description": "Excision of benign lesion, up to 1.25 cm",
+    "category": "Surgical Excision Of Reactive Soft Tissue Lesions",
+    "score": 0.551
+  },
+  {
+    "code": "D3425",
+    "description": "Apicoectomy - molar (first root)",
+    "category": "Apicoectomy/Periradicular Services: Includes All Pre-Operative Radiographs, Bacteriologic Cultures, ",
+    "score": 0.551
+  },
+  {
+    "code": "D2983",
+    "description": "Veneer repair necessitated by restorative material failure",
+    "category": "Other Restorative Services",
+    "score": 0.551
+  },
+  {
+    "code": "D5511",
+    "description": "Repair broken complete denture base, mandibular",
+    "category": "Repairs To Complete And Partial Dentures",
+    "score": 0.551
+  },
+  {
+    "code": "D7411",
+    "description": "Excision of benign lesion > 1.25 cm",
+    "category": "Surgical Excision Of Reactive Soft Tissue Lesions",
+    "score": 0.551
+  },
+  {
+    "code": "D0485",
+    "description": "Consultation, including preparation of slides from biopsy material supplied by referring source",
+    "category": "Oral Pathology Laboratory",
+    "score": 0.551
+  },
+  {
+    "code": "D0412",
+    "description": "Blood glucose level test-in-office using a glucose meter",
+    "category": "Tests And Examinations",
+    "score": 0.551
+  },
+  {
+    "code": "D0371",
+    "description": "Sialoendoscopy capture and interpretation",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.55
+  },
+  {
+    "code": "D7450",
+    "description": "Removal of benign odontogenic cyst or tumor lesion, diameter up to 1.25 cm",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.55
+  },
+  {
+    "code": "D0385",
+    "description": "Maxillofacial MRI capture and interpretation",
+    "category": "Image Capture Only: Capture By A Practitioner Not Associated With Interpretation And Report",
+    "score": 0.55
+  },
+  {
+    "code": "D0415",
+    "description": "Collection of microorganisms for culture and sensitivity",
+    "category": "Tests And Examinations",
+    "score": 0.55
+  },
+  {
+    "code": "D1320",
+    "description": "Tobacco counseling for control and prevention of oral disease",
+    "category": "Other Preventive Services",
+    "score": 0.55
+  },
+  {
+    "code": "D9450",
+    "description": "Case presentation, subsequent to detailed and extensive treatment planning",
+    "category": "Professional Visits",
+    "score": 0.55
+  },
+  {
+    "code": "D7540",
+    "description": "Removal of reaction-producing foreign bodies - musculoskeletal system",
+    "category": "Surgical Incision",
+    "score": 0.55
+  },
+  {
+    "code": "D7854",
+    "description": "Synovectomy",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.55
+  },
+  {
+    "code": "D5730",
+    "description": "Reline complete maxillary denture (chair side)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.55
+  },
+  {
+    "code": "D7451",
+    "description": "Removal of benign odontogenic cyst or tumor, lesion diameter > 1.25 cm",
+    "category": "Surgical Excision Of Intra-Osseous Lesions",
+    "score": 0.55
+  },
+  {
+    "code": "D7261",
+    "description": "Primary closure of a sinus perforation",
+    "category": "Other Surgical Procedures",
+    "score": 0.55
+  },
+  {
+    "code": "D9130",
+    "description": "Temporomandibular joint dysfunction - non-invasive physical therapies",
+    "category": "Unclassified Treatment",
+    "score": 0.55
+  },
+  {
+    "code": "D3910",
+    "description": "Surgical procedure for isolation of tooth with rubber dam",
+    "category": "Other Endodontic Procedures",
+    "score": 0.55
+  },
+  {
+    "code": "D7509",
+    "description": "Marsupialization of odontogenic cyst",
+    "category": "Surgical Incision",
+    "score": 0.549
+  },
+  {
+    "code": "D7259",
+    "description": "Nerve dissection",
+    "category": "Other Surgical Procedures",
+    "score": 0.549
+  },
+  {
+    "code": "D7485",
+    "description": "Surgical reduction of osseous tuberosity",
+    "category": "Excision Of Bone Tissue",
+    "score": 0.549
+  },
+  {
+    "code": "D9243",
+    "description": "Intravenous moderate (conscious) sedation/analgesia - each 15 minute increment",
+    "category": "Anesthesia",
+    "score": 0.548
+  },
+  {
+    "code": "D1310",
+    "description": "Nutritional counseling for control of dental disease",
+    "category": "Other Preventive Services",
+    "score": 0.548
+  },
+  {
+    "code": "D9610",
+    "description": "Therapeutic drug injection, by report",
+    "category": "Drugs",
+    "score": 0.548
+  },
+  {
+    "code": "D7820",
+    "description": "Closed reduction of dislocation",
+    "category": "Reduction Of Dislocation And Management Of Other Temporomandibular Joint Dysfunctions: Procedures Th",
+    "score": 0.548
+  },
+  {
+    "code": "D5731",
+    "description": "Reline complete mandibular denture (chair side)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.548
+  },
+  {
+    "code": "D7412",
+    "description": "Excision of benign lesion; complicated",
+    "category": "Surgical Excision Of Reactive Soft Tissue Lesions",
+    "score": 0.548
+  },
+  {
+    "code": "D9420",
+    "description": "Hospital or ambulatory surgical center call",
+    "category": "Professional Visits",
+    "score": 0.548
+  },
+  {
+    "code": "D7415",
+    "description": "Excision of malignant lesion, complicated",
+    "category": "Surgical Excision Of Reactive Soft Tissue Lesions",
+    "score": 0.547
+  },
+  {
+    "code": "D5751",
+    "description": "Reline complete mandibular denture (laboratory)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.547
+  },
+  {
+    "code": "D9210",
+    "description": "Local anesthesia not in conjunction with operative or surgical procedures",
+    "category": "Anesthesia",
+    "score": 0.547
+  },
+  {
+    "code": "D9215",
+    "description": "Local anesthesia in conjunction with operative or surgical procedures",
+    "category": "Anesthesia",
+    "score": 0.547
+  },
+  {
+    "code": "D5750",
+    "description": "Reline complete maxillary denture (laboratory)",
+    "category": "Denture Reline Procedures: The Process Of Resurfacing The Tissue Side Of A Denture With New Base Mat",
+    "score": 0.547
+  },
+  {
+    "code": "D9212",
+    "description": "Trigeminal division block anesthesia",
+    "category": "Anesthesia",
+    "score": 0.546
+  },
+  {
+    "code": "D9248",
+    "description": "Non-intravenous (conscious) sedation. This includes non-IV minimal and moderate sedation.",
+    "category": "Anesthesia",
+    "score": 0.546
+  },
+  {
+    "code": "D0417",
+    "description": "Collection and preparation of saliva sample for laboratory diagnostic testing",
+    "category": "Tests And Examinations",
+    "score": 0.546
+  },
+  {
+    "code": "D7983",
+    "description": "Closure of salivary fistula",
+    "category": "Other Repair Procedures",
+    "score": 0.546
+  },
+  {
+    "code": "D0369",
+    "description": "Maxillofacial MRI capture and interpretation",
+    "category": "Pre-Diagnostic Services",
+    "score": 0.546
+  },
+  {
+    "code": "D9612",
+    "description": "Therapeutic parenteral drugs, two or more administrations, different medications",
+    "category": "Drugs",
+    "score": 0.546
+  },
+  {
+    "code": "D9230",
+    "description": "Administration of nitrous oxide/anxiolysis, analgesia",
+    "category": "Anesthesia",
+    "score": 0.545
+  },
+  {
+    "code": "D9311",
+    "description": "Consultation with a medical health care professional",
+    "category": "Professional Consultation",
+    "score": 0.545
+  },
+  {
+    "code": "D7300",
+    "description": "Removal of temporary anchorage device without flap",
+    "category": "Other Surgical Procedures",
+    "score": 0.545
+  },
+  {
+    "code": "D9310",
+    "description": "Consultation (diagnostic service by dentist or physician other than the practitioner providing treatment)",
+    "category": "Professional Consultation",
+    "score": 0.545
+  },
+  {
+    "code": "D0414",
+    "description": "Laboratory processing of microbial specimen to include culture and sensitivity studies, preparation, and transmission of written report",
+    "category": "Tests And Examinations",
+    "score": 0.544
+  },
+  {
+    "code": "D0418",
+    "description": "Analysis of saliva sample",
+    "category": "Tests And Examinations",
+    "score": 0.544
+  },
+  {
+    "code": "D9239",
+    "description": "Intravenous moderate (conscious) sedation/analgesia- first 15 minutes",
+    "category": "Anesthesia",
+    "score": 0.543
+  },
+  {
+    "code": "D1301",
+    "description": "Immunization counseling",
+    "category": "Other Preventive Services",
+    "score": 0.543
+  },
+  {
+    "code": "D9613",
+    "description": "Infiltration of sustained release therapeutic drug - per quadrant",
+    "category": "Drugs",
+    "score": 0.541
+  },
+  {
+    "code": "D7910",
+    "description": "Suture of recent small wounds up to 5 cm",
+    "category": "Repair Of Traumatic Wounds",
+    "score": 0.541
+  },
+  {
+    "code": "D0419",
+    "description": "Assessment of salivary flow by measurement",
+    "category": "Tests And Examinations",
+    "score": 0.538
+  },
+  {
+    "code": "D1321",
+    "description": "counseling for the control and prevention of adverse oral, behavioral, and systemic health effects associated with high-risk substance use",
+    "category": "Other Preventive Services",
+    "score": 0.536
+  }
+]
